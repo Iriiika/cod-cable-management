@@ -71,7 +71,7 @@ CREATE TABLE users (
     full_name VARCHAR(100) NOT NULL,
     role VARCHAR(20) NOT NULL,
     login VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL, -- Увеличено до 100 для хешированных паролей
+    password VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE
 );
 CREATE INDEX idx_users_login ON users(login);
@@ -108,15 +108,27 @@ INSERT INTO data_centers (name, short_name) VALUES
     ('DataWave', 'DW'), ('CloudPeak', 'CP'), ('InfoGrid', 'IG'), ('Nexus', 'NX'),
     ('BitForge', 'BF'), ('StreamBase', 'SB');
 
--- Вставка тестовых данных для halls
+-- Вставка тестовых данных для halls (уникальные имена с префиксом ЦОД)
 INSERT INTO halls (data_center_id, name) VALUES 
-    (1, '01'), (1, '02'), (2, '01'), (2, '02'), (3, '01'),
-    (4, '01'), (5, '01'), (6, '01'), (7, '01'), (8, '01');
+    (1, 'QF_01'), (1, 'QF_02'), 
+    (2, 'DH_01'), (2, 'DH_02'), 
+    (3, 'TC_01'), 
+    (4, 'SN_01'), 
+    (5, 'DW_01'), 
+    (6, 'CP_01'), 
+    (7, 'IG_01'), 
+    (8, 'NX_01');
 
--- Вставка тестовых данных для racks
+-- Вставка тестовых данных для racks (уникальные имена с префиксом зала)
 INSERT INTO racks (hall_id, name) VALUES 
-    (1, 'A01'), (1, 'A05'), (1, 'A09'), (2, 'A01'), (3, 'A01'),
-    (4, 'A01'), (5, 'A01'), (6, 'A01'), (7, 'A01'), (8, 'A01');
+    (1, 'QF_01_A01'), (1, 'QF_01_A05'), (1, 'QF_01_A09'), 
+    (2, 'QF_02_A01'), 
+    (3, 'DH_01_A01'), 
+    (4, 'DH_02_A01'), 
+    (5, 'TC_01_A01'), 
+    (6, 'SN_01_A01'), 
+    (7, 'DW_01_A01'), 
+    (8, 'CP_01_A01');
 
 -- Вставка тестовых данных для switches
 INSERT INTO switches (rack_id, type, hostname, unit, port_srvm, port_data) VALUES
@@ -124,12 +136,12 @@ INSERT INTO switches (rack_id, type, hostname, unit, port_srvm, port_data) VALUE
     (1, 'DATA1', 'DATA1_QF_01_A01', 21, NULL, 'G01/01'),
     (2, 'SRVM', 'SRVM_QF_01_A05', 19, 'G01', NULL),
     (3, 'DATA1', 'DATA1_QF_01_A09', 21, NULL, 'G01/01'),
-    (4, 'SRVM', 'SRVM_DH_01_A01', 19, 'G01', NULL),
-    (5, 'DATA1', 'DATA1_TC_01_A01', 21, NULL, 'G01/01'),
-    (6, 'SRVM', 'SRVM_SN_01_A01', 19, 'G01', NULL),
-    (7, 'DATA1', 'DATA1_DW_01_A01', 21, NULL, 'G01/01'),
-    (8, 'SRVM', 'SRVM_IG_01_A01', 19, 'G01', NULL),
-    (9, 'DATA1', 'DATA1_NX_01_A01', 21, NULL, 'G01/01');
+    (4, 'SRVM', 'SRVM_QF_02_A01', 19, 'G01', NULL),
+    (5, 'DATA1', 'DATA1_DH_01_A01', 21, NULL, 'G01/01'),
+    (6, 'SRVM', 'SRVM_DH_02_A01', 19, 'G01', NULL),
+    (7, 'DATA1', 'DATA1_TC_01_A01', 21, NULL, 'G01/01'),
+    (8, 'SRVM', 'SRVM_SN_01_A01', 19, 'G01', NULL),
+    (9, 'DATA1', 'DATA1_DW_01_A01', 21, NULL, 'G01/01');
 
 -- Вставка тестовых данных для servers
 INSERT INTO servers (serial_number, rack_id, unit, description_srvm, description_data1, description_data2) VALUES
@@ -146,16 +158,16 @@ INSERT INTO servers (serial_number, rack_id, unit, description_srvm, description
 
 -- Вставка тестовых данных для connections
 INSERT INTO connections (server_id, switch_id, port, label) VALUES
-    (1, 1, 'G01', 'SRVM_QF_01_A01 G01 -> 022 A01 3(V6JGQ2SX)'),
-    (2, 3, 'G02', 'SRVM_QF_01_A05 G02 -> 022 A05 4(X7KLP9TY)'),
-    (3, 5, 'G03', 'SRVM_DH_01_A01 G03 -> 022 A01 5(Z8MQR1UV)'),
-    (4, 7, 'G04', 'SRVM_SN_01_A01 G04 -> 022 A01 6(A9NWS2VW)'),
-    (5, 9, 'G05', 'SRVM_IG_01_A01 G05 -> 022 A01 7(B1PXT3WX)'),
-    (6, 1, 'G06', 'SRVM_QF_01_A01 G06 -> 022 A01 8(C2QYU4XY)'),
-    (7, 3, 'G07', 'SRVM_QF_01_A05 G07 -> 022 A05 9(D3RZV5YZ)'),
-    (8, 5, 'G08', 'SRVM_DH_01_A01 G08 -> 022 A01 10(E4SAW6ZA)'),
-    (9, 7, 'G09', 'SRVM_SN_01_A01 G09 -> 022 A01 11(F5TBX7AB)'),
-    (10, 9, 'G10', 'SRVM_IG_01_A01 G10 -> 022 A01 12(G6UCY8BC)');
+    (1, 1, 'G01', 'SRVM_QF_01_A01 G01 -> 022 QF_01_A01 3(V6JGQ2SX)'),
+    (2, 3, 'G02', 'SRVM_QF_01_A05 G02 -> 022 QF_01_A05 4(X7KLP9TY)'),
+    (3, 5, 'G03', 'SRVM_QF_02_A01 G03 -> 022 QF_02_A01 5(Z8MQR1UV)'),
+    (4, 7, 'G04', 'SRVM_DH_02_A01 G04 -> 022 DH_02_A01 6(A9NWS2VW)'),
+    (5, 9, 'G05', 'SRVM_SN_01_A01 G05 -> 022 SN_01_A01 7(B1PXT3WX)'),
+    (6, 1, 'G06', 'SRVM_QF_01_A01 G06 -> 022 QF_01_A01 8(C2QYU4XY)'),
+    (7, 3, 'G07', 'SRVM_QF_01_A05 G07 -> 022 QF_01_A05 9(D3RZV5YZ)'),
+    (8, 5, 'G08', 'SRVM_QF_02_A01 G08 -> 022 QF_02_A01 10(E4SAW6ZA)'),
+    (9, 7, 'G09', 'SRVM_DH_02_A01 G09 -> 022 DH_02_A01 11(F5TBX7AB)'),
+    (10, 9, 'G10', 'SRVM_SN_01_A01 G10 -> 022 SN_01_A01 12(G6UCY8BC)');
 
 -- Вставка тестовых данных для users (10 пользователей с хешированными паролями)
 INSERT INTO users (full_name, role, login, password, email) VALUES
