@@ -1,0 +1,152 @@
+/* Определение переменных для светлой и темной тем */
+:root {
+    --bg-color: #f5f7fa;
+    --text-color: #333;
+    --input-bg: #fff;
+    --input-border: #ccc;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+    --error-color: #dc3545;
+    --container-bg: #fff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a202c;
+    --text-color: #e2e8f0;
+    --input-bg: #2d3748;
+    --input-border: #4a5568;
+    --button-bg: #4299e1;
+    --button-hover-bg: #2b6cb0;
+    --error-color: #f56565;
+    --container-bg: #2d3748;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Основной стиль страницы */
+.login-body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Контейнер формы */
+.login-container {
+    background: var(--container-bg);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Заголовок */
+.login-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Группа полей формы */
+.login-form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+/* Метки */
+.login-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Поля ввода */
+.login-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.375rem;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: var(--button-bg);
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+/* Кнопка отправки */
+.login-submit {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--button-bg);
+    color: #fff;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-submit:hover {
+    background: var(--button-hover-bg);
+}
+
+/* Сообщение об ошибке */
+.login-error {
+    margin-top: 1rem;
+    color: var(--error-color);
+    font-size: 0.875rem;
+}
+
+/* Кнопка переключения темы */
+.login-theme-toggle {
+    margin-top: 1rem;
+    background: none;
+    border: none;
+    color: var(--button-bg);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.login-theme-toggle:hover {
+    text-decoration: underline;
+}
+
+/* Подвал */
+.login-footer {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+    .login-container {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+
+    .login-title {
+        font-size: 1.5rem;
+    }
+
+    .login-input,
+    .login-submit {
+        padding: 0.625rem;
+    }
+}

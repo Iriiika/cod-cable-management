@@ -1,0 +1,6 @@
+venv/ env/
+pycache/ *.pyc *.pyo *.pyd
+*.log *.tmp *.bak
+.idea/ .vscode/ *.sublime-project *.sublime-workspace
+.DS_Store Thumbs.db
+dist/ build/ *.egg-info/
