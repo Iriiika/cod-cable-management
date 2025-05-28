@@ -5,13 +5,13 @@ import bcrypt
 
 # Инициализация Flask-приложения
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Замените на безопасный ключ в продакшене
+app.secret_key = 'your_secret_key_here' 
 
 # Настройки подключения к базе данных PostgreSQL
 DB_CONFIG = {
     'dbname': 'cod_db',
     'user': 'postgres',
-    'password': 'your_password_here',  # Замените на ваш пароль
+    'password': 'password123',
     'host': 'localhost',
     'port': '5432'
 }
@@ -78,6 +78,14 @@ def engineer_dashboard():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
     return render_template('main_engineer.html', full_name=session['full_name'])
+
+@app.route('/upload_connection')
+def upload_connection():
+    return "Страница Загрузка подключения (в разработке)"
+
+@app.route('/add_switch')
+def add_switch():
+    return "Страница Добавление коммутатора (в разработке)"
 
 @app.route('/observer')
 def observer_dashboard():

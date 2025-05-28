@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Администратор</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_admin.css') }}">
+</head>
+<body class="admin-body" data-theme="light">
+    <header class="admin-header">
+        <nav class="admin-nav">
+            <button class="admin-nav-btn active" data-url="home">Главная</button>
+            <button class="admin-nav-btn" data-url="{{ url_for('commutation') }}">Коммутация</button>
+            <button class="admin-nav-btn" data-url="{{ url_for('reference') }}">Справочник</button>
+            <button class="admin-nav-btn" data-url="{{ url_for('report') }}">Отчет</button>
+        </nav>
+        <span class="admin-user">{{ full_name }}</span>
+        <button class="admin-help-btn" data-url="{{ url_for('help') }}">?</button>
+    </header>
+    <aside class="admin-sidebar">
+        <button class="admin-sidebar-btn" data-url="{{ url_for('reference') }}">ЦОДы</button>
+        <button class="admin-sidebar-btn" data-url="{{ url_for('reference_switches') }}">Коммутаторы</button>
+        <button class="admin-sidebar-btn" data-url="{{ url_for('reference_servers') }}">Серверы</button>
+        <button class="admin-sidebar-btn" data-url="{{ url_for('reference_roles') }}">Матрица ролей</button>
+        <button class="admin-sidebar-btn" data-url="{{ url_for('reference_users') }}">Пользователи</button>
+    </aside>
+    <main class="admin-main">
+        <div class="admin-breadcrumbs">
+            <a href="{{ url_for('admin_dashboard') }}">Главная</a>
+        </div>
+        <div class="admin-content">
+            <button class="admin-action-btn" data-url="{{ url_for('commutation') }}">Коммутация</button>
+            <button class="admin-action-btn" data-url="{{ url_for('reference') }}">Справочник</button>
+            <button class="admin-action-btn" data-url="{{ url_for('report') }}">Отчет</button>
+            <button class="admin-action-btn" data-url="{{ url_for('add_dc') }}">Добавить ЦОД</button>
+            <button class="admin-action-btn" data-url="{{ url_for('add_user') }}">Добавить пользователя</button>
+        </div>
+    </main>
+    <footer class="admin-footer">
+        Автор: [ФИО студента]
+    </footer>
+    <script src="{{ url_for('static', filename='js/main_admin.js') }}"></script>
+</body>
+</html>
