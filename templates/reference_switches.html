@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Справочник - Коммутаторы{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_switches.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="ref-sw-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('reference') }}">Справочник</a> > Коммутаторы
+  </div>
+  <div class="ref-sw-content content">
+    <div class="ref-sw-filters filters">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Коммутатор" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="ref-sw-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="ref-sw-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Hostname</th>
+          <th>ЦОД</th>
+          <th>Зал</th>
+          <th>Стойка</th>
+          {% if session['role'] == 'Инженер ЛВС' %}
+            <th></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for switch in switches %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ switch.hostname }}</td>
+            <td>{{ switch.dc_name }}</td>
+            <td>{{ switch.hall_name }}</td>
+            <td>{{ switch.rack_name }}</td>
+            {% if session['role'] == 'Инженер ЛВС' %}
+              <td><button class="ref-sw-delete-btn delete-btn" data-id="{{ switch.id }}"><i class="fas fa-trash"></i></button></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="ref-sw-status">Показано: {{ switches|length }} из {{ switches|length }}</p>
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{{ url_for('static', filename='js/reference_switches.js') }}"></script>
+{% endblock %}

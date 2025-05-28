@@ -1,74 +1,44 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Коммутация</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/commutation.css') }}">
-</head>
-<body>
-    <header class="comm-header">
-        <nav class="comm-nav">
-            <button class="nav-btn" data-page="{{ url_for('dashboard') }}">Главная</button>
-            <button class="nav-btn active" data-page="home">Коммутация</button>
-            <button class="nav-btn" data-page="{{ url_for('reference') }}">Справочник</button>
-            {% if session['role'] == 'Администратор' %}
-                <button class="nav-btn" data-page="{{ url_for('report') }}">Отчет</button>
-            {% endif %}
-        </nav>
-        <span class="comm-user">{{ session['full_name'] }}</span>
-        <button class="help-btn" data-page="{{ url_for('help') }}">?</button>
-    </header>
-
-    <aside class="comm-sidebar">
-        <button class="sidebar-btn" data-page="{{ url_for('reference') }}">ЦОДы</button>
-        <button class="sidebar-btn" data-page="{{ url_for('reference_switches') }}">Коммутаторы</button>
-        <button class="sidebar-btn" data-page="{{ url_for('reference_servers') }}">Серверы</button>
-        <button class="sidebar-btn" data-page="{{ url_for('reference_roles') }}">Матрица ролей</button>
-        <button class="sidebar-btn" data-page="{{ url_for('reference_users') }}">Пользователи</button>
-    </aside>
-
-    <main class="comm-main">
-        <div class="breadcrumbs">
-            <a href="{{ url_for('dashboard') }}">Главная</a> > Коммутация
-        </div>
-        <div class="comm-content">
-            <div class="comm-filters">
-                <input type="text" class="filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-                <input type="text" class="filter-input" placeholder="Зал" onfocus="this.placeholder=''">
-                <input type="text" class="filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
-                <input type="text" class="filter-input" placeholder="Юнит" onfocus="this.placeholder=''">
-                <input type="text" class="filter-input" placeholder="Коммутатор" onfocus="this.placeholder=''">
-                {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-                    <button class="excel-btn">Excel</button>
-                {% endif %}
-            </div>
-            <table class="comm-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox"></th>
-                        <th>Подключение</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for conn in connections %}
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>{{ conn.label }}</td>
-                            <td><button class="delete-btn" data-id="{{ conn.id }}">🗑️</button></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p>Показано: {{ connections|length }} из {{ connections|length }}</p>
-        </div>
-    </main>
-
-    <footer class="comm-footer">
-        Автор: Гуренко Ирина Александровна
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/commutation.js') }}"></script>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Коммутация{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/commutation.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="comm-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > Коммутация
+  </div>
+  <div class="comm-content content">
+    <div class="comm-filters filters">
+      <input type="text" class="comm-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="Юнит" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="Коммутатор" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="comm-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="comm-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Подключение</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for conn in connections %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ conn.label }}</td>
+            <td><button class="comm-delete-btn delete-btn" data-id="{{ conn.id }}"><i class="fas fa-trash"></i></button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="comm-status">Показано: {{ connections|length }} из {{ connections|length }}</p>
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{{ url_for('static', filename='js/commutation.js') }}"></script>
+{% endblock %}

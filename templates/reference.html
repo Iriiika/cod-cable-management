@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Справочник - ЦОДы{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="ref-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('reference') }}">Справочник</a> > ЦОДы
+  </div>
+  <div class="ref-content content">
+    <div class="ref-filters filters">
+      <input type="text" class="ref-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="ref-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>ЦОД</th>
+          <th>Короткое имя</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dc in data_centers %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ dc.name }}</td>
+            <td>{{ dc.short_name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="ref-status">Показано: {{ data_centers|length }} из {{ data_centers|length }}</p>
+  </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+@import url('styles.css');
+
+.ref-sw-content {
+    padding: 30px;
+}
+
+.ref-sw-filters {
+    margin-bottom: 25px;
+}
+
+.ref-sw-filter-input {
+    width: 200px;
+}
+
+.ref-sw-table {
+    margin-bottom: 20px;
+}
+
+.ref-sw-delete-btn {
+    color: var(--accent-color);
+}
+
+.ref-sw-status {
+    font-size: 14px;
+    color: var(--text-color);
+}

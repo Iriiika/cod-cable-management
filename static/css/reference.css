@@ -1,0 +1,22 @@
+@import url('styles.css');
+
+.ref-content {
+    padding: 30px;
+}
+
+.ref-filters {
+    margin-bottom: 25px;
+}
+
+.ref-filter-input {
+    width: 200px;
+}
+
+.ref-table {
+    margin-bottom: 20px;
+}
+
+.ref-status {
+    font-size: 14px;
+    color: var(--text-color);
+}
