@@ -1,33 +1,27 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
-<body class="login-body">
-    <div class="login-container">
-        <h2 class="login-title">Авторизация</h2>
-        <form method="POST" action="{{ url_for('login') }}">
-            <div class="login-form-group">
-                <label for="username" class="login-label">Имя пользователя</label>
-                <input type="text" id="username" name="username" class="login-input" placeholder="Введите имя" required>
-            </div>
-            <div class="login-form-group">
-                <label for="password" class="login-label">Пароль</label>
-                <input type="password" id="password" name="password" class="login-input" placeholder="Введите пароль" required>
-            </div>
-            <button type="submit" class="login-submit">Вход</button>
-        </form>
-        {% if error %}
-        <div class="login-error" id="login-error">{{ error }}</div>
-        {% endif %}
-        <button id="theme-toggle" class="login-theme-toggle">Переключить тему</button>
-    </div>
-    <footer class="login-footer">
-        Автор: [ФИО студента]
-    </footer>
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Авторизация{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="login-content">
+    <h2 class="login-title">Авторизация</h2>
+    <form method="POST" action="{{ url_for('login') }}">
+      <div class="login-form-group">
+        <label for="username" class="login-label"><i class="fas fa-user"></i> Имя пользователя</label>
+        <input type="text" id="username" name="username" class="filter-input" placeholder="Введите имя" required>
+      </div>
+      <div class="login-form-group">
+        <label for="password" class="login-label"><i class="fas fa-lock"></i> Пароль</label>
+        <input type="password" id="password" name="password" class="filter-input" placeholder="Введите пароль" required>
+      </div>
+      <button type="submit" class="excel-btn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+      {% if error %}
+        <div class="login-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+      {% endif %}
+    </form>
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
