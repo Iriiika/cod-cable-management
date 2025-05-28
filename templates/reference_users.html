@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Справочник - Пользователи{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_users.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="ref-users-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('reference') }}">Справочник</a> > Пользователи
+  </div>
+  <div class="ref-users-content content">
+    <div class="ref-users-filters filters">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="ФИО" onfocus="this.placeholder=''">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="Роль" onfocus="this.placeholder=''">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="Логин" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="ref-users-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="ref-users-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>ФИО</th>
+          <th>Роль</th>
+          <th>Логин</th>
+          <th>Email</th>
+          {% if session['role'] == 'Администратор' %}
+            <th></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.login }}</td>
+            <td>{{ user.email }}</td>
+            {% if session['role'] == 'Администратор' %}
+              <td><button class="ref-users-delete-btn delete-btn" data-id="{{ user.id }}"><i class="fas fa-trash"></i></button></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="ref-users-status">Показано: {{ users|length }} из {{ users|length }}</p>
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{{ url_for('static', filename='js/reference_users.js') }}"></script>
+{% endblock %}

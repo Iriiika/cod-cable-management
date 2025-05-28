@@ -1,0 +1,22 @@
+@import url('styles.css');
+
+.ref-srv-content {
+    padding: 30px;
+}
+
+.ref-srv-filters {
+    margin-bottom: 25px;
+}
+
+.ref-srv-filter-input {
+    width: 200px;
+}
+
+.ref-srv-table {
+    margin-bottom: 20px;
+}
+
+.ref-srv-status {
+    font-size: 14px;
+    color: var(--text-color);
+}

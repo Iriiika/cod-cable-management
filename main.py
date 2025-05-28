@@ -150,6 +150,91 @@ def reference_switches():
 
     return render_template('reference_switches.html', switches=switches)
 
+@app.route('/reference_servers')
+def reference_servers():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        return render_template('reference_servers.html', servers=[])
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('''
+                SELECT s.id, s.serial_number, dc.name AS dc_name, h.name AS hall_name, r.name AS rack_name, s.unit
+                FROM servers s
+                JOIN racks r ON s.rack_id = r.id
+                JOIN halls h ON r.hall_id = h.id
+                JOIN data_centers dc ON h.data_center_id = dc.id
+            ''')
+            servers = cur.fetchall()
+            servers = [{
+                'id': row[0],
+                'serial_number': row[1],
+                'dc_name': row[2],
+                'hall_name': row[3],
+                'rack_name': row[4],
+                'unit': row[5]
+            } for row in servers]
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        servers = []
+    finally:
+        conn.close()
+
+    return render_template('reference_servers.html', servers=servers)
+
+@app.route('/reference_roles')
+def reference_roles():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        return render_template('reference_roles.html', roles=[])
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT name, permissions FROM roles')
+            roles = cur.fetchall()
+            roles = [{'name': row[0], 'permissions': row[1]} for row in roles]
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        roles = []
+    finally:
+        conn.close()
+
+    return render_template('reference_roles.html', roles=roles)
+
+@app.route('/reference_users')
+def reference_users():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        return render_template('reference_users.html', users=[])
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT id, full_name, role, login, email FROM users')
+            users = cur.fetchall()
+            users = [{
+                'id': row[0],
+                'full_name': row[1],
+                'role': row[2],
+                'login': row[3],
+                'email': row[4]
+            } for row in users]
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        users = []
+    finally:
+        conn.close()
+
+    return render_template('reference_users.html', users=users)
+
 @app.route('/report')
 def report():
     return render_template('report.html')
@@ -165,18 +250,6 @@ def add_dc():
 @app.route('/add_user')
 def add_user():
     return render_template('add_user.html')
-
-@app.route('/reference_servers')
-def reference_servers():
-    return render_template('reference_servers.html')
-
-@app.route('/reference_roles')
-def reference_roles():
-    return render_template('reference_roles.html')
-
-@app.route('/reference_users')
-def reference_users():
-    return render_template('reference_users.html')
 
 @app.route('/upload_connection')
 def upload_connection():

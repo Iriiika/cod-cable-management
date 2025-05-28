@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Справочник - Серверы{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_servers.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="ref-srv-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('reference') }}">Справочник</a> > Серверы
+  </div>
+  <div class="ref-srv-content content">
+    <div class="ref-srv-filters filters">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Серийный номер" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="ref-srv-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="ref-srv-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Серийный номер</th>
+          <th>ЦОД</th>
+          <th>Зал</th>
+          <th>Стойка</th>
+          <th>Юнит</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for server in servers %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ server.serial_number }}</td>
+            <td>{{ server.dc_name }}</td>
+            <td>{{ server.hall_name }}</td>
+            <td>{{ server.rack_name }}</td>
+            <td>{{ server.unit }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="ref-srv-status">Показано: {{ servers|length }} из {{ servers|length }}</p>
+  </div>
+{% endblock %}

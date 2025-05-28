@@ -1,0 +1,22 @@
+@import url('styles.css');
+
+.ref-roles-content {
+    padding: 30px;
+}
+
+.ref-roles-filters {
+    margin-bottom: 25px;
+}
+
+.ref-roles-filter-input {
+    width: 200px;
+}
+
+.ref-roles-table {
+    margin-bottom: 20px;
+}
+
+.ref-roles-status {
+    font-size: 14px;
+    color: var(--text-color);
+}

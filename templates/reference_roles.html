@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Справочник - Матрица ролей{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_roles.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="ref-roles-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('reference') }}">Справочник</a> > Матрица ролей
+  </div>
+  <div class="ref-roles-content content">
+    <div class="ref-roles-filters filters">
+      <input type="text" class="ref-roles-filter-input filter-input" placeholder="Роль" onfocus="this.placeholder=''">
+      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
+        <button class="ref-roles-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      {% endif %}
+    </div>
+    <table class="ref-roles-table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Роль</th>
+          <th>Права</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for role in roles %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ role.name }}</td>
+            <td>{{ role.permissions }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="ref-roles-status">Показано: {{ roles|length }} из {{ roles|length }}</p>
+  </div>
+{% endblock %}
