@@ -1,20 +1,40 @@
 @import url('styles.css');
 
 .login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
+}
+
+.login-form-wrapper {
     max-width: 400px;
-    margin: 0 auto;
-    padding: 30px;
-    text-align: center;
+    width: 100%;
+    background: var(--content-bg);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-form-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: var(--neon-glow);
 }
 
 .login-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .login-form-group {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: left;
 }
 
@@ -24,14 +44,80 @@
     gap: 8px;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.login-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.login-input:focus {
+    border-color: var(--button-bg);
+    box-shadow: 0 0 8px rgba(167, 196, 212, 0.3);
+}
+
+.login-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.login-submit-btn {
+    padding: 12px 24px;
+    background: var(--button-bg);
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-submit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
 }
 
 .login-error {
     color: var(--accent-color);
     font-size: 14px;
-    margin-top: 15px;
+    margin-top: 20px;
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+}
+
+@media (max-width: 768px) {
+    .login-content {
+        padding: 15px;
+    }
+
+    .login-form-wrapper {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form-wrapper {
+        padding: 20px;
+    }
+
+    .login-title {
+        font-size: 24px;
+    }
+
+    .login-submit-btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
 }

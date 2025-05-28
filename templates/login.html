@@ -5,21 +5,25 @@
 {% endblock %}
 {% block content %}
   <div class="login-content">
-    <h2 class="login-title">Авторизация</h2>
-    <form method="POST" action="{{ url_for('login') }}">
-      <div class="login-form-group">
-        <label for="username" class="login-label"><i class="fas fa-user"></i> Имя пользователя</label>
-        <input type="text" id="username" name="username" class="filter-input" placeholder="Введите имя" required>
-      </div>
-      <div class="login-form-group">
-        <label for="password" class="login-label"><i class="fas fa-lock"></i> Пароль</label>
-        <input type="password" id="password" name="password" class="filter-input" placeholder="Введите пароль" required>
-      </div>
-      <button type="submit" class="excel-btn"><i class="fas fa-sign-in-alt"></i> Войти</button>
-      {% if error %}
-        <div class="login-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
-      {% endif %}
-    </form>
+    <div class="login-form-wrapper">
+      <h2 class="login-title">Авторизация</h2>
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="login-form-group">
+          <label for="username" class="login-label"><i class="fas fa-user"></i> Имя пользователя</label>
+          <input type="text" id="username" name="username" class="filter-input login-input" placeholder="Введите имя" required>
+        </div>
+        <div class="login-form-group">
+          <label for="password" class="login-label"><i class="fas fa-lock"></i> Пароль</label>
+          <input type="password" id="password" name="password" class="filter-input login-input" placeholder="Введите пароль" required>
+        </div>
+        <div class="login-button-wrapper">
+          <button type="submit" class="excel-btn login-submit-btn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+        </div>
+        {% if error %}
+          <div class="login-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+        {% endif %}
+      </form>
+    </div>
   </div>
 {% endblock %}
 {% block js %}
