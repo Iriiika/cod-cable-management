@@ -235,6 +235,98 @@ def reference_users():
 
     return render_template('reference_users.html', users=users)
 
+@app.route('/add_dc', methods=['GET', 'POST'])
+def add_dc():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        short_name = request.form['short_name']
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('add_dc'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
+                conn.commit()
+                flash('ЦОД успешно добавлен', 'success')
+                return redirect(url_for('reference'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('add_dc.html')
+
+@app.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        role = request.form['role']
+        login = request.form['login']
+        password = request.form['password'].encode('utf-8')
+        email = request.form['email']
+
+        hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('add_user'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
+                            (full_name, role, login, hashed_password, email))
+                conn.commit()
+                flash('Пользователь успешно добавлен', 'success')
+                return redirect(url_for('reference_users'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('add_user.html')
+
+@app.route('/add_switch', methods=['GET', 'POST'])
+def add_switch():
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        rack_id = int(request.form['rack_id'])
+        type = request.form['type']
+        hostname = request.form['hostname']
+        unit = int(request.form['unit'])
+        port_srvm = request.form['port_srvm'] or None
+        port_data = request.form['port_data'] or None
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('add_switch'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO switches (rack_id, type, hostname, unit, port_srvm, port_data) VALUES (%s, %s, %s, %s, %s, %s)', 
+                            (rack_id, type, hostname, unit, port_srvm, port_data))
+                conn.commit()
+                flash('Коммутатор успешно добавлен', 'success')
+                return redirect(url_for('reference_switches'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('add_switch.html')
+
 @app.route('/report')
 def report():
     return render_template('report.html')
@@ -243,21 +335,9 @@ def report():
 def help():
     return render_template('help.html')
 
-@app.route('/add_dc')
-def add_dc():
-    return render_template('add_dc.html')
-
-@app.route('/add_user')
-def add_user():
-    return render_template('add_user.html')
-
 @app.route('/upload_connection')
 def upload_connection():
     return render_template('upload_connection.html')
-
-@app.route('/add_switch')
-def add_switch():
-    return render_template('add_switch.html')
 
 @app.route('/dashboard')
 def dashboard():

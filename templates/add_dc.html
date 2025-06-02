@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Добавление ЦОД{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/add_dc.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="add-dc-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Добавление ЦОД
+  </div>
+  <div class="add-dc-content content">
+    <div class="add-dc-form-wrapper">
+      <h2 class="add-dc-title">Добавление ЦОД</h2>
+      <form method="POST" action="{{ url_for('add_dc') }}">
+        <div class="add-dc-form-group">
+          <label for="name" class="add-dc-label"><i class="fas fa-building"></i> Название ЦОД</label>
+          <input type="text" id="name" name="name" class="filter-input add-dc-input" placeholder="Введите название" required>
+        </div>
+        <div class="add-dc-form-group">
+          <label for="short_name" class="add-dc-label"><i class="fas fa-tag"></i> Короткое имя</label>
+          <input type="text" id="short_name" name="short_name" class="filter-input add-dc-input" placeholder="Введите короткое имя" required>
+        </div>
+        <div class="add-dc-button-wrapper">
+          <button type="submit" class="excel-btn add-dc-submit-btn"><i class="fas fa-plus-circle"></i> Добавить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

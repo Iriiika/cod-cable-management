@@ -1,0 +1,112 @@
+@import url('styles.css');
+
+.add-switch-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
+}
+
+.add-switch-form-wrapper {
+    max-width: 450px;
+    width: 100%;
+    background: var(--content-bg);
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.add-switch-form-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: var(--neon-glow);
+}
+
+.add-switch-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-align: center;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-switch-form-group {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.add-switch-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.add-switch-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+
+.add-switch-input:focus {
+    border-color: var(--button-bg);
+    box-shadow: 0 0 8px rgba(167, 196, 212, 0.3);
+}
+
+.add-switch-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.add-switch-submit-btn {
+    padding: 12px 32px;
+    background: var(--button-bg);
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-switch-submit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+
+@media (max-width: 768px) {
+    .add-switch-content {
+        padding: 15px;
+    }
+
+    .add-switch-form-wrapper {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-switch-form-wrapper {
+        padding: 30px;
+    }
+
+    .add-switch-title {
+        font-size: 28px;
+    }
+
+    .add-switch-submit-btn {
+        font-size: 14px;
+        padding: 10px 24px;
+    }
+}
