@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Справка{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="help-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > Справка
+  </div>
+  <div class="help-content content">
+    <h2 class="help-title">Справка по системе</h2>
+    <p>Раздел справки в разработке.</p>
+  </div>
+{% endblock %}
