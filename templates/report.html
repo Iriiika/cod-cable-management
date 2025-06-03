@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Отчеты{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="report-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > Отчеты
+  </div>
+  <div class="report-content content">
+    <h2 class="report-title">Отчеты</h2>
+    <p>Здесь будут отображаться отчеты по подключениям.</p>
+  </div>
+{% endblock %}
