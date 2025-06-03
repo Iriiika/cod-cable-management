@@ -9,7 +9,31 @@
     <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Логи действий
   </div>
   <div class="logs-content content">
-    <h2 class="logs-title">Логи действий пользователей</h2>
-    <p>Раздел логов в разработке.</p>
+    <div class="logs-filters filters">
+      <input type="text" class="logs-filter-input filter-input" placeholder="Пользователь" onfocus="this.placeholder=''">
+      <input type="text" class="logs-filter-input filter-input" placeholder="Действие" onfocus="this.placeholder=''">
+      <input type="date" class="logs-filter-input filter-input" name="date">
+    </div>
+    <table class="logs-table">
+      <thead>
+        <tr>
+          <th>Пользователь</th>
+          <th>Действие</th>
+          <th>Объект</th>
+          <th>Дата и время</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+          <tr>
+            <td>{{ log.user_name }}</td>
+            <td>{{ log.action }}</td>
+            <td>{{ log.object }}</td>
+            <td>{{ log.created_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="logs-status">Показано: {{ logs|length }} записей</p>
   </div>
 {% endblock %}

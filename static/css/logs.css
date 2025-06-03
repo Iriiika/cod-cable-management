@@ -4,6 +4,23 @@
     padding: 30px;
 }
 
+.logs-filters {
+    margin-bottom: 25px;
+}
+
+.logs-filter-input {
+    width: 200px;
+}
+
+.logs-table {
+    margin-bottom: 20px;
+}
+
+.logs-status {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
 .logs-title {
     font-size: 32px;
     font-weight: 700;
@@ -16,6 +33,10 @@
 @media (max-width: 768px) {
     .logs-content {
         padding: 20px;
+    }
+
+    .logs-filter-input {
+        width: 100%;
     }
 
     .logs-title {
