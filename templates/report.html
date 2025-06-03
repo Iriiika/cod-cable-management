@@ -8,7 +8,32 @@
     <a href="{{ url_for('dashboard') }}">Главная</a> > Отчеты
   </div>
   <div class="report-content content">
-    <h2 class="report-title">Отчеты</h2>
-    <p>Здесь будут отображаться отчеты по подключениям.</p>
+    <div class="report-filters filters">
+      <input type="text" class="report-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
+      <input type="text" class="report-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
+      <input type="text" class="report-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
+      <button class="report-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+    </div>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th>ЦОД</th>
+          <th>Зал</th>
+          <th>Стойка</th>
+          <th>Количество подключений</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in reports %}
+          <tr>
+            <td>{{ report.dc_name }}</td>
+            <td>{{ report.hall_name }}</td>
+            <td>{{ report.rack_name }}</td>
+            <td>{{ report.connection_count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="report-status">Показано: {{ reports|length }} записей</p>
   </div>
 {% endblock %}

@@ -4,6 +4,23 @@
     padding: 30px;
 }
 
+.report-filters {
+    margin-bottom: 25px;
+}
+
+.report-filter-input {
+    width: 200px;
+}
+
+.report-table {
+    margin-bottom: 20px;
+}
+
+.report-status {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
 .report-title {
     font-size: 32px;
     font-weight: 700;
@@ -16,6 +33,10 @@
 @media (max-width: 768px) {
     .report-content {
         padding: 20px;
+    }
+
+    .report-filter-input {
+        width: 100%;
     }
 
     .report-title {
