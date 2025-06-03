@@ -327,17 +327,75 @@ def add_switch():
 
     return render_template('add_switch.html')
 
+@app.route('/upload_connection', methods=['GET', 'POST'])
+def upload_connection():
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        server_id = int(request.form['server_id'])
+        switch_id = int(request.form['switch_id'])
+        port = request.form['port']
+        label = request.form['label']
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('upload_connection'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO connections (server_id, switch_id, port, label) VALUES (%s, %s, %s, %s)', 
+                            (server_id, switch_id, port, label))
+                conn.commit()
+                flash('Подключение успешно загружено', 'success')
+                return redirect(url_for('commutation'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('upload_connection.html')
+
 @app.route('/report')
 def report():
-    return render_template('report.html')
+    if 'user_id' not in session or session['role'] not in ['Администратор', 'Наблюдатель']:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        return render_template('report.html', reports=[])
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('''
+                SELECT dc.name AS dc_name, h.name AS hall_name, r.name AS rack_name, COUNT(c.id) AS connection_count
+                FROM connections c
+                JOIN servers s ON c.server_id = s.id
+                JOIN switches sw ON c.switch_id = sw.id
+                JOIN racks r ON s.rack_id = r.id
+                JOIN halls h ON r.hall_id = h.id
+                JOIN data_centers dc ON h.data_center_id = dc.id
+                GROUP BY dc.name, h.name, r.name
+            ''')
+            reports = cur.fetchall()
+            reports = [{
+                'dc_name': row[0],
+                'hall_name': row[1],
+                'rack_name': row[2],
+                'connection_count': row[3]
+            } for row in reports]
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        reports = []
+    finally:
+        conn.close()
+
+    return render_template('report.html', reports=reports)
 
 @app.route('/help')
 def help():
     return render_template('help.html')
-
-@app.route('/upload_connection')
-def upload_connection():
-    return render_template('upload_connection.html')
 
 @app.route('/dashboard')
 def dashboard():
