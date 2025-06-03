@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Загрузка подключения{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/upload_connection.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="upload-conn-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Загрузка подключения
+  </div>
+  <div class="upload-conn-content content">
+    <h2 class="upload-conn-title">Загрузка подключения</h2>
+    <p>Форма загрузки подключения в разработке.</p>
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{{ url_for('static', filename='js/upload_connection.js') }}"></script>
+{% endblock %}
