@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Логи действий{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/logs.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="logs-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Логи действий
+  </div>
+  <div class="logs-content content">
+    <h2 class="logs-title">Логи действий пользователей</h2>
+    <p>Раздел логов в разработке.</p>
+  </div>
+{% endblock %}
