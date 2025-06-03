@@ -13,6 +13,27 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.help-section {
+    margin-bottom: 30px;
+}
+
+.help-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.help-list {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.help-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
 @media (max-width: 768px) {
     .help-content {
         padding: 20px;
@@ -20,5 +41,9 @@
 
     .help-title {
         font-size: 28px;
+    }
+
+    .help-subtitle {
+        font-size: 20px;
     }
 }
