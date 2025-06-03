@@ -9,8 +9,30 @@
     <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Загрузка подключения
   </div>
   <div class="upload-conn-content content">
-    <h2 class="upload-conn-title">Загрузка подключения</h2>
-    <p>Форма загрузки подключения в разработке.</p>
+    <div class="upload-conn-form-wrapper">
+      <h2 class="upload-conn-title">Загрузка подключения</h2>
+      <form method="POST" action="{{ url_for('upload_connection') }}">
+        <div class="upload-conn-form-group">
+          <label for="server_id" class="upload-conn-label"><i class="fas fa-server"></i> ID сервера</label>
+          <input type="text" id="server_id" name="server_id" class="filter-input upload-conn-input" placeholder="Введите ID сервера" required>
+        </div>
+        <div class="upload-conn-form-group">
+          <label for="switch_id" class="upload-conn-label"><i class="fas fa-network-wired"></i> ID коммутатора</label>
+          <input type="text" id="switch_id" name="switch_id" class="filter-input upload-conn-input" placeholder="Введите ID коммутатора" required>
+        </div>
+        <div class="upload-conn-form-group">
+          <label for="port" class="upload-conn-label"><i class="fas fa-plug"></i> Порт</label>
+          <input type="text" id="port" name="port" class="filter-input upload-conn-input" placeholder="Введите порт" required>
+        </div>
+        <div class="upload-conn-form-group">
+          <label for="label" class="upload-conn-label"><i class="fas fa-tag"></i> Метка</label>
+          <input type="text" id="label" name="label" class="filter-input upload-conn-input" placeholder="Введите метку" required>
+        </div>
+        <div class="upload-conn-button-wrapper">
+          <button type="submit" class="excel-btn upload-conn-submit-btn"><i class="fas fa-upload"></i> Загрузить</button>
+        </div>
+      </form>
+    </div>
   </div>
 {% endblock %}
 {% block js %}

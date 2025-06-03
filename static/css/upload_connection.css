@@ -1,7 +1,27 @@
 @import url('styles.css');
 
 .upload-conn-content {
-    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
+}
+
+.upload-conn-form-wrapper {
+    max-width: 450px;
+    width: 100%;
+    background: var(--content-bg);
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.upload-conn-form-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: var(--neon-glow);
 }
 
 .upload-conn-title {
@@ -13,12 +33,80 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.upload-conn-form-group {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.upload-conn-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.upload-conn-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+
+.upload-conn-input:focus {
+    border-color: var(--button-bg);
+    box-shadow: 0 0 8px rgba(167, 196, 212, 0.3);
+}
+
+.upload-conn-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.upload-conn-submit-btn {
+    padding: 12px 32px;
+    background: var(--button-bg);
+    color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-conn-submit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+
 @media (max-width: 768px) {
     .upload-conn-content {
-        padding: 20px;
+        padding: 15px;
+    }
+
+    .upload-conn-form-wrapper {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .upload-conn-form-wrapper {
+        padding: 30px;
     }
 
     .upload-conn-title {
         font-size: 28px;
+    }
+
+    .upload-conn-submit-btn {
+        font-size: 14px;
+        padding: 10px 24px;
     }
 }
