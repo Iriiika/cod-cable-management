@@ -1,0 +1,24 @@
+@import url('styles.css');
+    
+    .delete-dc-content {
+        padding: 30px;
+    }
+    
+    .delete-dc-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+        color: var(--text-color);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    @media (max-width: 768px) {
+        .delete-dc-content {
+            padding: 20px;
+        }
+    
+        .delete-dc-title {
+            font-size: 28px;
+        }
+    }
