@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block title %}Удаление подключения{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_connection.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="delete-conn-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Удаление подключения
+    </div>
+    <div class="delete-conn-content content">
+      <h2 class="delete-conn-title">Удаление подключения</h2>
+      <p>Форма удаления подключения в разработке.</p>
+    </div>
+  {% endblock %}
