@@ -9,7 +9,17 @@
       <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Удаление подключения
     </div>
     <div class="delete-conn-content content">
-      <h2 class="delete-conn-title">Удаление подключения</h2>
-      <p>Форма удаления подключения в разработке.</p>
+      <div class="delete-conn-form-wrapper">
+        <h2 class="delete-conn-title">Удаление подключения</h2>
+        <form method="POST" action="{{ url_for('delete_connection') }}">
+          <div class="delete-conn-form-group">
+            <label for="conn_id" class="delete-conn-label"><i class="fas fa-plug"></i> ID подключения</label>
+            <input type="text" id="conn_id" name="conn_id" class="filter-input delete-conn-input" placeholder="Введите ID подключения" required>
+          </div>
+          <div class="delete-conn-button-wrapper">
+            <button type="submit" class="excel-btn delete-conn-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
+          </div>
+        </form>
+      </div>
     </div>
   {% endblock %}
