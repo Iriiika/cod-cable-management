@@ -425,6 +425,38 @@ def report():
 def help():
     return render_template('help.html')
 
+@app.route('/logs')
+def logs():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        return render_template('logs.html', logs=[])
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('''
+                SELECT u.full_name AS user_name, l.action, l.object, l.created_at
+                FROM logs l
+                JOIN users u ON l.user_id = u.id
+                ORDER BY l.created_at DESC
+            ''')
+            logs = cur.fetchall()
+            logs = [{
+                'user_name': row[0],
+                'action': row[1],
+                'object': row[2],
+                'created_at': row[3]
+            } for row in logs]
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        logs = []
+    finally:
+        conn.close()
+
+    return render_template('logs.html', logs=logs)
+
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if 'user_id' not in session or session['role'] != 'Администратор':
