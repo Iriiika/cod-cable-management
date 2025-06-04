@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block title %}Удаление пользователя{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_user.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="delete-user-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление пользователя
+    </div>
+    <div class="delete-user-content content">
+      <h2 class="delete-user-title">Удаление пользователя</h2>
+      <p>Форма удаления пользователя в разработке.</p>
+    </div>
+  {% endblock %}
