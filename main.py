@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg
 import bcrypt
-
+    
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -72,6 +72,10 @@ def register():
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
                             (full_name, 'Наблюдатель', login, hashed_password, email))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session.get('user_id', 0), 'Регистрация пользователя', login))
                 conn.commit()
                 flash('Регистрация успешна! Запросите доступ у администратора для повышения роли.', 'success')
                 return redirect(url_for('login'))
@@ -281,6 +285,10 @@ def add_dc():
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
                 conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Добавление ЦОД', name))
+                conn.commit()
                 flash('ЦОД успешно добавлен', 'success')
                 return redirect(url_for('reference'))
         except psycopg.Error as e:
@@ -314,6 +322,10 @@ def add_user():
                 cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
                             (full_name, role, login, hashed_password, email))
                 conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Добавление пользователя', login))
+                conn.commit()
                 flash('Пользователь успешно добавлен', 'success')
                 return redirect(url_for('reference_users'))
         except psycopg.Error as e:
@@ -346,6 +358,10 @@ def add_switch():
                 cur.execute('INSERT INTO switches (rack_id, type, hostname, unit, port_srvm, port_data) VALUES (%s, %s, %s, %s, %s, %s)', 
                             (rack_id, type, hostname, unit, port_srvm, port_data))
                 conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Добавление коммутатора', hostname))
+                conn.commit()
                 flash('Коммутатор успешно добавлен', 'success')
                 return redirect(url_for('reference_switches'))
         except psycopg.Error as e:
@@ -375,6 +391,10 @@ def upload_connection():
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO connections (server_id, switch_id, port, label) VALUES (%s, %s, %s, %s)', 
                             (server_id, switch_id, port, label))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Загрузка подключения', label))
                 conn.commit()
                 flash('Подключение успешно загружено', 'success')
                 return redirect(url_for('commutation'))
@@ -467,25 +487,34 @@ def settings():
         flash('Ошибка базы данных', 'error')
         return redirect(url_for('settings'))
 
+    if request.method == 'POST':
+        label_format = request.form['label_format']
+        export_limit = request.form['export_limit']
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('UPDATE settings SET value = %s WHERE key = %s', (label_format, 'label_format'))
+                cur.execute('UPDATE settings SET value = %s WHERE key = %s', (export_limit, 'export_limit'))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Изменение настроек', 'label_format, export_limit'))
+                conn.commit()
+                flash('Настройки успешно обновлены', 'success')
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+        return redirect(url_for('settings'))
+
     try:
         with conn.cursor() as cur:
-            if request.method == 'POST':
-                label_format = request.form['label_format']
-                export_limit = request.form['export_limit']
-
-                cur.execute('INSERT INTO settings (key, value) VALUES (%s, %s) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value', 
-                            ('label_format', label_format))
-                cur.execute('INSERT INTO settings (key, value) VALUES (%s, %s) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value', 
-                            ('export_limit', export_limit))
-                conn.commit()
-                flash('Настройки успешно сохранены', 'success')
-                return redirect(url_for('settings'))
-
             cur.execute('SELECT key, value FROM settings')
             settings_data = cur.fetchall()
             settings = {row[0]: row[1] for row in settings_data}
     except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
+        settings = {'label_format': '', 'export_limit': '1000'}
     finally:
         conn.close()
 
