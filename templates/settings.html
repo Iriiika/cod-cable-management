@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Настройки{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="settings-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">Главная</a> > 
+    <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Настройки
+  </div>
+  <div class="settings-content content">
+    <h2 class="settings-title">Настройки системы</h2>
+    <p>Раздел настроек в разработке.</p>
+  </div>
+{% endblock %}
