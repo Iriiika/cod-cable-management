@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-import psycopg
+import psycopg2
 import bcrypt
 
 app = Flask(__name__)
@@ -15,9 +15,9 @@ DB_CONFIG = {
 
 def get_db_connection():
     try:
-        conn = psycopg.connect(**DB_CONFIG)
+        conn = psycopg2.connect(**DB_CONFIG)
         return conn
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         return None
 
@@ -43,7 +43,7 @@ def login():
                 return redirect(url_for('dashboard'))
             else:
                 return render_template('login.html', error='Запросите доступ у <a href="mailto:SergeyAIvanov@dom.ru">SergeyAIvanov@dom.ru</a>')
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -79,7 +79,7 @@ def register():
                 conn.commit()
                 flash('Регистрация успешна! Запросите доступ у администратора для повышения роли.', 'success')
                 return redirect(url_for('login'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -118,7 +118,7 @@ def commutation():
             cur.execute('SELECT id, label FROM connections')
             connections = cur.fetchall()
             connections = [{'id': row[0], 'label': row[1]} for row in connections]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         connections = []
     finally:
@@ -140,7 +140,7 @@ def reference():
             cur.execute('SELECT name, short_name FROM data_centers')
             data_centers = cur.fetchall()
             data_centers = [{'name': row[0], 'short_name': row[1]} for row in data_centers]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         data_centers = []
     finally:
@@ -174,7 +174,7 @@ def reference_switches():
                 'hall_name': row[3],
                 'rack_name': row[4]
             } for row in switches]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         switches = []
     finally:
@@ -209,7 +209,7 @@ def reference_servers():
                 'rack_name': row[4],
                 'unit': row[5]
             } for row in servers]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         servers = []
     finally:
@@ -231,7 +231,7 @@ def reference_roles():
             cur.execute('SELECT name, permissions FROM roles')
             roles = cur.fetchall()
             roles = [{'name': row[0], 'permissions': row[1]} for row in roles]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         roles = []
     finally:
@@ -259,7 +259,7 @@ def reference_users():
                 'login': row[3],
                 'email': row[4]
             } for row in users]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         users = []
     finally:
@@ -291,7 +291,7 @@ def add_dc():
                 conn.commit()
                 flash('ЦОД успешно добавлен', 'success')
                 return redirect(url_for('reference'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -328,7 +328,7 @@ def add_user():
                 conn.commit()
                 flash('Пользователь успешно добавлен', 'success')
                 return redirect(url_for('reference_users'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -364,7 +364,7 @@ def add_switch():
                 conn.commit()
                 flash('Коммутатор успешно добавлен', 'success')
                 return redirect(url_for('reference_switches'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -398,7 +398,7 @@ def upload_connection():
                 conn.commit()
                 flash('Подключение успешно загружено', 'success')
                 return redirect(url_for('commutation'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -433,7 +433,7 @@ def report():
                 'rack_name': row[2],
                 'connection_count': row[3]
             } for row in reports]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         reports = []
     finally:
@@ -469,7 +469,7 @@ def logs():
                 'object': row[2],
                 'created_at': row[3]
             } for row in logs]
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         logs = []
     finally:
@@ -501,7 +501,7 @@ def settings():
                             (session['user_id'], 'Изменение настроек', 'label_format, export_limit'))
                 conn.commit()
                 flash('Настройки успешно обновлены', 'success')
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -512,7 +512,7 @@ def settings():
             cur.execute('SELECT key, value FROM settings')
             settings_data = cur.fetchall()
             settings = {row[0]: row[1] for row in settings_data}
-    except psycopg.Error as e:
+    except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         settings = {'label_format': '', 'export_limit': '1000'}
     finally:
@@ -546,12 +546,45 @@ def delete_dc():
                 conn.commit()
                 flash('ЦОД успешно удален', 'success')
                 return redirect(url_for('reference'))
-        except psycopg.Error as e:
+        except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
 
     return render_template('delete_dc.html')
+
+@app.route('/delete_user', methods=['GET', 'POST'])
+def delete_user():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        user_id = int(request.form['user_id'])
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('delete_user'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('SELECT login FROM users WHERE id = %s', (user_id,))
+                user_login = cur.fetchone()[0]
+
+                cur.execute('DELETE FROM users WHERE id = %s', (user_id,))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Удаление пользователя', user_login))
+                conn.commit()
+                flash('Пользователь успешно удален', 'success')
+                return redirect(url_for('reference_users'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('delete_user.html')
 
 @app.route('/dashboard')
 def dashboard():
