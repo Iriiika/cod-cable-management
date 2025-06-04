@@ -50,8 +50,36 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if 'user_id' in session:
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        login = request.form['login']
+        password = request.form['password'].encode('utf-8')
+        email = request.form['email']
+
+        hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('register'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
+                            (full_name, 'Наблюдатель', login, hashed_password, email))
+                conn.commit()
+                flash('Регистрация успешна! Запросите доступ у администратора для повышения роли.', 'success')
+                return redirect(url_for('login'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
     return render_template('register.html')
 
 @app.route('/admin')
@@ -396,6 +424,40 @@ def report():
 @app.route('/help')
 def help():
     return render_template('help.html')
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        flash('Ошибка базы данных', 'error')
+        return redirect(url_for('settings'))
+
+    try:
+        with conn.cursor() as cur:
+            if request.method == 'POST':
+                label_format = request.form['label_format']
+                export_limit = request.form['export_limit']
+
+                cur.execute('INSERT INTO settings (key, value) VALUES (%s, %s) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value', 
+                            ('label_format', label_format))
+                cur.execute('INSERT INTO settings (key, value) VALUES (%s, %s) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value', 
+                            ('export_limit', export_limit))
+                conn.commit()
+                flash('Настройки успешно сохранены', 'success')
+                return redirect(url_for('settings'))
+
+            cur.execute('SELECT key, value FROM settings')
+            settings_data = cur.fetchall()
+            settings = {row[0]: row[1] for row in settings_data}
+    except psycopg.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
+
+    return render_template('settings.html', settings=settings)
 
 @app.route('/dashboard')
 def dashboard():
