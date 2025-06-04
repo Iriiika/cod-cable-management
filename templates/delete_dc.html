@@ -9,7 +9,17 @@
       <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление ЦОД
     </div>
     <div class="delete-dc-content content">
-      <h2 class="delete-dc-title">Удаление ЦОД</h2>
-      <p>Форма удаления ЦОД в разработке.</p>
+      <div class="delete-dc-form-wrapper">
+        <h2 class="delete-dc-title">Удаление ЦОД</h2>
+        <form method="POST" action="{{ url_for('delete_dc') }}">
+          <div class="delete-dc-form-group">
+            <label for="dc_id" class="delete-dc-label"><i class="fas fa-building"></i> ID ЦОД</label>
+            <input type="text" id="dc_id" name="dc_id" class="filter-input delete-dc-input" placeholder="Введите ID ЦОД" required>
+          </div>
+          <div class="delete-dc-button-wrapper">
+            <button type="submit" class="excel-btn delete-dc-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
+          </div>
+        </form>
+      </div>
     </div>
   {% endblock %}
