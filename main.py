@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg
 import bcrypt
-    
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -519,6 +519,39 @@ def settings():
         conn.close()
 
     return render_template('settings.html', settings=settings)
+
+@app.route('/delete_dc', methods=['GET', 'POST'])
+def delete_dc():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        dc_id = int(request.form['dc_id'])
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('delete_dc'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('SELECT name FROM data_centers WHERE id = %s', (dc_id,))
+                dc_name = cur.fetchone()[0]
+
+                cur.execute('DELETE FROM data_centers WHERE id = %s', (dc_id,))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Удаление ЦОД', dc_name))
+                conn.commit()
+                flash('ЦОД успешно удален', 'success')
+                return redirect(url_for('reference'))
+        except psycopg.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('delete_dc.html')
 
 @app.route('/dashboard')
 def dashboard():
