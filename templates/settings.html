@@ -9,7 +9,21 @@
     <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Настройки
   </div>
   <div class="settings-content content">
-    <h2 class="settings-title">Настройки системы</h2>
-    <p>Раздел настроек в разработке.</p>
+    <div class="settings-form-wrapper">
+      <h2 class="settings-title">Настройки системы</h2>
+      <form method="POST" action="{{ url_for('settings') }}">
+        <div class="settings-form-group">
+          <label for="label_format" class="settings-label"><i class="fas fa-tag"></i> Формат метки</label>
+          <input type="text" id="label_format" name="label_format" class="filter-input settings-input" value="{{ settings.label_format }}" required>
+        </div>
+        <div class="settings-form-group">
+          <label for="export_limit" class="settings-label"><i class="fas fa-download"></i> Лимит экспорта</label>
+          <input type="number" id="export_limit" name="export_limit" class="filter-input settings-input" value="{{ settings.export_limit }}" required>
+        </div>
+        <div class="settings-button-wrapper">
+          <button type="submit" class="excel-btn settings-submit-btn"><i class="fas fa-save"></i> Сохранить</button>
+        </div>
+      </form>
+    </div>
   </div>
 {% endblock %}
