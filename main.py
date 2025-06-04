@@ -586,6 +586,39 @@ def delete_user():
 
     return render_template('delete_user.html')
 
+@app.route('/delete_connection', methods=['GET', 'POST'])
+def delete_connection():
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        conn_id = int(request.form['conn_id'])
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('delete_connection'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('SELECT label FROM connections WHERE id = %s', (conn_id,))
+                conn_label = cur.fetchone()[0]
+
+                cur.execute('DELETE FROM connections WHERE id = %s', (conn_id,))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Удаление подключения', conn_label))
+                conn.commit()
+                flash('Подключение успешно удалено', 'success')
+                return redirect(url_for('commutation'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('delete_connection.html')
+
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
