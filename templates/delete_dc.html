@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block title %}Удаление ЦОД{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_dc.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="delete-dc-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление ЦОД
+    </div>
+    <div class="delete-dc-content content">
+      <h2 class="delete-dc-title">Удаление ЦОД</h2>
+      <p>Форма удаления ЦОД в разработке.</p>
+    </div>
+  {% endblock %}
