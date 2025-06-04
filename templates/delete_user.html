@@ -9,7 +9,17 @@
       <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление пользователя
     </div>
     <div class="delete-user-content content">
-      <h2 class="delete-user-title">Удаление пользователя</h2>
-      <p>Форма удаления пользователя в разработке.</p>
+      <div class="delete-user-form-wrapper">
+        <h2 class="delete-user-title">Удаление пользователя</h2>
+        <form method="POST" action="{{ url_for('delete_user') }}">
+          <div class="delete-user-form-group">
+            <label for="user_id" class="delete-user-label"><i class="fas fa-user"></i> ID пользователя</label>
+            <input type="text" id="user_id" name="user_id" class="filter-input delete-user-input" placeholder="Введите ID пользователя" required>
+          </div>
+          <div class="delete-user-button-wrapper">
+            <button type="submit" class="excel-btn delete-user-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
+          </div>
+        </form>
+      </div>
     </div>
   {% endblock %}
