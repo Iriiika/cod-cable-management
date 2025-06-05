@@ -113,6 +113,27 @@
 .base-user:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.language-switcher a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.language-switcher a.active, .language-switcher a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+.language-switcher span {
+    color: #fff;
+    font-size: 14px;
+}
 .help-btn {
     background: var(--accent-color);
     color: #4F6C77;
@@ -343,6 +364,55 @@ tr:hover {
     transform: scale(1.05);
     box-shadow: var(--neon-glow);
 }
+.flash-messages {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 1001;
+    max-width: 400px;
+    width: 100%;
+}
+.flash-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: var(--border-radius);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+    animation: slideIn 0.5s ease forwards;
+    opacity: 0;
+}
+.flash-success {
+    background: linear-gradient(45deg, #28a745, #34c759);
+}
+.flash-error {
+    background: linear-gradient(45deg, #dc3545, #ff4757);
+}
+.flash-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.flash-close:hover {
+    transform: scale(1.2);
+}
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 @media (max-width: 768px) {
     .base-sidebar {
         width: 180px;
@@ -386,6 +456,11 @@ tr:hover {
         gap: 15px;
         margin-right: 10px;
     }
+    .flash-messages {
+        top: 80px;
+        right: 10px;
+        max-width: 90%;
+    }
 }
 @media (max-width: 480px) {
     .base-main {
@@ -394,5 +469,9 @@ tr:hover {
     }
     .base-sidebar {
         display: none;
+    }
+    .flash-message {
+        font-size: 14px;
+        padding: 10px 15px;
     }
 }
