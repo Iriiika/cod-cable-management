@@ -113,6 +113,14 @@ msgstr ""
     msgid "Вы успешно вышли из системы."
     msgstr "Вы успешно вышли из системы."
 
+    #: main.py
+    msgid "Коммутатор не найден"
+    msgstr "Коммутатор не найден"
+    
+    #: main.py
+    msgid "Подключение не найдено"
+    msgstr "Подключение не найдено"
+
     #: templates/add_dc.html:2 templates/add_dc.html:9 templates/add_dc.html:13
     msgid "Добавление ЦОД"
     msgstr "Добавление ЦОД"

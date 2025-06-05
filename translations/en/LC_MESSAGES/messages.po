@@ -112,6 +112,14 @@ msgstr "User with this email not found."
 msgid "Вы успешно вышли из системы."
 msgstr "You have successfully logged out."
 
+#: main.py
+msgid "Коммутатор не найден"
+msgstr "Switch not found"
+
+#: main.py
+msgid "Подключение не найдено"
+msgstr "Connection not found"
+
 #: templates/add_dc.html:2 templates/add_dc.html:9 templates/add_dc.html:13
 msgid "Добавление ЦОД"
 msgstr "Add Data Center"

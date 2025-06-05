@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, g
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g, send_file
 from flask_babel import Babel, _, get_locale
 import psycopg2
 import bcrypt
 import math
+import io
+from openpyxl import Workbook
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -16,11 +18,13 @@ DB_CONFIG = {
     'host': 'localhost',
     'port': '5432'
 }
+
 @babel.localeselector
 def get_locale():
     if 'lang' in session:
         return session['lang']
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
 def get_db_connection():
     try:
         conn = psycopg2.connect(**DB_CONFIG)
@@ -28,15 +32,19 @@ def get_db_connection():
     except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         return None
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html', error_code=404, error_message=_("Страница не найдена")), 404
+
 @app.errorhandler(403)
 def forbidden(e):
     return render_template('error.html', error_code=403, error_message=_("Доступ запрещен")), 403
+
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('error.html', error_code=500, error_message=_("Внутренняя ошибка сервера")), 500
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -61,6 +69,7 @@ def login():
         finally:
             conn.close()
     return render_template('login.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if 'user_id' in session:
@@ -90,21 +99,25 @@ def register():
         finally:
             conn.close()
     return render_template('register.html')
+
 @app.route('/admin')
 def admin_dashboard():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
     return render_template('main_admin.html', full_name=session['full_name'])
+
 @app.route('/engineer')
 def engineer_dashboard():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
     return render_template('main_engineer.html', full_name=session['full_name'])
+
 @app.route('/observer')
 def observer_dashboard():
     if 'user_id' not in session or session['role'] != 'Наблюдатель':
         return redirect(url_for('login'))
     return render_template('main_observer.html', full_name=session['full_name'])
+
 @app.route('/commutation')
 def commutation():
     if 'user_id' not in session:
@@ -123,6 +136,7 @@ def commutation():
     finally:
         conn.close()
     return render_template('commutation.html', connections=connections)
+
 @app.route('/reference')
 def reference():
     if 'user_id' not in session:
@@ -153,6 +167,45 @@ def reference():
     finally:
         conn.close()
     return render_template('reference.html', data_centers=data_centers, page=page, total_pages=total_pages)
+
+@app.route('/export_data_centers')
+def export_data_centers():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    if conn is None:
+        flash(_('Ошибка базы данных'), 'error')
+        return redirect(url_for('reference'))
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT id, name, short_name FROM data_centers')
+            data_centers = cur.fetchall()
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+        return redirect(url_for('reference'))
+    finally:
+        conn.close()
+    
+    # Создаем Excel-файл
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Data Centers"
+    ws.append([_("ID"), _("Название"), _("Короткое имя")])
+    for dc in data_centers:
+        ws.append([dc[0], dc[1], dc[2]])
+    
+    # Сохраняем файл в буфер
+    output = io.BytesIO()
+    wb.save(output)
+    output.seek(0)
+    
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name="data_centers.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
 @app.route('/reference_switches')
 def reference_switches():
     if 'user_id' not in session:
@@ -183,6 +236,35 @@ def reference_switches():
     finally:
         conn.close()
     return render_template('reference_switches.html', switches=switches)
+
+@app.route('/delete_switch/<int:switch_id>', methods=['POST'])
+def delete_switch(switch_id):
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    if conn is None:
+        flash(_('Ошибка базы данных'), 'error')
+        return redirect(url_for('reference_switches'))
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT hostname FROM switches WHERE id = %s', (switch_id,))
+            switch_hostname = cur.fetchone()
+            if not switch_hostname:
+                flash(_('Коммутатор не найден'), 'error')
+                return redirect(url_for('reference_switches'))
+            switch_hostname = switch_hostname[0]
+            cur.execute('DELETE FROM switches WHERE id = %s', (switch_id,))
+            conn.commit()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Удаление коммутатора', switch_hostname))
+            conn.commit()
+            flash(_('Коммутатор успешно удален'), 'success')
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('reference_switches'))
+
 @app.route('/reference_servers')
 def reference_servers():
     if 'user_id' not in session:
@@ -214,6 +296,7 @@ def reference_servers():
     finally:
         conn.close()
     return render_template('reference_servers.html', servers=servers)
+
 @app.route('/reference_roles')
 def reference_roles():
     if 'user_id' not in session:
@@ -232,6 +315,7 @@ def reference_roles():
     finally:
         conn.close()
     return render_template('reference_roles.html', roles=roles)
+
 @app.route('/reference_users')
 def reference_users():
     if 'user_id' not in session:
@@ -256,6 +340,35 @@ def reference_users():
     finally:
         conn.close()
     return render_template('reference_users.html', users=users)
+
+@app.route('/delete_user/<int:user_id>', methods=['POST'])
+def delete_user_by_id(user_id):
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    if conn is None:
+        flash(_('Ошибка базы данных'), 'error')
+        return redirect(url_for('reference_users'))
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT login FROM users WHERE id = %s', (user_id,))
+            user_login = cur.fetchone()
+            if not user_login:
+                flash(_('Пользователь не найден'), 'error')
+                return redirect(url_for('reference_users'))
+            user_login = user_login[0]
+            cur.execute('DELETE FROM users WHERE id = %s', (user_id,))
+            conn.commit()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Удаление пользователя', user_login))
+            conn.commit()
+            flash(_('Пользователь успешно удален'), 'success')
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('reference_users'))
+
 @app.route('/add_dc', methods=['GET', 'POST'])
 def add_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -281,6 +394,7 @@ def add_dc():
         finally:
             conn.close()
     return render_template('add_dc.html')
+
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -311,6 +425,7 @@ def add_user():
         finally:
             conn.close()
     return render_template('add_user.html')
+
 @app.route('/add_switch', methods=['GET', 'POST'])
 def add_switch():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
@@ -341,6 +456,7 @@ def add_switch():
         finally:
             conn.close()
     return render_template('add_switch.html')
+
 @app.route('/upload_connection', methods=['GET', 'POST'])
 def upload_connection():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
@@ -369,6 +485,35 @@ def upload_connection():
         finally:
             conn.close()
     return render_template('upload_connection.html')
+
+@app.route('/delete_connection/<int:conn_id>', methods=['POST'])
+def delete_connection(conn_id):
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+    conn = get_db_connection()
+    if conn is None:
+        flash(_('Ошибка базы данных'), 'error')
+        return redirect(url_for('commutation'))
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT label FROM connections WHERE id = %s', (conn_id,))
+            conn_label = cur.fetchone()
+            if not conn_label:
+                flash(_('Подключение не найдено'), 'error')
+                return redirect(url_for('commutation'))
+            conn_label = conn_label[0]
+            cur.execute('DELETE FROM connections WHERE id = %s', (conn_id,))
+            conn.commit()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Удаление подключения', conn_label))
+            conn.commit()
+            flash(_('Подключение успешно удалено'), 'success')
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
+    return redirect(url_for('commutation'))
+
 @app.route('/report')
 def report():
     if 'user_id' not in session or session['role'] not in ['Администратор', 'Наблюдатель']:
@@ -401,9 +546,11 @@ def report():
     finally:
         conn.close()
     return render_template('report.html', reports=reports)
+
 @app.route('/help')
 def help():
     return render_template('help.html')
+
 @app.route('/logs')
 def logs():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -432,6 +579,7 @@ def logs():
     finally:
         conn.close()
     return render_template('logs.html', logs=logs)
+
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -468,6 +616,7 @@ def settings():
     finally:
         conn.close()
     return render_template('settings.html', settings=settings)
+
 @app.route('/delete_dc', methods=['GET', 'POST'])
 def delete_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -494,6 +643,7 @@ def delete_dc():
         finally:
             conn.close()
     return render_template('delete_dc.html')
+
 @app.route('/delete_user', methods=['GET', 'POST'])
 def delete_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -520,32 +670,7 @@ def delete_user():
         finally:
             conn.close()
     return render_template('delete_user.html')
-@app.route('/delete_connection', methods=['GET', 'POST'])
-def delete_connection():
-    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
-        return redirect(url_for('login'))
-    if request.method == 'POST':
-        conn_id = int(request.form['conn_id'])
-        conn = get_db_connection()
-        if conn is None:
-            flash(_('Ошибка базы данных'), 'error')
-            return redirect(url_for('delete_connection'))
-        try:
-            with conn.cursor() as cur:
-                cur.execute('SELECT label FROM connections WHERE id = %s', (conn_id,))
-                conn_label = cur.fetchone()[0]
-                cur.execute('DELETE FROM connections WHERE id = %s', (conn_id,))
-                conn.commit()
-                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
-                            (session['user_id'], 'Удаление подключения', conn_label))
-                conn.commit()
-                flash(_('Подключение успешно удалено'), 'success')
-                return redirect(url_for('commutation'))
-        except psycopg2.Error as e:
-            flash(f'Ошибка базы: {e}', 'error')
-        finally:
-            conn.close()
-    return render_template('delete_connection.html')
+
 @app.route('/edit_dc', methods=['GET', 'POST'])
 def edit_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -572,6 +697,7 @@ def edit_dc():
         finally:
             conn.close()
     return render_template('edit_dc.html')
+
 @app.route('/edit_user', methods=['GET', 'POST'])
 def edit_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
@@ -607,6 +733,7 @@ def edit_user():
         finally:
             conn.close()
     return render_template('edit_user.html')
+
 @app.route('/edit_switch', methods=['GET', 'POST'])
 def edit_switch():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
@@ -638,6 +765,7 @@ def edit_switch():
         finally:
             conn.close()
     return render_template('edit_switch.html')
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user_id' not in session:
@@ -678,6 +806,7 @@ def profile():
     finally:
         conn.close()
     return render_template('profile.html', user=user_data)
+
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     if 'user_id' in session:
@@ -702,11 +831,13 @@ def reset_password():
             conn.close()
         return redirect(url_for('login'))
     return render_template('reset_password.html')
+
 @app.route('/logout')
 def logout():
     session.clear()
     flash(_('Вы успешно вышли из системы.'), 'success')
     return redirect(url_for('login'))
+
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -723,5 +854,6 @@ def set_language(lang):
     if lang in app.config['LANGUAGES']:
         session['lang'] = lang
     return redirect(request.referrer or url_for('dashboard'))
+
 if __name__ == '__main__':
     app.run(debug=True)
