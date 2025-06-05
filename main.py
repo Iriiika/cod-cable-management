@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg2
 import bcrypt
+import math
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 DB_CONFIG = {
@@ -118,18 +119,30 @@ def reference():
         return redirect(url_for('login'))
     conn = get_db_connection()
     if conn is None:
-        return render_template('reference.html', data_centers=[])
+        return render_template('reference.html', data_centers=[], page=1, total_pages=1)
+    per_page = 10
+    page = int(request.args.get('page', 1))
+    if page < 1:
+        page = 1
     try:
         with conn.cursor() as cur:
-            cur.execute('SELECT name, short_name FROM data_centers')
+            cur.execute('SELECT COUNT(*) FROM data_centers')
+            total_records = cur.fetchone()[0]
+            total_pages = math.ceil(total_records / per_page)
+            if page > total_pages and total_pages > 0:
+                page = total_pages
+            offset = (page - 1) * per_page
+            cur.execute('SELECT id, name, short_name FROM data_centers LIMIT %s OFFSET %s', (per_page, offset))
             data_centers = cur.fetchall()
-            data_centers = [{'name': row[0], 'short_name': row[1]} for row in data_centers]
+            data_centers = [{'id': row[0], 'name': row[1], 'short_name': row[2]} for row in data_centers]
     except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         data_centers = []
+        total_pages = 1
+        page = 1
     finally:
         conn.close()
-    return render_template('reference.html', data_centers=data_centers)
+    return render_template('reference.html', data_centers=data_centers, page=page, total_pages=total_pages)
 @app.route('/reference_switches')
 def reference_switches():
     if 'user_id' not in session:
@@ -679,6 +692,11 @@ def reset_password():
             conn.close()
         return redirect(url_for('login'))
     return render_template('reset_password.html')
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Вы успешно вышли из системы.', 'success')
+    return redirect(url_for('login'))
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
