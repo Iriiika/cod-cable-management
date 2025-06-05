@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block title %}Редактирование пользователя{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_user.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="edit-user-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Редактирование пользователя
+    </div>
+    <div class="edit-user-content content">
+      <h2 class="edit-user-title">Редактирование пользователя</h2>
+      <p>Форма редактирования пользователя в разработке.</p>
+    </div>
+  {% endblock %}
