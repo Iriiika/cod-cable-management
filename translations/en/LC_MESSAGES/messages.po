@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-05 19:16+0300\n"
-"PO-Revision-Date: 2025-06-05 19:17+0300\n"
+"POT-Creation-Date: 2025-06-05 20:16+0300\n"
+"PO-Revision-Date: 2025-06-05 20:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -18,3 +18,1047 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
+#: main.py:33
+msgid "Страница не найдена"
+msgstr "Page not found"
+
+#: main.py:36
+msgid "Доступ запрещен"
+msgstr "Access denied"
+
+#: main.py:39
+msgid "Внутренняя ошибка сервера"
+msgstr "Internal server error"
+
+#: main.py:47
+msgid "Ошибка сервера"
+msgstr "Server error"
+
+#: main.py:58
+msgid "Запросите доступ у <a href=\"mailto:SergeyAIvanov@dom.ru\">SergeyAIvanov@dom.ru</a>"
+msgstr "Request access from <a href=\"mailto:SergeyAIvanov@dom.ru\">SergeyAIvanov@dom.ru</a>"
+
+#: main.py:76 main.py:268 main.py:297 main.py:327 main.py:355 main.py:441
+#: main.py:479 main.py:505 main.py:531 main.py:559 main.py:588 main.py:624
+#: main.py:647 main.py:689
+msgid "Ошибка базы данных"
+msgstr "Database error"
+
+#: main.py:86
+msgid "Регистрация успешна! Запросите доступ у администратора для повышения роли."
+msgstr "Registration successful! Request access from an administrator to upgrade your role."
+
+#: main.py:277
+msgid "ЦОД успешно добавлен"
+msgstr "Data Center added successfully"
+
+#: main.py:307
+msgid "Пользователь успешно добавлен"
+msgstr "User added successfully"
+
+#: main.py:337
+msgid "Коммутатор успешно добавлен"
+msgstr "Switch added successfully"
+
+#: main.py:365
+msgid "Подключение успешно загружено"
+msgstr "Connection uploaded successfully"
+
+#: main.py:454
+msgid "Настройки успешно обновлены"
+msgstr "Settings updated successfully"
+
+#: main.py:490
+msgid "ЦОД успешно удален"
+msgstr "Data Center deleted successfully"
+
+#: main.py:516
+msgid "Пользователь успешно удален"
+msgstr "User deleted successfully"
+
+#: main.py:542
+msgid "Подключение успешно удалено"
+msgstr "Connection deleted successfully"
+
+#: main.py:568
+msgid "ЦОД успешно отредактирован"
+msgstr "Data Center edited successfully"
+
+#: main.py:603
+msgid "Пользователь успешно отредактирован"
+msgstr "User edited successfully"
+
+#: main.py:634
+msgid "Коммутатор успешно отредактирован"
+msgstr "Switch edited successfully"
+
+#: main.py:654
+msgid "Пользователь не найден"
+msgstr "User not found"
+
+#: main.py:674
+msgid "Профиль успешно обновлен"
+msgstr "Profile updated successfully"
+
+#: main.py:696
+msgid "Инструкции по сбросу пароля отправлены на ваш email."
+msgstr "Password reset instructions sent to your email."
+
+#: main.py:698
+msgid "Пользователь с таким email не найден."
+msgstr "User with this email not found."
+
+#: main.py:708
+msgid "Вы успешно вышли из системы."
+msgstr "You have successfully logged out."
+
+#: templates/add_dc.html:2 templates/add_dc.html:9 templates/add_dc.html:13
+msgid "Добавление ЦОД"
+msgstr "Add Data Center"
+
+#: templates/add_dc.html:8 templates/add_switch.html:8
+#: templates/add_user.html:8 templates/base.html:19
+#: templates/commutation.html:8 templates/delete_connection.html:8
+#: templates/delete_dc.html:8 templates/delete_user.html:8
+#: templates/edit_dc.html:8 templates/edit/delete_switch.html:8
+#: templates/edit_user.html:8 templates/help.html:8 templates/logs.html:8
+#: templates/main_admin.html:8 templates/main_engineer.html:8
+#: templates/main_observer.html:8 templates/profile.html:8
+#: templates/reference.html:8 templates/reference_roles.html:8
+#: templates/reference_servers.html:8 templates/reference_switches.html:8
+#: templates/reference_users.html:8 templates/report.html:8
+#: templates/settings.html:8 templates/upload_connection.html:8
+msgid "Главная"
+msgstr "Home"
+
+#: templates/add_dc.html:9 templates/add_user.html:9 templates/delete_dc.html:9
+#: templates/delete_user.html:9 templates/edit_dc.html:9
+#: templates/edit_user.html:9 templates/logs.html:9 templates/settings.html:9
+msgid "Админ-панель"
+msgstr "Admin Panel"
+
+#: templates/add_dc.html:16 templates/edit_dc.html:23
+msgid "Название ЦОД"
+msgstr "Data Center Name"
+
+#: templates/add_dc.html:17 templates/edit_dc.html:25
+msgid "Введите название"
+msgstr "Enter name"
+
+#: templates/add_dc.html:20 templates/edit_dc.html:29
+#: templates/reference.html:28
+msgid "Короткое имя"
+msgstr "Short Name"
+
+#: templates/add_dc.html:21 templates/edit_dc.html:31
+msgid "Введите короткое имя"
+msgstr "Enter short name"
+
+#: templates/add_dc.html:24 templates/add_switch.html:56
+#: templates/add_user.html:51
+msgid "Добавить"
+msgstr "Add"
+
+#: templates/add_switch.html:2 templates/add_switch.html:9
+#: templates/add_switch.html:13
+msgid "Добавление коммутатора"
+msgstr "Add Switch"
+
+#: templates/add_switch.html:9 templates/delete_connection.html:9
+#: templates/edit/delete_switch.html:9 templates/upload_connection.html:9
+msgid "Кабинет инженера"
+msgstr "Engineer's Office"
+
+#: templates/add_switch.html:17 templates/commutation.html:14
+#: templates/edit/delete_switch.html:23 templates/reference_servers.html:15
+#: templates/reference_servers.html:28 templates/reference_switches.html:15
+#: templates/reference_switches.html:28 templates/report.html:14
+#: templates/report.html:22
+msgid "Стойка"
+msgstr "Rack"
+
+#: templates/add_switch.html:19 templates/edit/delete_switch.html:25
+msgid "Введите ID стойки"
+msgstr "Enter rack ID"
+
+#: templates/add_switch.html:23 templates/edit/delete_switch.html:29
+msgid "Тип"
+msgstr "Type"
+
+#: templates/add_switch.html:26 templates/edit/delete_switch.html:32
+msgid "SRVM"
+msgstr "SRVM"
+
+#: templates/add_switch.html:27 templates/edit/delete_switch.html:33
+msgid "DATA1"
+msgstr "DATA1"
+
+#: templates/add_switch.html:32 templates/edit/delete_switch.html:38
+#: templates/reference_switches.html:25
+msgid "Hostname"
+msgstr "Hostname"
+
+#: templates/add_switch.html:34 templates/edit/delete_switch.html:40
+msgid "Введите hostname"
+msgstr "Enter hostname"
+
+#: templates/add_switch.html:38 templates/commutation.html:15
+#: templates/edit/delete_switch.html:44 templates/reference_servers.html:29
+msgid "Юнит"
+msgstr "Unit"
+
+#: templates/add_switch.html:40 templates/edit/delete_switch.html:46
+msgid "Введите юнит (19-25)"
+msgstr "Enter unit (19-25)"
+
+#: templates/add_switch.html:44 templates/edit/delete_switch.html:50
+msgid "Порт SRVM (опционально)"
+msgstr "SRVM Port (optional)"
+
+#: templates/add_switch.html:46 templates/edit/delete_switch.html:52
+msgid "Введите порт SRVM"
+msgstr "Enter SRVM port"
+
+#: templates/add_switch.html:50 templates/edit/delete_switch.html:56
+msgid "Порт DATA (опционально)"
+msgstr "DATA Port (optional)"
+
+#: templates/add_switch.html:52 templates/edit/delete_switch.html:58
+msgid "Введите порт DATA"
+msgstr "Enter DATA port"
+
+#: templates/add_user.html:2 templates/add_user.html:9
+#: templates/add_user.html:13
+msgid "Добавление пользователя"
+msgstr "Add User"
+
+#: templates/add_user.html:17 templates/edit_user.html:23
+#: templates/profile.html:16 templates/reference_users.html:13
+#: templates/reference_users.html:24 templates/register.html:13
+msgid "ФИО"
+msgstr "Full Name"
+
+#: templates/add_user.html:19 templates/edit_user.html:25
+#: templates/register.html:15
+msgid "Введите ФИО"
+msgstr "Enter full name"
+
+#: templates/add_user.html:23 templates/edit_user.html:29
+#: templates/reference_roles.html:13 templates/reference_roles.html:22
+#: templates/reference_users.html:14 templates/reference_users.html:25
+msgid "Роль"
+msgstr "Role"
+
+#: templates/add_user.html:26 templates/edit_user.html:32
+#: templates/help.html:19
+msgid "Администратор"
+msgstr "Administrator"
+
+#: templates/add_user.html:27 templates/edit_user.html:33
+#: templates/help.html:20
+msgid "Инженер ЛВС"
+msgstr "Network Engineer"
+
+#: templates/add_user.html:28 templates/edit_user.html:34
+#: templates/help.html:21
+msgid "Наблюдатель"
+msgstr "Observer"
+
+#: templates/add_user.html:33 templates/edit_user.html:39
+#: templates/reference_users.html:15 templates/reference_users.html:26
+#: templates/register.html:19
+msgid "Логин"
+msgstr "Username"
+
+#: templates/add_user.html:35 templates/edit_user.html:41
+#: templates/register.html:21
+msgid "Введите логин"
+msgstr "Enter username"
+
+#: templates/add_user.html:39 templates/login.html:19
+#: templates/register.html:25
+msgid "Пароль"
+msgstr "Password"
+
+#: templates/add_user.html:41 templates/login.html:21
+#: templates/register.html:27
+msgid "Введите пароль"
+msgstr "Enter password"
+
+#: templates/add_user.html:45 templates/edit_user.html:51
+#: templates/profile.html:22 templates/reference_users.html:27
+#: templates/register.html:31 templates/reset_password.html:12
+msgid "Email"
+msgstr "Email"
+
+#: templates/add_user.html:47 templates/edit_user.html:53
+#: templates/register.html:33 templates/reset_password.html:13
+msgid "Введите email"
+msgstr "Enter email"
+
+#: templates/base.html:13
+msgid "Открыть меню"
+msgstr "Open menu"
+
+#: templates/base.html:22 templates/commutation.html:2
+#: templates/commutation.html:8 templates/main_admin.html:12
+#: templates/main_engineer.html:12 templates/main_observer.html:12
+msgid "Коммутация"
+msgstr "Connections"
+
+#: templates/base.html:25 templates/main_admin.html:15
+#: templates/main_engineer.html:15 templates/main_observer.html:15
+#: templates/reference_roles.html:9 templates/reference_servers.html:9
+#: templates/reference_switches.html:9 templates/reference_users.html:9
+msgid "Справочник"
+msgstr "Reference"
+
+#: templates/base.html:29 templates/main_admin.html:18
+#: templates/main_observer.html:18
+msgid "Отчет"
+msgstr "Report"
+
+#: templates/base.html:33 templates/profile.html:2 templates/profile.html:8
+msgid "Профиль"
+msgstr "Profile"
+
+#: templates/base.html:36
+msgid "Выход"
+msgstr "Logout"
+
+#: templates/base.html:40
+msgid "Вход"
+msgstr "Login"
+
+#: templates/base.html:43 templates/register.html:2 templates/register.html:9
+msgid "Регистрация"
+msgstr "Registration"
+
+#: templates/base.html:49
+msgid "Гость"
+msgstr "Guest"
+
+#: templates/base.html:51
+msgid "Выбор языка"
+msgstr "Language selection"
+
+#: templates/base.html:52
+msgid "RU"
+msgstr "RU"
+
+#: templates/base.html:54
+msgid "EN"
+msgstr "EN"
+
+#: templates/base.html:56
+msgid "Помощь"
+msgstr "Help"
+
+#: templates/base.html:64
+msgid "ЦОДы"
+msgstr "Data Centers"
+
+#: templates/base.html:67 templates/reference_switches.html:9
+msgid "Коммутаторы"
+msgstr "Switches"
+
+#: templates/base.html:70 templates/reference_servers.html:9
+msgid "Серверы"
+msgstr "Servers"
+
+#: templates/base.html:73 templates/reference_roles.html:9
+msgid "Матрица ролей"
+msgstr "Role Matrix"
+
+#: templates/base.html:76 templates/reference_users.html:9
+msgid "Пользователи"
+msgstr "Users"
+
+#: templates/base.html:87
+msgid "Закрыть"
+msgstr "Close"
+
+#: templates/base.html:96
+msgid "Автор: Гуренко Ирина Александровна"
+msgstr "Author: Iryna Gurenko"
+
+#: templates/commutation.html:12 templates/reference_servers.html:13
+#: templates/reference_servers.html:26 templates/reference_switches.html:13
+#: templates/reference_switches.html:26 templates/report.html:12
+#: templates/report.html:20
+msgid "ЦОД"
+msgstr "Data Center"
+
+#: templates/commutation.html:13 templates/reference_servers.html:14
+#: templates/reference_servers.html:27 templates/reference_switches.html:14
+#: templates/reference_switches.html:27 templates/report.html:13
+#: templates/report.html:21
+msgid "Зал"
+msgstr "Hall"
+
+#: templates/commutation.html:16 templates/reference_switches.html:16
+msgid "Коммутатор"
+msgstr "Switch"
+
+#: templates/commutation.html:18 templates/reference_roles.html:15
+#: templates/reference_servers.html:18 templates/reference_switches.html:18
+#: templates/reference_users.html:17 templates/report.html:15
+msgid "Excel"
+msgstr "Excel"
+
+#: templates/commutation.html:25
+msgid "Подключение"
+msgstr "Connection"
+
+#: templates/commutation.html:39 templates/logs.html:37
+#: templates/reference_roles.html:36 templates/reference_servers.html:45
+#: templates/reference_switches.html:49 templates/reference_users.html:48
+#: templates/report.html:37
+msgid "Показано:"
+msgstr "Shown:"
+
+#: templates/commutation.html:39 templates/reference.html:57
+#: templates/reference_roles.html:36 templates/reference_servers.html:45
+#: templates/reference_switches.html:49 templates/reference_users.html:48
+msgid "из"
+msgstr "of"
+
+#: templates/delete_connection.html:2 templates/delete_connection.html:9
+#: templates/delete_connection.html:13
+msgid "Удаление подключения"
+msgstr "Delete Connection"
+
+#: templates/delete_connection.html:17
+msgid "ID подключения"
+msgstr "Connection ID"
+
+#: templates/delete_connection.html:19
+msgid "Введите ID подключения"
+msgstr "Enter connection ID"
+
+#: templates/delete_connection.html:23 templates/delete_dc.html:23
+#: templates/delete_user.html:23
+msgid "Удалить"
+msgstr "Delete"
+
+#: templates/delete_dc.html:2 templates/delete_dc.html:9
+#: templates/delete_dc.html:13
+msgid "Удаление ЦОД"
+msgstr "Delete Data Center"
+
+#: templates/delete_dc.html:17 templates/edit_dc.html:17
+msgid "ID ЦОД"
+msgstr "Data Center ID"
+
+#: templates/delete_dc.html:19 templates/edit_dc.html:19
+msgid "Введите ID ЦОД"
+msgstr "Enter Data Center ID"
+
+#: templates/delete_user.html:2 templates/delete_user.html:9
+#: templates/delete_user.html:13
+msgid "Удаление пользователя"
+msgstr "Delete User"
+
+#: templates/delete_user.html:17 templates/edit_user.html:17
+msgid "ID пользователя"
+msgstr "User ID"
+
+#: templates/delete_user.html:19 templates/edit_user.html:19
+msgid "Введите ID пользователя"
+msgstr "Enter user ID"
+
+#: templates/edit_dc.html:2 templates/edit_dc.html:9 templates/edit_dc.html:13
+msgid "Редактирование ЦОД"
+msgstr "Edit Data Center"
+
+#: templates/edit_dc.html:35 templates/edit/delete_switch.html:62
+#: templates/edit_user.html:57 templates/profile.html:34
+#: templates/settings.html:29
+msgid "Сохранить"
+msgstr "Save"
+
+#: templates/edit/delete_switch.html:2 templates/edit/delete_switch.html:9
+#: templates/edit/delete_switch.html:13
+msgid "Редактирование коммутатора"
+msgstr "Edit Switch"
+
+#: templates/edit/delete_switch.html:17 templates/upload_connection.html:23
+msgid "ID коммутатора"
+msgstr "Switch ID"
+
+#: templates/edit/delete_switch.html:19 templates/upload_connection.html:25
+msgid "Введите ID коммутатора"
+msgstr "Enter switch ID"
+
+#: templates/edit_user.html:2 templates/edit_user.html:9
+#: templates/edit_user.html:13
+msgid "Редактирование пользователя"
+msgstr "Edit User"
+
+#: templates/edit_user.html:45
+msgid "Пароль (оставьте пустым, если не меняете)"
+msgstr "Password (leave blank if not changing)"
+
+#: templates/edit_user.html:47 templates/profile.html:30
+msgid "Введите новый пароль"
+msgstr "Enter new password"
+
+#: templates/error.html:2 templates/error.html:9
+msgid "Ошибка"
+msgstr "Error"
+
+#: templates/error.html:12
+msgid "Вернуться"
+msgstr "Go back"
+
+#: templates/help.html:2 templates/help.html:8
+msgid "Справка"
+msgstr "Help"
+
+#: templates/help.html:11
+msgid "Справка по системе"
+msgstr "System Help"
+
+#: templates/help.html:13
+msgid "Как пользоваться системой"
+msgstr "How to use the system"
+
+#: templates/help.html:14
+msgid "Для авторизации используйте свои учетные данные. Если у вас нет доступа, запросите его у администратора."
+msgstr "Use your credentials to log in. If you don't have access, request it from an administrator."
+
+#: templates/help.html:17
+msgid "Роли пользователей"
+msgstr "User Roles"
+
+#: templates/help.html:19
+msgid "Полный доступ ко всем функциям."
+msgstr "Full access to all features."
+
+#: templates/help.html:20
+msgid "Управление подключениями и коммутаторами."
+msgstr "Manage connections and switches."
+
+#: templates/help.html:21
+msgid "Только просмотр данных."
+msgstr "View data only."
+
+#: templates/help.html:25
+msgid "Контакты поддержки"
+msgstr "Support Contacts"
+
+#: templates/help.html:26
+msgid "Для вопросов и предложений пишите на"
+msgstr "For questions and suggestions, write to"
+
+#: templates/login.html:2 templates/login.html:9
+msgid "Авторизация"
+msgstr "Authorization"
+
+#: templates/login.html:13
+msgid "Имя пользователя"
+msgstr "Username"
+
+#: templates/login.html:15
+msgid "Введите имя"
+msgstr "Enter name"
+
+#: templates/login.html:25
+msgid "Войти"
+msgstr "Sign in"
+
+#: templates/logs.html:2 templates/logs.html:9
+msgid "Логи действий"
+msgstr "Action Logs"
+
+#: templates/logs.html:13 templates/logs.html:20
+msgid "Пользователь"
+msgstr "User"
+
+#: templates/logs.html:14 templates/logs.html:21
+msgid "Действие"
+msgstr "Action"
+
+#: templates/logs.html:22
+msgid "Объект"
+msgstr "Object"
+
+#: templates/logs.html:23
+msgid "Дата и время"
+msgstr "Date and Time"
+
+#: templates/logs.html:37 templates/report.html:37
+msgid "записей"
+msgstr "records"
+
+#: templates/main_admin.html:2
+msgid "Главная - Администратор"
+msgstr "Home - Administrator"
+
+#: templates/main_admin.html:21 templates/reference.html:17
+msgid "Добавить ЦОД"
+msgstr "Add Data Center"
+
+#: templates/main_admin.html:24
+msgid "Добавить пользователя"
+msgstr "Add User"
+
+#: templates/main_engineer.html:2
+msgid "Главная - Инженер ЛВС"
+msgstr "Home - Network Engineer"
+
+#: templates/main_engineer.html:18
+msgid "Загрузить подключение"
+msgstr "Upload Connection"
+
+#: templates/main_engineer.html:21
+msgid "Удалить подключение"
+msgstr "Delete Connection"
+
+#: templates/main_engineer.html:24
+msgid "Добавить коммутатор"
+msgstr "Add Switch"
+
+#: templates/main_engineer.html:27
+msgid "Удалить коммутатор"
+msgstr "Delete Switch"
+
+#: templates/main_observer.html:2
+msgid "Главная - Наблюдатель"
+msgstr "Home - Observer"
+
+#: templates/profile.html:12
+msgid "Профиль пользователя"
+msgstr "User Profile"
+
+#: templates/profile.html:28
+msgid "Новый пароль (оставьте пустым, если не меняете)"
+msgstr "New password (leave blank if not changing)"
+
+#: templates/reference.html:2 templates/reference.html:8
+#: templates/reference.html:11
+msgid "Справочник ЦОДов"
+msgstr "Data Centers Reference"
+
+#: templates/reference.html:13
+msgid "Фильтр по названию"
+msgstr "Filter by name"
+
+#: templates/reference.html:14
+msgid "Фильтр по короткому имени"
+msgstr "Filter by short name"
+
+#: templates/reference.html:21
+msgid "Экспорт в Excel"
+msgstr "Export to Excel"
+
+#: templates/reference.html:27
+msgid "Название"
+msgstr "Name"
+
+#: templates/reference.html:29
+msgid "Действия"
+msgstr "Actions"
+
+#: templates/reference.html:57
+msgid "Страница"
+msgstr "Page"
+
+#: templates/reference_roles.html:2
+msgid "Справочник - Матрица ролей"
+msgstr "Reference - Role Matrix"
+
+#: templates/reference_roles.html:23
+msgid "Права"
+msgstr "Permissions"
+
+#: templates/reference_servers.html:2
+msgid "Справочник - Серверы"
+msgstr "Reference - Servers"
+
+#: templates/reference_servers.html:16 templates/reference_servers.html:25
+msgid "Серийный номер"
+msgstr "Serial Number"
+
+#: templates/reference_switches.html:2
+msgid "Справочник - Коммутаторы"
+msgstr "Reference - Switches"
+
+#: templates/reference_users.html:2
+msgid "Справочник - Пользователи"
+msgstr "Reference - Users"
+
+#: templates/register.html:37
+msgid "Зарегистрироваться"
+msgstr "Register"
+
+#: templates/report.html:2 templates/report.html:8
+msgid "Отчеты"
+msgstr "Reports"
+
+#: templates/report.html:23
+msgid "Количество подключений"
+msgstr "Number of connections"
+
+#: templates/reset_password.html:2 templates/reset_password.html:9
+msgid "Сброс пароля"
+msgstr "Reset Password"
+
+#: templates/reset_password.html:17
+msgid "Сбросить пароль"
+msgstr "Reset password"
+
+#: templates/reset_password.html:21
+msgid "Введите ваш email, чтобы получить ссылку для сброса пароля."
+msgstr "Enter your email to receive a password reset link."
+
+#: templates/settings.html:2 templates/settings.html:9
+msgid "Настройки"
+msgstr "Settings"
+
+#: templates/settings.html:13
+msgid "Настройки системы"
+msgstr "System Settings"
+
+#: templates/settings.html:17
+msgid "Формат метки"
+msgstr "Label Format"
+
+#: templates/settings.html:23
+msgid "Лимит экспорта"
+msgstr "Export Limit"
+
+#: templates/upload_connection.html:2 templates/upload_connection.html:9
+#: templates/upload_connection.html:13
+msgid "Загрузка подключения"
+msgstr "Upload Connection"
+
+#: templates/upload_connection.html:17
+msgid "ID сервера"
+msgstr "Server ID"
+
+#: templates/upload_connection.html:19
+msgid "Введите ID сервера"
+msgstr "Enter server ID"
+
+#: templates/upload_connection.html:29
+msgid "Порт"
+msgstr "Port"
+
+#: templates/upload_connection.html:31
+msgid "Введите порт"
+msgstr "Enter port"
+
+#: templates/upload_connection.html:35
+msgid "Метка"
+msgstr "Label"
+
+#: templates/upload_connection.html:37
+msgid "Введите метку"
+msgstr "Enter label"
+
+#: templates/upload_connection.html:41
+msgid "Загрузить"
+msgstr "Upload"
+
+#: venv/Lib/site-packages/click/_termui_impl.py:600
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr "{editor}: Editing failed"
+
+#: venv/Lib/site-packages/click/_termui_impl.py:604
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr "{editor}: Editing failed: {e}"
+
+#: venv/Lib/site-packages/click/core.py:1084
+#: venv/Lib/site-packages/click/core.py:1121
+#, python-brace-format
+msgid "{text} {deprecated_message}"
+msgstr "{text} {deprecated_message}"
+
+#: venv/Lib/site-packages/click/core.py:1140
+msgid "Options"
+msgstr "Options"
+
+#: venv/Lib/site-packages/click/core.py:1202
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] "Got unexpected extra argument ({args})"
+msgstr[1] "Got unexpected extra arguments ({args})"
+
+#: venv/Lib/site-packages/click/core.py:1221
+#, python-brace-format
+msgid "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
+msgstr "DeprecationWarning: The command {name!r} is deprecated.{extra_message}"
+
+#: venv/Lib/site-packages/click/core.py:1405
+msgid "Aborted!"
+msgstr "Aborted!"
+
+#: venv/Lib/site-packages/click/core.py:1779
+msgid "Commands"
+msgstr "Commands"
+
+#: venv/Lib/site-packages/click/core.py:1810
+msgid "Missing command."
+msgstr "Missing command."
+
+#: venv/Lib/site-packages/click/core.py:1888
+#, python-brace-format
+msgid "No such command {name!r}."
+msgstr "No such command {name!r}."
+
+#: venv/Lib/site-packages/click/core.py:2303
+msgid "Value must be an iterable."
+msgstr "Value must be an iterable."
+
+#: venv/Lib/site-packages/click/core.py:2324
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] "Takes {nargs} value but 1 was given."
+msgstr[1] "Takes {nargs} values but {len} were given."
+
+#: venv/Lib/site-packages/click/core.py:2404
+#, python-brace-format
+msgid "DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
+msgstr "DeprecationWarning: The {param_type} {name!r} is deprecated.{extra_message}"
+
+#: venv/Lib/site-packages/click/core.py:2807
+#, python-brace-format
+msgid "env var: {var}"
+msgstr "Environment variable: {var}"
+
+#: venv/Lib/site-packages/click/core.py:2810
+#, python-brace-format
+msgid "default: {default}"
+msgstr "Default: {default}"
+
+#: venv/Lib/site-packages/click/core.py:2814
+msgid "required"
+msgstr "Required"
+
+#: venv/Lib/site-packages/click/core.py:2870
+msgid "(dynamic)"
+msgstr "(dynamic)"
+
+#: venv/Lib/site-packages/click/decorators.py:465
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr "%(prog)s, version %(version)s"
+
+#: venv/Lib/site-packages/click/decorators.py:522
+msgid "Show the version and exit."
+msgstr "Show the version and exit."
+
+#: venv/Lib/site-packages/click/decorators.py:548
+msgid "Show this message and exit."
+msgstr "Show this message and exit."
+
+#: venv/Lib/site-packages/click/exceptions.py:50
+#: venv/Lib/site-packages/click/exceptions.py:89
+#, python-brace-format
+msgid "Error: {message}"
+msgstr "Error: {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:81
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr "Try '{command} {option}' for help."
+
+#: venv/Lib/site-packages/click/exceptions.py:130
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr "Invalid value: {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:132
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr "Invalid value for {param_hint}: {message}"
+
+#: venv/Lib/site-packages/click/exceptions.py:190
+msgid "Missing argument"
+msgstr "Missing argument"
+
+#: venv/Lib/site-packages/click/exceptions.py:192
+msgid "Missing option"
+msgstr "Missing option"
+
+#: venv/Lib/site-packages/click/exceptions.py:194
+msgid "Missing parameter"
+msgstr "Missing parameter"
+
+#: venv/Lib/site-packages/click/exceptions.py:196
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr "Missing {param_type}"
+
+#: venv/Lib/site-packages/click/exceptions.py:203
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr "Missing parameter: {param_name}"
+
+#: venv/Lib/site-packages/click/exceptions.py:223
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr "No such option: {name}"
+
+#: venv/Lib/site-packages/click/exceptions.py:235
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] "Did you mean {possibility}?"
+msgstr[1] "(Possible options: {possibilities})"
+
+#: venv/Lib/site-packages/click/exceptions.py:282
+msgid "unknown error"
+msgstr "Unknown error"
+
+#: venv/Lib/site-packages/click/exceptions.py:289
+#, python-brace-format
+msgid "Could not open file {filename!r}: {message}"
+msgstr "Could not open file {filename!r}: {message}"
+
+#: venv/Lib/site-packages/click/formatting.py:156
+msgid "Usage:"
+msgstr "Usage:"
+
+#: venv/Lib/site-packages/click/parser.py:200
+#, python-brace-format
+msgid "Argument {name!r} takes {nargs} values."
+msgstr "Argument {name!r} takes {nargs} values."
+
+#: venv/Lib/site-packages/click/parser.py:383
+#, python-brace-format
+msgid "Option {name!r} does not take a value."
+msgstr "Option {name!r} does not take a value."
+
+#: venv/Lib/site-packages/click/parser.py:444
+#, python-brace-format
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] "Option {name!r} requires an argument."
+msgstr[1] "Option {name!r} requires {nargs} arguments."
+
+#: venv/Lib/site-packages/click/shell_completion.py:326
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr "Shell completion is not supported for Bash versions older than 4.4."
+
+#: venv/Lib/site-packages/click/shell_completion.py:333
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr "Couldn't detect Bash version, shell completion is not supported."
+
+#: venv/Lib/site-packages/click/termui.py:162
+msgid "Repeat for confirmation"
+msgstr "Repeat for confirmation"
+
+#: venv/Lib/site-packages/click/termui.py:178
+msgid "Error: The value you entered was invalid."
+msgstr "Error: The value you entered was invalid."
+
+#: venv/Lib/site-packages/click/termui.py:180
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr "Error: {e.message}"
+
+#: venv/Lib/site-packages/click/termui.py:191
+msgid "Error: The two entered values do not match."
+msgstr "Error: The two entered values do not match."
+
+#: venv/Lib/site-packages/click/termui.py:247
+msgid "Error: invalid input"
+msgstr "Error: invalid input"
+
+#: venv/Lib/site-packages/click/termui.py:866
+msgid "Press any key to continue..."
+msgstr "Press any key to continue..."
+
+#: venv/Lib/site-packages/click/types.py:332
+#, python-brace-format
+msgid "Choose from:\n\t{choices}"
+msgstr "Choose from:\n\t{choices}"
+
+#: venv/Lib/site-packages/click/types.py:369
+#, python-brace-format
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] "{value!r} is not {choice}."
+msgstr[1] "{value!r} is not one of {choices}."
+
+#: venv/Lib/site-packages/click/types.py:460
+#, python-brace-format
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] "{value!r} does not match the format {format}."
+msgstr[1] "{value!r} does not match the formats {formats}."
+
+#: venv/Lib/site-packages/click/types.py:482
+#, python-brace-format
+msgid "{value!r} is not a valid {number_type}."
+msgstr "{value!r} is not a valid {number_type}."
+
+#: venv/Lib/site-packages/click/types.py:538
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr "{value} is not in the range {range}."
+
+#: venv/Lib/site-packages/click/types.py:679
+#, python-brace-format
+msgid "{value!r} is not a valid boolean."
+msgstr "{value!r} is not a valid boolean."
+
+#: venv/Lib/site-packages/click/types.py:703
+#, python-brace-format
+msgid "{value!r} is not a valid UUID."
+msgstr "{value!r} is not a valid UUID."
+
+#: venv/Lib/site-packages/click/types.py:893
+msgid "file"
+msgstr "File"
+
+#: venv/Lib/site-packages/click/types.py:895
+msgid "directory"
+msgstr "Directory"
+
+#: venv/Lib/site-packages/click/types.py:897
+msgid "path"
+msgstr "Path"
+
+#: venv/Lib/site-packages/click/types.py:944
+#, python-brace-format
+msgid "{name} {filename!r} does not exist."
+msgstr "{name} {filename!r} does not exist."
+
+#: venv/Lib/site-packages/click/types.py:953
+#, python-brace-format
+msgid "{name} {filename!r} is a file."
+msgstr "{name} {filename!r} is a file."
+
+#: venv/Lib/site-packages/click/types.py:961
+#, python-brace-format
+msgid "{name} {filename!r} is a directory."
+msgstr "{name} {filename!r} is a directory."
+
+#: venv/Lib/site-packages/click/types.py:970
+#, python-brace-format
+msgid "{name} {filename!r} is not readable."
+msgstr "{name} {filename!r} is not readable."
+
+#: venv/Lib/site-packages/click/types.py:979
+#, python-brace-format
+msgid "{name} {filename!r} is not writable."
+msgstr "{name} {filename!r} is not writable."
+
+#: venv/Lib/site-packages/click/types.py:988
+#, python-brace-format
+msgid "{name} {filename!r} is not executable."
+msgstr "{name} {filename!r} is not executable."
+
+#: venv/Lib/site-packages/click/types.py:1055
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] "{len_type} value is required, but {len_value} was given."
+msgstr[1] "{len_type} values are required, but {len_value} were given."
