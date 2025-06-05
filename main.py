@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g
+from flask_babel import Babel, _, get_locale
 import psycopg2
 import bcrypt
 import math
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+app.config['BABEL_DEFAULT_LOCALE'] = 'ru'
+app.config['LANGUAGES'] = ['ru', 'en']
+babel = Babel(app)
 DB_CONFIG = {
     'dbname': 'cod_db',
     'user': 'postgres',
@@ -11,6 +15,11 @@ DB_CONFIG = {
     'host': 'localhost',
     'port': '5432'
 }
+@babel.localeselector
+def get_locale():
+    if 'lang' in session:
+        return session['lang']
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 def get_db_connection():
     try:
         conn = psycopg2.connect(**DB_CONFIG)
@@ -20,13 +29,13 @@ def get_db_connection():
         return None
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('error.html', error_code=404, error_message="Страница не найдена"), 404
+    return render_template('error.html', error_code=404, error_message=_("Страница не найдена")), 404
 @app.errorhandler(403)
 def forbidden(e):
-    return render_template('error.html', error_code=403, error_message="Доступ запрещен"), 403
+    return render_template('error.html', error_code=403, error_message=_("Доступ запрещен")), 403
 @app.errorhandler(500)
 def internal_server_error(e):
-    return render_template('error.html', error_code=500, error_message="Внутренняя ошибка сервера"), 500
+    return render_template('error.html', error_code=500, error_message=_("Внутренняя ошибка сервера")), 500
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -34,7 +43,7 @@ def login():
         password = request.form['password'].encode('utf-8')
         conn = get_db_connection()
         if conn is None:
-            return render_template('login.html', error='Ошибка сервера')
+            return render_template('login.html', error=_('Ошибка сервера'))
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT id, full_name, role, password FROM users WHERE login = %s', (login,))
@@ -45,7 +54,7 @@ def login():
                 session['role'] = user[2]
                 return redirect(url_for('dashboard'))
             else:
-                return render_template('login.html', error='Запросите доступ у <a href="mailto:SergeyAIvanov@dom.ru">SergeyAIvanov@dom.ru</a>')
+                return render_template('login.html', error=_('Запросите доступ у <a href="mailto:SergeyAIvanov@dom.ru">SergeyAIvanov@dom.ru</a>'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
@@ -63,7 +72,7 @@ def register():
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('register'))
         try:
             with conn.cursor() as cur:
@@ -73,7 +82,7 @@ def register():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session.get('user_id', 0), 'Регистрация пользователя', login))
                 conn.commit()
-                flash('Регистрация успешна! Запросите доступ у администратора для повышения роли.', 'success')
+                flash(_('Регистрация успешна! Запросите доступ у администратора для повышения роли.'), 'success')
                 return redirect(url_for('login'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -255,7 +264,7 @@ def add_dc():
         short_name = request.form['short_name']
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('add_dc'))
         try:
             with conn.cursor() as cur:
@@ -264,7 +273,7 @@ def add_dc():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Добавление ЦОД', name))
                 conn.commit()
-                flash('ЦОД успешно добавлен', 'success')
+                flash(_('ЦОД успешно добавлен'), 'success')
                 return redirect(url_for('reference'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -284,7 +293,7 @@ def add_user():
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('add_user'))
         try:
             with conn.cursor() as cur:
@@ -294,7 +303,7 @@ def add_user():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Добавление пользователя', login))
                 conn.commit()
-                flash('Пользователь успешно добавлен', 'success')
+                flash(_('Пользователь успешно добавлен'), 'success')
                 return redirect(url_for('reference_users'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -314,7 +323,7 @@ def add_switch():
         port_data = request.form['port_data'] or None
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('add_switch'))
         try:
             with conn.cursor() as cur:
@@ -324,7 +333,7 @@ def add_switch():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Добавление коммутатора', hostname))
                 conn.commit()
-                flash('Коммутатор успешно добавлен', 'success')
+                flash(_('Коммутатор успешно добавлен'), 'success')
                 return redirect(url_for('reference_switches'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -342,7 +351,7 @@ def upload_connection():
         label = request.form['label']
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('upload_connection'))
         try:
             with conn.cursor() as cur:
@@ -352,7 +361,7 @@ def upload_connection():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Загрузка подключения', label))
                 conn.commit()
-                flash('Подключение успешно загружено', 'success')
+                flash(_('Подключение успешно загружено'), 'success')
                 return redirect(url_for('commutation'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -428,7 +437,7 @@ def settings():
         return redirect(url_for('login'))
     conn = get_db_connection()
     if conn is None:
-        flash('Ошибка базы данных', 'error')
+        flash(_('Ошибка базы данных'), 'error')
         return redirect(url_for('settings'))
     if request.method == 'POST':
         label_format = request.form['label_format']
@@ -441,7 +450,7 @@ def settings():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Изменение настроек', 'label_format, export_limit'))
                 conn.commit()
-                flash('Настройки успешно обновлены', 'success')
+                flash(_('Настройки успешно обновлены'), 'success')
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
@@ -466,7 +475,7 @@ def delete_dc():
         dc_id = int(request.form['dc_id'])
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('delete_dc'))
         try:
             with conn.cursor() as cur:
@@ -477,7 +486,7 @@ def delete_dc():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление ЦОД', dc_name))
                 conn.commit()
-                flash('ЦОД успешно удален', 'success')
+                flash(_('ЦОД успешно удален'), 'success')
                 return redirect(url_for('reference'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -492,7 +501,7 @@ def delete_user():
         user_id = int(request.form['user_id'])
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('delete_user'))
         try:
             with conn.cursor() as cur:
@@ -503,7 +512,7 @@ def delete_user():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление пользователя', user_login))
                 conn.commit()
-                flash('Пользователь успешно удален', 'success')
+                flash(_('Пользователь успешно удален'), 'success')
                 return redirect(url_for('reference_users'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -518,7 +527,7 @@ def delete_connection():
         conn_id = int(request.form['conn_id'])
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('delete_connection'))
         try:
             with conn.cursor() as cur:
@@ -529,7 +538,7 @@ def delete_connection():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление подключения', conn_label))
                 conn.commit()
-                flash('Подключение успешно удалено', 'success')
+                flash(_('Подключение успешно удалено'), 'success')
                 return redirect(url_for('commutation'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -546,7 +555,7 @@ def edit_dc():
         short_name = request.form['short_name']
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('edit_dc'))
         try:
             with conn.cursor() as cur:
@@ -555,7 +564,7 @@ def edit_dc():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование ЦОД', name))
                 conn.commit()
-                flash('ЦОД успешно отредактирован', 'success')
+                flash(_('ЦОД успешно отредактирован'), 'success')
                 return redirect(url_for('reference'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -575,7 +584,7 @@ def edit_user():
         email = request.form['email']
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('edit_user'))
         try:
             with conn.cursor() as cur:
@@ -590,7 +599,7 @@ def edit_user():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование пользователя', login))
                 conn.commit()
-                flash('Пользователь успешно отредактирован', 'success')
+                flash(_('Пользователь успешно отредактирован'), 'success')
                 return redirect(url_for('reference_users'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -611,7 +620,7 @@ def edit_switch():
         port_data = request.form['port_data'] or None
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('edit_switch'))
         try:
             with conn.cursor() as cur:
@@ -621,7 +630,7 @@ def edit_switch():
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование коммутатора', hostname))
                 conn.commit()
-                flash('Коммутатор успешно отредактирован', 'success')
+                flash(_('Коммутатор успешно отредактирован'), 'success')
                 return redirect(url_for('reference_switches'))
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
@@ -634,14 +643,14 @@ def profile():
         return redirect(url_for('login'))
     conn = get_db_connection()
     if conn is None:
-        flash('Ошибка базы данных', 'error')
+        flash(_('Ошибка базы данных'), 'error')
         return redirect(url_for('dashboard'))
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT full_name, email FROM users WHERE id = %s', (session['user_id'],))
             user = cur.fetchone()
             if not user:
-                flash('Пользователь не найден', 'error')
+                flash(_('Пользователь не найден'), 'error')
                 return redirect(url_for('dashboard'))
             user_data = {'full_name': user[0], 'email': user[1]}
         if request.method == 'POST':
@@ -661,7 +670,7 @@ def profile():
                             (session['user_id'], 'Редактирование профиля', session['full_name']))
                 conn.commit()
                 session['full_name'] = full_name
-                flash('Профиль успешно обновлен', 'success')
+                flash(_('Профиль успешно обновлен'), 'success')
                 return redirect(url_for('profile'))
     except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
@@ -676,16 +685,16 @@ def reset_password():
         email = request.form['email']
         conn = get_db_connection()
         if conn is None:
-            flash('Ошибка базы данных', 'error')
+            flash(_('Ошибка базы данных'), 'error')
             return redirect(url_for('reset_password'))
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT id FROM users WHERE email = %s', (email,))
                 user = cur.fetchone()
             if user:
-                flash('Инструкции по сбросу пароля отправлены на ваш email.', 'success')
+                flash(_('Инструкции по сбросу пароля отправлены на ваш email.'), 'success')
             else:
-                flash('Пользователь с таким email не найден.', 'error')
+                flash(_('Пользователь с таким email не найден.'), 'error')
         except psycopg2.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
@@ -695,7 +704,7 @@ def reset_password():
 @app.route('/logout')
 def logout():
     session.clear()
-    flash('Вы успешно вышли из системы.', 'success')
+    flash(_('Вы успешно вышли из системы.'), 'success')
     return redirect(url_for('login'))
 @app.route('/dashboard')
 def dashboard():
@@ -707,5 +716,10 @@ def dashboard():
         return redirect(url_for('engineer_dashboard'))
     else:
         return redirect(url_for('observer_dashboard'))
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in app.config['LANGUAGES']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('dashboard'))
 if __name__ == '__main__':
     app.run(debug=True)
