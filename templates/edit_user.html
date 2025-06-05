@@ -9,7 +9,41 @@
       <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Редактирование пользователя
     </div>
     <div class="edit-user-content content">
-      <h2 class="edit-user-title">Редактирование пользователя</h2>
-      <p>Форма редактирования пользователя в разработке.</p>
+      <div class="edit-user-form-wrapper">
+        <h2 class="edit-user-title">Редактирование пользователя</h2>
+        <form method="POST" action="{{ url_for('edit_user') }}">
+          <div class="edit-user-form-group">
+            <label for="user_id" class="edit-user-label"><i class="fas fa-user"></i> ID пользователя</label>
+            <input type="text" id="user_id" name="user_id" class="filter-input edit-user-input" placeholder="Введите ID пользователя" required>
+          </div>
+          <div class="edit-user-form-group">
+            <label for="full_name" class="edit-user-label"><i class="fas fa-user"></i> ФИО</label>
+            <input type="text" id="full_name" name="full_name" class="filter-input edit-user-input" placeholder="Введите ФИО" required>
+          </div>
+          <div class="edit-user-form-group">
+            <label for="role" class="edit-user-label"><i class="fas fa-shield-alt"></i> Роль</label>
+            <select id="role" name="role" class="filter-input edit-user-input" required>
+              <option value="Администратор">Администратор</option>
+              <option value="Инженер ЛВС">Инженер ЛВС</option>
+              <option value="Наблюдатель">Наблюдатель</option>
+            </select>
+          </div>
+          <div class="edit-user-form-group">
+            <label for="login" class="edit-user-label"><i class="fas fa-id-card"></i> Логин</label>
+            <input type="text" id="login" name="login" class="filter-input edit-user-input" placeholder="Введите логин" required>
+          </div>
+          <div class="edit-user-form-group">
+            <label for="password" class="edit-user-label"><i class="fas fa-lock"></i> Пароль (оставьте пустым, если не меняете)</label>
+            <input type="password" id="password" name="password" class="filter-input edit-user-input" placeholder="Введите новый пароль">
+          </div>
+          <div class="edit-user-form-group">
+            <label for="email" class="edit-user-label"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" class="filter-input edit-user-input" placeholder="Введите email" required>
+          </div>
+          <div class="edit-user-button-wrapper">
+            <button type="submit" class="excel-btn edit-user-submit-btn"><i class="fas fa-save"></i> Сохранить</button>
+          </div>
+        </form>
+      </div>
     </div>
   {% endblock %}
