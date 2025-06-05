@@ -32,6 +32,9 @@
           <button class="nav-btn {% if request.path == url_for('profile') %}active{% endif %}" data-page="{{ url_for('profile') }}">
             <i class="fas fa-user"></i> Профиль
           </button>
+          <button class="nav-btn" data-page="{{ url_for('logout') }}">
+            <i class="fas fa-sign-out-alt"></i> Выход
+          </button>
         {% else %}
           <button class="nav-btn {% if request.path == url_for('login') %}active{% endif %}" data-page="{{ url_for('login') }}">
             <i class="fas fa-sign-in-alt"></i> Вход
