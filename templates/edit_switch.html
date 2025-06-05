@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+  {% block title %}Редактирование коммутатора{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_switch.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="edit-switch-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Редактирование коммутатора
+    </div>
+    <div class="edit-switch-content content">
+      <div class="edit-switch-form-wrapper">
+        <h2 class="edit-switch-title">Редактирование коммутатора</h2>
+        <form method="POST" action="{{ url_for('edit_switch') }}">
+          <div class="edit-switch-form-group">
+            <label for="switch_id" class="edit-switch-label"><i class="fas fa-network-wired"></i> ID коммутатора</label>
+            <input type="text" id="switch_id" name="switch_id" class="filter-input edit-switch-input" placeholder="Введите ID коммутатора" required>
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="rack_id" class="edit-switch-label"><i class="fas fa-server"></i> Стойка</label>
+            <input type="text" id="rack_id" name="rack_id" class="filter-input edit-switch-input" placeholder="Введите ID стойки" required>
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="type" class="edit-switch-label"><i class="fas fa-network-wired"></i> Тип</label>
+            <select id="type" name="type" class="filter-input edit-switch-input" required>
+              <option value="SRVM">SRVM</option>
+              <option value="DATA1">DATA1</option>
+            </select>
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="hostname" class="edit-switch-label"><i class="fas fa-id-card"></i> Hostname</label>
+            <input type="text" id="hostname" name="hostname" class="filter-input edit-switch-input" placeholder="Введите hostname" required>
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="unit" class="edit-switch-label"><i class="fas fa-ruler-vertical"></i> Юнит</label>
+            <input type="number" id="unit" name="unit" class="filter-input edit-switch-input" placeholder="Введите юнит (19-25)" min="19" max="25" required>
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="port_srvm" class="edit-switch-label"><i class="fas fa-plug"></i> Порт SRVM (опционально)</label>
+            <input type="text" id="port_srvm" name="port_srvm" class="filter-input edit-switch-input" placeholder="Введите порт SRVM">
+          </div>
+          <div class="edit-switch-form-group">
+            <label for="port_data" class="edit-switch-label"><i class="fas fa-plug"></i> Порт DATA (опционально)</label>
+            <input type="text" id="port_data" name="port_data" class="filter-input edit-switch-input" placeholder="Введите порт DATA">
+          </div>
+          <div class="edit-switch-button-wrapper">
+            <button type="submit" class="excel-btn edit-switch-submit-btn"><i class="fas fa-save"></i> Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endblock %}
