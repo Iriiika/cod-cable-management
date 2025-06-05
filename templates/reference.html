@@ -17,9 +17,9 @@
           <i class="fas fa-plus"></i> {{ _('Добавить ЦОД') }}
         </a>
       {% endif %}
-      <button class="excel-btn" onclick="exportToExcel()">
+      <a href="{{ url_for('export_data_centers') }}" class="excel-btn">
         <i class="fas fa-file-excel"></i> {{ _('Экспорт в Excel') }}
-      </button>
+      </a>
     </div>
     <table id="dataCentersTable">
       <thead>

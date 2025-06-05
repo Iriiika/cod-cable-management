@@ -58,8 +58,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     nameFilter.addEventListener('input', filterTable);
     shortNameFilter.addEventListener('input', filterTable);
-
-    function exportToExcel() {
-      alert('Экспорт в Excel пока не реализован.');
-    }
-  });
+});

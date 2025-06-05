@@ -3,6 +3,7 @@ from flask_babel import Babel, _, get_locale
 import psycopg2
 import bcrypt
 import math
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 app.config['BABEL_DEFAULT_LOCALE'] = 'ru'
@@ -716,6 +717,7 @@ def dashboard():
         return redirect(url_for('engineer_dashboard'))
     else:
         return redirect(url_for('observer_dashboard'))
+    
 @app.route('/set_language/<lang>')
 def set_language(lang):
     if lang in app.config['LANGUAGES']:
