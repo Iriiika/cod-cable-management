@@ -19,7 +19,7 @@
             <i class="fas fa-home"></i> Главная
           </button>
           <button class="nav-btn {% if request.path == url_for('commutation') %}active{% endif %}" data-page="{{ url_for('commutation') }}">
-            <i class="fas fa-plug"></i> Коммутация
+            <i class="fas fa-plug"></i> Коммутации
           </button>
           <button class="nav-btn {% if request.path in [url_for('reference'), url_for('reference_switches'), url_for('reference_servers'), url_for('reference_roles'), url_for('reference_users')] %}active{% endif %}" data-page="{{ url_for('reference') }}">
             <i class="fas fa-book"></i> Справочник
@@ -73,6 +73,18 @@
       </aside>
     {% endif %}
     <main class="base-main">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message flash-{{ category }}">
+                {{ message }}
+                <button class="flash-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </main>
     <footer class="base-footer">
