@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <html lang="ru">
+  <html lang="{{ g.locale }}">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,44 +10,49 @@
   </head>
   <body class="base-body">
     <header class="base-header">
-      <button class="base-burger" aria-label="Toggle menu">
+      <button class="base-burger" aria-label="{{ _('Toggle menu') }}">
         <i class="fas fa-bars"></i>
       </button>
       <nav class="base-nav">
         {% if session['user_id'] %}
           <button class="nav-btn {% if request.path == url_for('dashboard') %}active{% endif %}" data-page="{{ url_for('dashboard') }}">
-            <i class="fas fa-home"></i> Главная
+            <i class="fas fa-home"></i> {{ _('Главная') }}
           </button>
           <button class="nav-btn {% if request.path == url_for('commutation') %}active{% endif %}" data-page="{{ url_for('commutation') }}">
-            <i class="fas fa-plug"></i> Коммутации
+            <i class="fas fa-plug"></i> {{ _('Коммутация') }}
           </button>
           <button class="nav-btn {% if request.path in [url_for('reference'), url_for('reference_switches'), url_for('reference_servers'), url_for('reference_roles'), url_for('reference_users')] %}active{% endif %}" data-page="{{ url_for('reference') }}">
-            <i class="fas fa-book"></i> Справочник
+            <i class="fas fa-book"></i> {{ _('Справочник') }}
           </button>
           {% if session['role'] == 'Администратор' %}
             <button class="nav-btn {% if request.path == url_for('report') %}active{% endif %}" data-page="{{ url_for('report') }}">
-              <i class="fas fa-chart-line"></i> Отчет
+              <i class="fas fa-chart-line"></i> {{ _('Отчет') }}
             </button>
           {% endif %}
           <button class="nav-btn {% if request.path == url_for('profile') %}active{% endif %}" data-page="{{ url_for('profile') }}">
-            <i class="fas fa-user"></i> Профиль
+            <i class="fas fa-user"></i> {{ _('Профиль') }}
           </button>
           <button class="nav-btn" data-page="{{ url_for('logout') }}">
-            <i class="fas fa-sign-out-alt"></i> Выход
+            <i class="fas fa-sign-out-alt"></i> {{ _('Выход') }}
           </button>
         {% else %}
           <button class="nav-btn {% if request.path == url_for('login') %}active{% endif %}" data-page="{{ url_for('login') }}">
-            <i class="fas fa-sign-in-alt"></i> Вход
+            <i class="fas fa-sign-in-alt"></i> {{ _('Вход') }}
           </button>
           <button class="nav-btn {% if request.path == url_for('register') %}active{% endif %}" data-page="{{ url_for('register') }}">
-            <i class="fas fa-user-plus"></i> Регистрация
+            <i class="fas fa-user-plus"></i> {{ _('Регистрация') }}
           </button>
         {% endif %}
       </nav>
       <div class="base-header-right">
         <span class="base-user">
-          <i class="fas fa-user"></i> {{ session['full_name'] if session['full_name'] else 'Гость' }}
+          <i class="fas fa-user"></i> {{ session['full_name'] if session['full_name'] else _('Гость') }}
         </span>
+        <div class="language-switcher">
+          <a href="{{ url_for('set_language', lang='ru') }}" class="{% if g.locale == 'ru' %}active{% endif %}">RU</a>
+          <span>|</span>
+          <a href="{{ url_for('set_language', lang='en') }}" class="{% if g.locale == 'en' %}active{% endif %}">EN</a>
+        </div>
         <button class="help-btn" data-page="{{ url_for('help') }}">
           <i class="fas fa-question-circle"></i>
         </button>
@@ -56,19 +61,19 @@
     {% if session['user_id'] %}
       <aside class="base-sidebar">
         <button class="sidebar-btn {% if request.path == url_for('reference') %}active{% endif %}" data-page="{{ url_for('reference') }}">
-          <i class="fas fa-building"></i> ЦОДы
+          <i class="fas fa-building"></i> {{ _('ЦОДы') }}
         </button>
         <button class="sidebar-btn {% if request.path == url_for('reference_switches') %}active{% endif %}" data-page="{{ url_for('reference_switches') }}">
-          <i class="fas fa-network-wired"></i> Коммутаторы
+          <i class="fas fa-network-wired"></i> {{ _('Коммутаторы') }}
         </button>
         <button class="sidebar-btn {% if request.path == url_for('reference_servers') %}active{% endif %}" data-page="{{ url_for('reference_servers') }}">
-          <i class="fas fa-server"></i> Серверы
+          <i class="fas fa-server"></i> {{ _('Серверы') }}
         </button>
         <button class="sidebar-btn {% if request.path == url_for('reference_roles') %}active{% endif %}" data-page="{{ url_for('reference_roles') }}">
-          <i class="fas fa-shield-alt"></i> Матрица ролей
+          <i class="fas fa-shield-alt"></i> {{ _('Матрица ролей') }}
         </button>
         <button class="sidebar-btn {% if request.path == url_for('reference_users') %}active{% endif %}" data-page="{{ url_for('reference_users') }}">
-          <i class="fas fa-users"></i> Пользователи
+          <i class="fas fa-users"></i> {{ _('Пользователи') }}
         </button>
       </aside>
     {% endif %}
@@ -88,7 +93,7 @@
       {% block content %}{% endblock %}
     </main>
     <footer class="base-footer">
-      Автор: Гуренко Ирина Александровна
+      {{ _('Автор: Гуренко Ирина Александровна') }}
     </footer>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block js %}{% endblock %}
