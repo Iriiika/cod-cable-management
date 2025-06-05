@@ -281,20 +281,20 @@ def add_dc():
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_dc'))
 
-    try:
-        with conn.cursor() as cur:
-            cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
-            conn.commit()
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
+                conn.commit()
 
-            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
-                        (session['user_id'], 'Добавление ЦОД', name))
-            conn.commit()
-            flash('ЦОД успешно добавлен', 'success')
-            return redirect(url_for('reference'))
-    except psycopg2.Error as e:
-        flash(f'Ошибка базы: {e}', 'error')
-    finally:
-        conn.close()
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Добавление ЦОД', name))
+                conn.commit()
+                flash('ЦОД успешно добавлен', 'success')
+                return redirect(url_for('reference'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
 
     return render_template('add_dc.html')
 
