@@ -1,31 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}Регистрация{% endblock %}
+{% block title %}{{ _('Регистрация') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 {% endblock %}
 {% block content %}
   <div class="register-content">
     <div class="register-form-wrapper">
-      <h2 class="register-title">Регистрация</h2>
+      <h2 class="register-title">{{ _('Регистрация') }}</h2>
       <form method="POST" action="{{ url_for('register') }}">
         <div class="register-form-group">
-          <label for="full_name" class="register-label"><i class="fas fa-user"></i> ФИО</label>
-          <input type="text" id="full_name" name="full_name" class="filter-input register-input" placeholder="Введите ФИО" required>
+          <label for="full_name" class="register-label">
+            <i class="fas fa-user"></i> {{ _('ФИО') }}
+          </label>
+          <input type="text" id="full_name" name="full_name" class="filter-input register-input" placeholder="{{ _('Введите ФИО') }}" required>
         </div>
         <div class="register-form-group">
-          <label for="login" class="register-label"><i class="fas fa-id-card"></i> Логин</label>
-          <input type="text" id="login" name="login" class="filter-input register-input" placeholder="Введите логин" required>
+          <label for="login" class="register-label">
+            <i class="fas fa-id-card"></i> {{ _('Логин') }}
+          </label>
+          <input type="text" id="login" name="login" class="filter-input register-input" placeholder="{{ _('Введите логин') }}" required>
         </div>
         <div class="register-form-group">
-          <label for="password" class="register-label"><i class="fas fa-lock"></i> Пароль</label>
-          <input type="password" id="password" name="password" class="filter-input register-input" placeholder="Введите пароль" required>
+          <label for="password" class="register-label">
+            <i class="fas fa-lock"></i> {{ _('Пароль') }}
+          </label>
+          <input type="password" id="password" name="password" class="filter-input register-input" placeholder="{{ _('Введите пароль') }}" required>
         </div>
         <div class="register-form-group">
-          <label for="email" class="register-label"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" class="filter-input register-input" placeholder="Введите email" required>
+          <label for="email" class="register-label">
+            <i class="fas fa-envelope"></i> {{ _('Email') }}
+          </label>
+          <input type="email" id="email" name="email" class="filter-input register-input" placeholder="{{ _('Введите email') }}" required>
         </div>
         <div class="register-button-wrapper">
-          <button type="submit" class="excel-btn register-submit-btn"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
+          <button type="submit" class="excel-btn register-submit-btn">
+            <i class="fas fa-user-plus"></i> {{ _('Зарегистрироваться') }}
+          </button>
         </div>
       </form>
     </div>

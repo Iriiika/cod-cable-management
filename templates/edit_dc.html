@@ -1,33 +1,41 @@
 {% extends 'base.html' %}
-  {% block title %}Редактирование ЦОД{% endblock %}
-  {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_dc.css') }}">
-  {% endblock %}
-  {% block content %}
-    <div class="edit-dc-breadcrumbs breadcrumbs">
-      <a href="{{ url_for('dashboard') }}">Главная</a> >
-      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Редактирование ЦОД
+{% block title %}{{ _('Редактирование ЦОД') }}{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_dc.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="edit-dc-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> >
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Админ-панель') }}</a> > {{ _('Редактирование ЦОД') }}
+  </div>
+  <div class="edit-dc-content content">
+    <div class="edit-dc-form-wrapper">
+      <h2 class="edit-dc-title">{{ _('Редактирование ЦОД') }}</h2>
+      <form method="POST" action="{{ url_for('edit_dc') }}">
+        <div class="edit-dc-form-group">
+          <label for="dc_id" class="edit-dc-label">
+            <i class="fas fa-building"></i> {{ _('ID ЦОД') }}
+          </label>
+          <input type="text" id="dc_id" name="dc_id" class="filter-input edit-dc-input" placeholder="{{ _('Введите ID ЦОД') }}" required>
+        </div>
+        <div class="edit-dc-form-group">
+          <label for="name" class="edit-dc-label">
+            <i class="fas fa-building"></i> {{ _('Название ЦОД') }}
+          </label>
+          <input type="text" id="name" name="name" class="filter-input edit-dc-input" placeholder="{{ _('Введите название') }}" required>
+        </div>
+        <div class="edit-dc-form-group">
+          <label for="short_name" class="edit-dc-label">
+            <i class="fas fa-tag"></i> {{ _('Короткое имя') }}
+          </label>
+          <input type="text" id="short_name" name="short_name" class="filter-input edit-dc-input" placeholder="{{ _('Введите короткое имя') }}" required>
+        </div>
+        <div class="edit-dc-button-wrapper">
+          <button type="submit" class="excel-btn edit-dc-submit-btn">
+            <i class="fas fa-save"></i> {{ _('Сохранить') }}
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="edit-dc-content content">
-      <div class="edit-dc-form-wrapper">
-        <h2 class="edit-dc-title">Редактирование ЦОД</h2>
-        <form method="POST" action="{{ url_for('edit_dc') }}">
-          <div class="edit-dc-form-group">
-            <label for="dc_id" class="edit-dc-label"><i class="fas fa-building"></i> ID ЦОД</label>
-            <input type="text" id="dc_id" name="dc_id" class="filter-input edit-dc-input" placeholder="Введите ID ЦОД" required>
-          </div>
-          <div class="edit-dc-form-group">
-            <label for="name" class="edit-dc-label"><i class="fas fa-building"></i> Название ЦОД</label>
-            <input type="text" id="name" name="name" class="filter-input edit-dc-input" placeholder="Введите название" required>
-          </div>
-          <div class="edit-dc-form-group">
-            <label for="short_name" class="edit-dc-label"><i class="fas fa-tag"></i> Короткое имя</label>
-            <input type="text" id="short_name" name="short_name" class="filter-input edit-dc-input" placeholder="Введите короткое имя" required>
-          </div>
-          <div class="edit-dc-button-wrapper">
-            <button type="submit" class="excel-btn edit-dc-submit-btn"><i class="fas fa-save"></i> Сохранить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {% endblock %}
+  </div>
+{% endblock %}

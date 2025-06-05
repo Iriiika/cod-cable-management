@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
-{% block title %}Главная - Администратор{% endblock %}
+{% block title %}{{ _('Главная - Администратор') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main_admin.css') }}">
 {% endblock %}
 {% block content %}
   <div class="admin-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('admin_dashboard') }}">Главная</a>
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Главная') }}</a>
   </div>
   <div class="admin-content content">
     <button class="admin-action-btn action-btn" data-page="{{ url_for('commutation') }}">
-      <i class="fas fa-plug"></i> Коммутация
+      <i class="fas fa-plug"></i> {{ _('Коммутация') }}
     </button>
     <button class="admin-action-btn action-btn" data-page="{{ url_for('reference') }}">
-      <i class="fas fa-book"></i> Справочник
+      <i class="fas fa-book"></i> {{ _('Справочник') }}
     </button>
     <button class="admin-action-btn action-btn" data-page="{{ url_for('report') }}">
-      <i class="fas fa-chart-line"></i> Отчет
+      <i class="fas fa-chart-line"></i> {{ _('Отчет') }}
     </button>
     <button class="admin-action-btn action-btn" data-page="{{ url_for('add_dc') }}">
-      <i class="fas fa-building"></i> Добавить ЦОД
+      <i class="fas fa-building"></i> {{ _('Добавить ЦОД') }}
     </button>
     <button class="admin-action-btn action-btn" data-page="{{ url_for('add_user') }}">
-      <i class="fas fa-user-plus"></i> Добавить пользователя
+      <i class="fas fa-user-plus"></i> {{ _('Добавить пользователя') }}
     </button>
   </div>
 {% endblock %}

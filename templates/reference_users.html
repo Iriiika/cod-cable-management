@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}Справочник - Пользователи{% endblock %}
+{% block title %}{{ _('Справочник - Пользователи') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_users.css') }}">
 {% endblock %}
 {% block content %}
   <div class="ref-users-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('reference') }}">Справочник</a> > Пользователи
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('reference') }}">{{ _('Справочник') }}</a> > {{ _('Пользователи') }}
   </div>
   <div class="ref-users-content content">
     <div class="ref-users-filters filters">
-      <input type="text" class="ref-users-filter-input filter-input" placeholder="ФИО" onfocus="this.placeholder=''">
-      <input type="text" class="ref-users-filter-input filter-input" placeholder="Роль" onfocus="this.placeholder=''">
-      <input type="text" class="ref-users-filter-input filter-input" placeholder="Логин" onfocus="this.placeholder=''">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="{{ _('ФИО') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="{{ _('Роль') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-users-filter-input filter-input" placeholder="{{ _('Логин') }}" onfocus="this.placeholder=''">
       {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="ref-users-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="ref-users-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
       {% endif %}
     </div>
     <table class="ref-users-table">
       <thead>
         <tr>
           <th><input type="checkbox"></th>
-          <th>ФИО</th>
-          <th>Роль</th>
-          <th>Логин</th>
-          <th>Email</th>
+          <th>{{ _('ФИО') }}</th>
+          <th>{{ _('Роль') }}</th>
+          <th>{{ _('Логин') }}</th>
+          <th>{{ _('Email') }}</th>
           {% if session['role'] == 'Администратор' %}
             <th></th>
           {% endif %}
@@ -45,7 +45,7 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="ref-users-status">Показано: {{ users|length }} из {{ users|length }}</p>
+    <p class="ref-users-status">{{ _('Показано:') }} {{ users|length }} {{ _('из') }} {{ users|length }}</p>
   </div>
 {% endblock %}
 {% block js %}

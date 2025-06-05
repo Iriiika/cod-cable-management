@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}Отчеты{% endblock %}
+{% block title %}{{ _('Отчеты') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
 {% endblock %}
 {% block content %}
   <div class="report-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > Отчеты
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > {{ _('Отчеты') }}
   </div>
   <div class="report-content content">
     <div class="report-filters filters">
-      <input type="text" class="report-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-      <input type="text" class="report-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
-      <input type="text" class="report-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
-      <button class="report-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+      <input type="text" class="report-filter-input filter-input" placeholder="{{ _('ЦОД') }}" onfocus="this.placeholder=''">
+      <input type="text" class="report-filter-input filter-input" placeholder="{{ _('Зал') }}" onfocus="this.placeholder=''">
+      <input type="text" class="report-filter-input filter-input" placeholder="{{ _('Стойка') }}" onfocus="this.placeholder=''">
+      <button class="report-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
     </div>
     <table class="report-table">
       <thead>
         <tr>
-          <th>ЦОД</th>
-          <th>Зал</th>
-          <th>Стойка</th>
-          <th>Количество подключений</th>
+          <th>{{ _('ЦОД') }}</th>
+          <th>{{ _('Зал') }}</th>
+          <th>{{ _('Стойка') }}</th>
+          <th>{{ _('Количество подключений') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +34,6 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="report-status">Показано: {{ reports|length }} записей</p>
+    <p class="report-status">{{ _('Показано:') }} {{ reports|length }} {{ _('записей') }}</p>
   </div>
 {% endblock %}

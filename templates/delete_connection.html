@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
-  {% block title %}Удаление подключения{% endblock %}
-  {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_connection.css') }}">
-  {% endblock %}
-  {% block content %}
-    <div class="delete-conn-breadcrumbs breadcrumbs">
-      <a href="{{ url_for('dashboard') }}">Главная</a> >
-      <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Удаление подключения
+{% block title %}{{ _('Удаление подключения') }}{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_connection.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="delete-conn-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> >
+    <a href="{{ url_for('engineer_dashboard') }}">{{ _('Кабинет инженера') }}</a> > {{ _('Удаление подключения') }}
+  </div>
+  <div class="delete-conn-content content">
+    <div class="delete-conn-form-wrapper">
+      <h2 class="delete-conn-title">{{ _('Удаление подключения') }}</h2>
+      <form method="POST" action="{{ url_for('delete_connection') }}">
+        <div class="delete-conn-form-group">
+          <label for="conn_id" class="delete-conn-label">
+            <i class="fas fa-plug"></i> {{ _('ID подключения') }}
+          </label>
+          <input type="text" id="conn_id" name="conn_id" class="filter-input delete-conn-input" placeholder="{{ _('Введите ID подключения') }}" required>
+        </div>
+        <div class="delete-conn-button-wrapper">
+          <button type="submit" class="excel-btn delete-conn-submit-btn">
+            <i class="fas fa-trash"></i> {{ _('Удалить') }}
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="delete-conn-content content">
-      <div class="delete-conn-form-wrapper">
-        <h2 class="delete-conn-title">Удаление подключения</h2>
-        <form method="POST" action="{{ url_for('delete_connection') }}">
-          <div class="delete-conn-form-group">
-            <label for="conn_id" class="delete-conn-label"><i class="fas fa-plug"></i> ID подключения</label>
-            <input type="text" id="conn_id" name="conn_id" class="filter-input delete-conn-input" placeholder="Введите ID подключения" required>
-          </div>
-          <div class="delete-conn-button-wrapper">
-            <button type="submit" class="excel-btn delete-conn-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {% endblock %}
+  </div>
+{% endblock %}

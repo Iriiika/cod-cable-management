@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}Главная - Инженер ЛВС{% endblock %}
+{% block title %}{{ _('Главная - Инженер ЛВС') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main_engineer.css') }}">
 {% endblock %}
 {% block content %}
   <div class="eng-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('engineer_dashboard') }}">Главная</a>
+    <a href="{{ url_for('engineer_dashboard') }}">{{ _('Главная') }}</a>
   </div>
   <div class="eng-content content">
     <button class="eng-action-btn action-btn" data-page="{{ url_for('commutation') }}">
-      <i class="fas fa-plug"></i> Коммутация
+      <i class="fas fa-plug"></i> {{ _('Коммутация') }}
     </button>
     <button class="eng-action-btn action-btn" data-page="{{ url_for('reference') }}">
-      <i class="fas fa-book"></i> Справочник
+      <i class="fas fa-book"></i> {{ _('Справочник') }}
     </button>
     <button class="eng-action-btn action-btn" data-page="{{ url_for('upload_connection') }}">
-      <i class="fas fa-upload"></i> Загрузить подключение
+      <i class="fas fa-upload"></i> {{ _('Загрузить подключение') }}
     </button>
     <button class="eng-action-btn action-btn" data-page="{{ url_for('reference_servers') }}">
-      <i class="fas fa-trash"></i> Удалить подключение
+      <i class="fas fa-trash"></i> {{ _('Удалить подключение') }}
     </button>
     <button class="eng-action-btn action-btn" data-page="{{ url_for('add_switch') }}">
-      <i class="fas fa-plus-circle"></i> Добавить коммутатор
+      <i class="fas fa-plus-circle"></i> {{ _('Добавить коммутатор') }}
     </button>
     <button class="eng-action-btn action-btn" data-page="{{ url_for('reference_switches') }}">
-      <i class="fas fa-trash"></i> Удалить коммутатор
+      <i class="fas fa-trash"></i> {{ _('Удалить коммутатор') }}
     </button>
   </div>
 {% endblock %}

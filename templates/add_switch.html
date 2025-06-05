@@ -1,46 +1,60 @@
 {% extends 'base.html' %}
-{% block title %}Добавление коммутатора{% endblock %}
+{% block title %}{{ _('Добавление коммутатора') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/add_switch.css') }}">
 {% endblock %}
 {% block content %}
   <div class="add-switch-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Добавление коммутатора
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('engineer_dashboard') }}">{{ _('Кабинет инженера') }}</a> > {{ _('Добавление коммутатора') }}
   </div>
   <div class="add-switch-content content">
     <div class="add-switch-form-wrapper">
-      <h2 class="add-switch-title">Добавление коммутатора</h2>
+      <h2 class="add-switch-title">{{ _('Добавление коммутатора') }}</h2>
       <form method="POST" action="{{ url_for('add_switch') }}">
         <div class="add-switch-form-group">
-          <label for="rack_id" class="add-switch-label"><i class="fas fa-server"></i> Стойка</label>
-          <input type="text" id="rack_id" name="rack_id" class="filter-input add-switch-input" placeholder="Введите ID стойки" required>
+          <label for="rack_id" class="add-switch-label">
+            <i class="fas fa-server"></i> {{ _('Стойка') }}
+          </label>
+          <input type="text" id="rack_id" name="rack_id" class="filter-input add-switch-input" placeholder="{{ _('Введите ID стойки') }}" required>
         </div>
         <div class="add-switch-form-group">
-          <label for="type" class="add-switch-label"><i class="fas fa-network-wired"></i> Тип</label>
+          <label for="type" class="add-switch-label">
+            <i class="fas fa-network-wired"></i> {{ _('Тип') }}
+          </label>
           <select id="type" name="type" class="filter-input add-switch-input" required>
-            <option value="SRVM">SRVM</option>
-            <option value="DATA1">DATA1</option>
+            <option value="SRVM">{{ _('SRVM') }}</option>
+            <option value="DATA1">{{ _('DATA1') }}</option>
           </select>
         </div>
         <div class="add-switch-form-group">
-          <label for="hostname" class="add-switch-label"><i class="fas fa-id-card"></i> Hostname</label>
-          <input type="text" id="hostname" name="hostname" class="filter-input add-switch-input" placeholder="Введите hostname" required>
+          <label for="hostname" class="add-switch-label">
+            <i class="fas fa-id-card"></i> {{ _('Hostname') }}
+          </label>
+          <input type="text" id="hostname" name="hostname" class="filter-input add-switch-input" placeholder="{{ _('Введите hostname') }}" required>
         </div>
         <div class="add-switch-form-group">
-          <label for="unit" class="add-switch-label"><i class="fas fa-ruler-vertical"></i> Юнит</label>
-          <input type="number" id="unit" name="unit" class="filter-input add-switch-input" placeholder="Введите юнит (19-25)" min="19" max="25" required>
+          <label for="unit" class="add-switch-label">
+            <i class="fas fa-ruler-vertical"></i> {{ _('Юнит') }}
+          </label>
+          <input type="number" id="unit" name="unit" class="filter-input add-switch-input" placeholder="{{ _('Введите юнит (19-25)') }}" min="19" max="25" required>
         </div>
         <div class="add-switch-form-group">
-          <label for="port_srvm" class="add-switch-label"><i class="fas fa-plug"></i> Порт SRVM (опционально)</label>
-          <input type="text" id="port_srvm" name="port_srvm" class="filter-input add-switch-input" placeholder="Введите порт SRVM">
+          <label for="port_srvm" class="add-switch-label">
+            <i class="fas fa-plug"></i> {{ _('Порт SRVM (опционально)') }}
+          </label>
+          <input type="text" id="port_srvm" name="port_srvm" class="filter-input add-switch-input" placeholder="{{ _('Введите порт SRVM') }}">
         </div>
         <div class="add-switch-form-group">
-          <label for="port_data" class="add-switch-label"><i class="fas fa-plug"></i> Порт DATA (опционально)</label>
-          <input type="text" id="port_data" name="port_data" class="filter-input add-switch-input" placeholder="Введите порт DATA">
+          <label for="port_data" class="add-switch-label">
+            <i class="fas fa-plug"></i> {{ _('Порт DATA (опционально)') }}
+          </label>
+          <input type="text" id="port_data" name="port_data" class="filter-input add-switch-input" placeholder="{{ _('Введите порт DATA') }}">
         </div>
         <div class="add-switch-button-wrapper">
-          <button type="submit" class="excel-btn add-switch-submit-btn"><i class="fas fa-plus-circle"></i> Добавить</button>
+          <button type="submit" class="excel-btn add-switch-submit-btn">
+            <i class="fas fa-plus-circle"></i> {{ _('Добавить') }}
+          </button>
         </div>
       </form>
     </div>

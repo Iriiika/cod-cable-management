@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}Логи действий{% endblock %}
+{% block title %}{{ _('Логи действий') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/logs.css') }}">
 {% endblock %}
 {% block content %}
   <div class="logs-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Логи действий
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Админ-панель') }}</a> > {{ _('Логи действий') }}
   </div>
   <div class="logs-content content">
     <div class="logs-filters filters">
-      <input type="text" class="logs-filter-input filter-input" placeholder="Пользователь" onfocus="this.placeholder=''">
-      <input type="text" class="logs-filter-input filter-input" placeholder="Действие" onfocus="this.placeholder=''">
+      <input type="text" class="logs-filter-input filter-input" placeholder="{{ _('Пользователь') }}" onfocus="this.placeholder=''">
+      <input type="text" class="logs-filter-input filter-input" placeholder="{{ _('Действие') }}" onfocus="this.placeholder=''">
       <input type="date" class="logs-filter-input filter-input" name="date">
     </div>
     <table class="logs-table">
       <thead>
         <tr>
-          <th>Пользователь</th>
-          <th>Действие</th>
-          <th>Объект</th>
-          <th>Дата и время</th>
+          <th>{{ _('Пользователь') }}</th>
+          <th>{{ _('Действие') }}</th>
+          <th>{{ _('Объект') }}</th>
+          <th>{{ _('Дата и время') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +34,6 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="logs-status">Показано: {{ logs|length }} записей</p>
+    <p class="logs-status">{{ _('Показано:') }} {{ logs|length }} {{ _('записей') }}</p>
   </div>
 {% endblock %}

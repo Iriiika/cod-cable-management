@@ -1,35 +1,45 @@
 {% extends 'base.html' %}
-{% block title %}Загрузка подключения{% endblock %}
+{% block title %}{{ _('Загрузка подключения') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/upload_connection.css') }}">
 {% endblock %}
 {% block content %}
   <div class="upload-conn-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('engineer_dashboard') }}">Кабинет инженера</a> > Загрузка подключения
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('engineer_dashboard') }}">{{ _('Кабинет инженера') }}</a> > {{ _('Загрузка подключения') }}
   </div>
   <div class="upload-conn-content content">
     <div class="upload-conn-form-wrapper">
-      <h2 class="upload-conn-title">Загрузка подключения</h2>
+      <h2 class="upload-conn-title">{{ _('Загрузка подключения') }}</h2>
       <form method="POST" action="{{ url_for('upload_connection') }}">
         <div class="upload-conn-form-group">
-          <label for="server_id" class="upload-conn-label"><i class="fas fa-server"></i> ID сервера</label>
-          <input type="text" id="server_id" name="server_id" class="filter-input upload-conn-input" placeholder="Введите ID сервера" required>
+          <label for="server_id" class="upload-conn-label">
+            <i class="fas fa-server"></i> {{ _('ID сервера') }}
+          </label>
+          <input type="text" id="server_id" name="server_id" class="filter-input upload-conn-input" placeholder="{{ _('Введите ID сервера') }}" required>
         </div>
         <div class="upload-conn-form-group">
-          <label for="switch_id" class="upload-conn-label"><i class="fas fa-network-wired"></i> ID коммутатора</label>
-          <input type="text" id="switch_id" name="switch_id" class="filter-input upload-conn-input" placeholder="Введите ID коммутатора" required>
+          <label for="switch_id" class="upload-conn-label">
+            <i class="fas fa-network-wired"></i> {{ _('ID коммутатора') }}
+          </label>
+          <input type="text" id="switch_id" name="switch_id" class="filter-input upload-conn-input" placeholder="{{ _('Введите ID коммутатора') }}" required>
         </div>
         <div class="upload-conn-form-group">
-          <label for="port" class="upload-conn-label"><i class="fas fa-plug"></i> Порт</label>
-          <input type="text" id="port" name="port" class="filter-input upload-conn-input" placeholder="Введите порт" required>
+          <label for="port" class="upload-conn-label">
+            <i class="fas fa-plug"></i> {{ _('Порт') }}
+          </label>
+          <input type="text" id="port" name="port" class="filter-input upload-conn-input" placeholder="{{ _('Введите порт') }}" required>
         </div>
         <div class="upload-conn-form-group">
-          <label for="label" class="upload-conn-label"><i class="fas fa-tag"></i> Метка</label>
-          <input type="text" id="label" name="label" class="filter-input upload-conn-input" placeholder="Введите метку" required>
+          <label for="label" class="upload-conn-label">
+            <i class="fas fa-tag"></i> {{ _('Метка') }}
+          </label>
+          <input type="text" id="label" name="label" class="filter-input upload-conn-input" placeholder="{{ _('Введите метку') }}" required>
         </div>
         <div class="upload-conn-button-wrapper">
-          <button type="submit" class="excel-btn upload-conn-submit-btn"><i class="fas fa-upload"></i> Загрузить</button>
+          <button type="submit" class="excel-btn upload-conn-submit-btn">
+            <i class="fas fa-upload"></i> {{ _('Загрузить') }}
+          </button>
         </div>
       </form>
     </div>

@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
-{% block title %}Главная - Наблюдатель{% endblock %}
+{% block title %}{{ _('Главная - Наблюдатель') }}{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main_observer.css') }}">
 {% endblock %}
 {% block content %}
     <div class="obs-breadcrumbs breadcrumbs">
-        <a href="{{ url_for('observer_dashboard') }}">Главная</a>
+        <a href="{{ url_for('observer_dashboard') }}">{{ _('Главная') }}</a>
     </div>
     <div class="obs-content content">
         <button class="obs-action-btn action-btn" data-page="{{ url_for('commutation') }}">
-            <i class="fas fa-plug"></i> Коммутация
+            <i class="fas fa-plug"></i> {{ _('Коммутация') }}
         </button>
         <button class="obs-action-btn action-btn" data-page="{{ url_for('reference') }}">
-            <i class="fas fa-book"></i> Справочник
+            <i class="fas fa-book"></i> {{ _('Справочник') }}
         </button>
         <button class="obs-action-btn action-btn" data-page="{{ url_for('report') }}">
-            <i class="fas fa-chart-line"></i> Отчет
+            <i class="fas fa-chart-line"></i> {{ _('Отчет') }}
         </button>
     </div>
 {% endblock %}

@@ -1,32 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Справочник - Серверы{% endblock %}
+{% block title %}{{ _('Справочник - Серверы') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_servers.css') }}">
 {% endblock %}
 {% block content %}
   <div class="ref-srv-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('reference') }}">Справочник</a> > Серверы
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('reference') }}">{{ _('Справочник') }}</a> > {{ _('Серверы') }}
   </div>
   <div class="ref-srv-content content">
     <div class="ref-srv-filters filters">
-      <input type="text" class="ref-srv-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
-      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
-      <input type="text" class="ref-srv-filter-input filter-input" placeholder="Серийный номер" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="{{ _('ЦОД') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="{{ _('Зал') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="{{ _('Стойка') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-srv-filter-input filter-input" placeholder="{{ _('Серийный номер') }}" onfocus="this.placeholder=''">
       {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="ref-srv-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="ref-srv-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
       {% endif %}
     </div>
     <table class="ref-srv-table">
       <thead>
         <tr>
           <th><input type="checkbox"></th>
-          <th>Серийный номер</th>
-          <th>ЦОД</th>
-          <th>Зал</th>
-          <th>Стойка</th>
-          <th>Юнит</th>
+          <th>{{ _('Серийный номер') }}</th>
+          <th>{{ _('ЦОД') }}</th>
+          <th>{{ _('Зал') }}</th>
+          <th>{{ _('Стойка') }}</th>
+          <th>{{ _('Юнит') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,6 +42,6 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="ref-srv-status">Показано: {{ servers|length }} из {{ servers|length }}</p>
+    <p class="ref-srv-status">{{ _('Показано:') }} {{ servers|length }} {{ _('из') }} {{ servers|length }}</p>
   </div>
 {% endblock %}

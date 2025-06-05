@@ -1,43 +1,55 @@
 {% extends 'base.html' %}
-{% block title %}Добавление пользователя{% endblock %}
+{% block title %}{{ _('Добавление пользователя') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/add_user.css') }}">
 {% endblock %}
 {% block content %}
   <div class="add-user-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Добавление пользователя
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Админ-панель') }}</a> > {{ _('Добавление пользователя') }}
   </div>
   <div class="add-user-content content">
     <div class="add-user-form-wrapper">
-      <h2 class="add-user-title">Добавление пользователя</h2>
+      <h2 class="add-user-title">{{ _('Добавление пользователя') }}</h2>
       <form method="POST" action="{{ url_for('add_user') }}">
         <div class="add-user-form-group">
-          <label for="full_name" class="add-user-label"><i class="fas fa-user"></i> ФИО</label>
-          <input type="text" id="full_name" name="full_name" class="filter-input add-user-input" placeholder="Введите ФИО" required>
+          <label for="full_name" class="add-user-label">
+            <i class="fas fa-user"></i> {{ _('ФИО') }}
+          </label>
+          <input type="text" id="full_name" name="full_name" class="filter-input add-user-input" placeholder="{{ _('Введите ФИО') }}" required>
         </div>
         <div class="add-user-form-group">
-          <label for="role" class="add-user-label"><i class="fas fa-shield-alt"></i> Роль</label>
+          <label for="role" class="add-user-label">
+            <i class="fas fa-shield-alt"></i> {{ _('Роль') }}
+          </label>
           <select id="role" name="role" class="filter-input add-user-input" required>
-            <option value="Администратор">Администратор</option>
-            <option value="Инженер ЛВС">Инженер ЛВС</option>
-            <option value="Наблюдатель">Наблюдатель</option>
+            <option value="Администратор">{{ _('Администратор') }}</option>
+            <option value="Инженер ЛВС">{{ _('Инженер ЛВС') }}</option>
+            <option value="Наблюдатель">{{ _('Наблюдатель') }}</option>
           </select>
         </div>
         <div class="add-user-form-group">
-          <label for="login" class="add-user-label"><i class="fas fa-id-card"></i> Логин</label>
-          <input type="text" id="login" name="login" class="filter-input add-user-input" placeholder="Введите логин" required>
+          <label for="login" class="add-user-label">
+            <i class="fas fa-id-card"></i> {{ _('Логин') }}
+          </label>
+          <input type="text" id="login" name="login" class="filter-input add-user-input" placeholder="{{ _('Введите логин') }}" required>
         </div>
         <div class="add-user-form-group">
-          <label for="password" class="add-user-label"><i class="fas fa-lock"></i> Пароль</label>
-          <input type="password" id="password" name="password" class="filter-input add-user-input" placeholder="Введите пароль" required>
+          <label for="password" class="add-user-label">
+            <i class="fas fa-lock"></i> {{ _('Пароль') }}
+          </label>
+          <input type="password" id="password" name="password" class="filter-input add-user-input" placeholder="{{ _('Введите пароль') }}" required>
         </div>
         <div class="add-user-form-group">
-          <label for="email" class="add-user-label"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="email" name="email" class="filter-input add-user-input" placeholder="Введите email" required>
+          <label for="email" class="add-user-label">
+            <i class="fas fa-envelope"></i> {{ _('Email') }}
+          </label>
+          <input type="email" id="email" name="email" class="filter-input add-user-input" placeholder="{{ _('Введите email') }}" required>
         </div>
         <div class="add-user-button-wrapper">
-          <button type="submit" class="excel-btn add-user-submit-btn"><i class="fas fa-user-plus"></i> Добавить</button>
+          <button type="submit" class="excel-btn add-user-submit-btn">
+            <i class="fas fa-user-plus"></i> {{ _('Добавить') }}
+          </button>
         </div>
       </form>
     </div>

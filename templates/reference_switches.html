@@ -1,31 +1,31 @@
 {% extends 'base.html' %}
-{% block title %}Справочник - Коммутаторы{% endblock %}
+{% block title %}{{ _('Справочник - Коммутаторы') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_switches.css') }}">
 {% endblock %}
 {% block content %}
   <div class="ref-sw-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('reference') }}">Справочник</a> > Коммутаторы
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('reference') }}">{{ _('Справочник') }}</a> > {{ _('Коммутаторы') }}
   </div>
   <div class="ref-sw-content content">
     <div class="ref-sw-filters filters">
-      <input type="text" class="ref-sw-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
-      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
-      <input type="text" class="ref-sw-filter-input filter-input" placeholder="Коммутатор" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="{{ _('ЦОД') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="{{ _('Зал') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="{{ _('Стойка') }}" onfocus="this.placeholder=''">
+      <input type="text" class="ref-sw-filter-input filter-input" placeholder="{{ _('Коммутатор') }}" onfocus="this.placeholder=''">
       {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="ref-sw-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="ref-sw-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
       {% endif %}
     </div>
     <table class="ref-sw-table">
       <thead>
         <tr>
           <th><input type="checkbox"></th>
-          <th>Hostname</th>
-          <th>ЦОД</th>
-          <th>Зал</th>
-          <th>Стойка</th>
+          <th>{{ _('Hostname') }}</th>
+          <th>{{ _('ЦОД') }}</th>
+          <th>{{ _('Зал') }}</th>
+          <th>{{ _('Стойка') }}</th>
           {% if session['role'] == 'Инженер ЛВС' %}
             <th></th>
           {% endif %}
@@ -46,7 +46,7 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="ref-sw-status">Показано: {{ switches|length }} из {{ switches|length }}</p>
+    <p class="ref-sw-status">{{ _('Показано:') }} {{ switches|length }} {{ _('из') }} {{ switches|length }}</p>
   </div>
 {% endblock %}
 {% block js %}

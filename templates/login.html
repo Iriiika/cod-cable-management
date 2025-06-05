@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Авторизация{% endblock %}
+{% block title %}{{ _('Авторизация') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 {% endblock %}
 {% block content %}
   <div class="login-content">
     <div class="login-form-wrapper">
-      <h2 class="login-title">Авторизация</h2>
+      <h2 class="login-title">{{ _('Авторизация') }}</h2>
       <form method="POST" action="{{ url_for('login') }}">
         <div class="login-form-group">
-          <label for="username" class="login-label"><i class="fas fa-user"></i> Имя пользователя</label>
-          <input type="text" id="username" name="username" class="filter-input login-input" placeholder="Введите имя" required>
+          <label for="username" class="login-label">
+            <i class="fas fa-user"></i> {{ _('Имя пользователя') }}
+          </label>
+          <input type="text" id="username" name="username" class="filter-input login-input" placeholder="{{ _('Введите имя') }}" required>
         </div>
         <div class="login-form-group">
-          <label for="password" class="login-label"><i class="fas fa-lock"></i> Пароль</label>
-          <input type="password" id="password" name="password" class="filter-input login-input" placeholder="Введите пароль" required>
+          <label for="password" class="login-label">
+            <i class="fas fa-lock"></i> {{ _('Пароль') }}
+          </label>
+          <input type="password" id="password" name="password" class="filter-input login-input" placeholder="{{ _('Введите пароль') }}" required>
         </div>
         <div class="login-button-wrapper">
-          <button type="submit" class="excel-btn login-submit-btn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+          <button type="submit" class="excel-btn login-submit-btn">
+            <i class="fas fa-sign-in-alt"></i> {{ _('Войти') }}
+          </button>
         </div>
         {% if error %}
-          <div class="login-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
+          <div class="login-error"><i class="fas fa-exclamation-circle"></i> {{ _(error) }}</div>
         {% endif %}
       </form>
     </div>

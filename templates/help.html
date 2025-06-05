@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Справка{% endblock %}
+{% block title %}{{ _('Справка') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
 {% endblock %}
 {% block content %}
   <div class="help-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > Справка
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > {{ _('Справка') }}
   </div>
   <div class="help-content content">
-    <h2 class="help-title">Справка по системе</h2>
+    <h2 class="help-title">{{ _('Справка по системе') }}</h2>
     <div class="help-section">
-      <h3 class="help-subtitle">Как пользоваться системой</h3>
-      <p>Для авторизации используйте свои учетные данные. Если у вас нет доступа, запросите его у администратора.</p>
+      <h3 class="help-subtitle">{{ _('Как пользоваться системой') }}</h3>
+      <p>{{ _('Для авторизации используйте свои учетные данные. Если у вас нет доступа, запросите его у администратора.') }}</p>
     </div>
     <div class="help-section">
-      <h3 class="help-subtitle">Роли пользователей</h3>
+      <h3 class="help-subtitle">{{ _('Роли пользователей') }}</h3>
       <ul class="help-list">
-        <li><strong>Администратор</strong>: Полный доступ ко всем функциям.</li>
-        <li><strong>Инженер ЛВС</strong>: Управление подключениями и коммутаторами.</li>
-        <li><strong>Наблюдатель</strong>: Только просмотр данных.</li>
+        <li><strong>{{ _('Администратор') }}</strong>: {{ _('Полный доступ ко всем функциям.') }}</li>
+        <li><strong>{{ _('Инженер ЛВС') }}</strong>: {{ _('Управление подключениями и коммутаторами.') }}</li>
+        <li><strong>{{ _('Наблюдатель') }}</strong>: {{ _('Только просмотр данных.') }}</li>
       </ul>
     </div>
     <div class="help-section">
-      <h3 class="help-subtitle">Контакты поддержки</h3>
-      <p>Для вопросов и предложений пишите на <a href="mailto:support@dom.ru">support@dom.ru</a>.</p>
+      <h3 class="help-subtitle">{{ _('Контакты поддержки') }}</h3>
+      <p>{{ _('Для вопросов и предложений пишите на') }} <a href="mailto:support@dom.ru">support@dom.ru</a>.</p>
     </div>
   </div>
 {% endblock %}

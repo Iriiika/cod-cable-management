@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
-  {% block title %}Удаление пользователя{% endblock %}
-  {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_user.css') }}">
-  {% endblock %}
-  {% block content %}
-    <div class="delete-user-breadcrumbs breadcrumbs">
-      <a href="{{ url_for('dashboard') }}">Главная</a> >
-      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление пользователя
+{% block title %}{{ _('Удаление пользователя') }}{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_user.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="delete-user-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> >
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Админ-панель') }}</a> > {{ _('Удаление пользователя') }}
+  </div>
+  <div class="delete-user-content content">
+    <div class="delete-user-form-wrapper">
+      <h2 class="delete-user-title">{{ _('Удаление пользователя') }}</h2>
+      <form method="POST" action="{{ url_for('delete_user') }}">
+        <div class="delete-user-form-group">
+          <label for="user_id" class="delete-user-label">
+            <i class="fas fa-user"></i> {{ _('ID пользователя') }}
+          </label>
+          <input type="text" id="user_id" name="user_id" class="filter-input delete-user-input" placeholder="{{ _('Введите ID пользователя') }}" required>
+        </div>
+        <div class="delete-user-button-wrapper">
+          <button type="submit" class="excel-btn delete-user-submit-btn">
+            <i class="fas fa-trash"></i> {{ _('Удалить') }}
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="delete-user-content content">
-      <div class="delete-user-form-wrapper">
-        <h2 class="delete-user-title">Удаление пользователя</h2>
-        <form method="POST" action="{{ url_for('delete_user') }}">
-          <div class="delete-user-form-group">
-            <label for="user_id" class="delete-user-label"><i class="fas fa-user"></i> ID пользователя</label>
-            <input type="text" id="user_id" name="user_id" class="filter-input delete-user-input" placeholder="Введите ID пользователя" required>
-          </div>
-          <div class="delete-user-button-wrapper">
-            <button type="submit" class="excel-btn delete-user-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {% endblock %}
+  </div>
+{% endblock %}

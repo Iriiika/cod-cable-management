@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
-{% block title %}Коммутация{% endblock %}
+{% block title %}{{ _('Коммутация') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/commutation.css') }}">
 {% endblock %}
 {% block content %}
   <div class="comm-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > Коммутация
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > {{ _('Коммутация') }}
   </div>
   <div class="comm-content content">
     <div class="comm-filters filters">
-      <input type="text" class="comm-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-      <input type="text" class="comm-filter-input filter-input" placeholder="Зал" onfocus="this.placeholder=''">
-      <input type="text" class="comm-filter-input filter-input" placeholder="Стойка" onfocus="this.placeholder=''">
-      <input type="text" class="comm-filter-input filter-input" placeholder="Юнит" onfocus="this.placeholder=''">
-      <input type="text" class="comm-filter-input filter-input" placeholder="Коммутатор" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="{{ _('ЦОД') }}" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="{{ _('Зал') }}" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="{{ _('Стойка') }}" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="{{ _('Юнит') }}" onfocus="this.placeholder=''">
+      <input type="text" class="comm-filter-input filter-input" placeholder="{{ _('Коммутатор') }}" onfocus="this.placeholder=''">
       {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="comm-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="comm-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
       {% endif %}
     </div>
     <table class="comm-table">
       <thead>
         <tr>
           <th><input type="checkbox"></th>
-          <th>Подключение</th>
+          <th>{{ _('Подключение') }}</th>
           <th></th>
         </tr>
       </thead>
@@ -36,7 +36,7 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="comm-status">Показано: {{ connections|length }} из {{ connections|length }}</p>
+    <p class="comm-status">{{ _('Показано:') }} {{ connections|length }} {{ _('из') }} {{ connections|length }}</p>
   </div>
 {% endblock %}
 {% block js %}

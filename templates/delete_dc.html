@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
-  {% block title %}Удаление ЦОД{% endblock %}
-  {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_dc.css') }}">
-  {% endblock %}
-  {% block content %}
-    <div class="delete-dc-breadcrumbs breadcrumbs">
-      <a href="{{ url_for('dashboard') }}">Главная</a> >
-      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Удаление ЦОД
+{% block title %}{{ _('Удаление ЦОД') }}{% endblock %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/delete_dc.css') }}">
+{% endblock %}
+{% block content %}
+  <div class="delete-dc-breadcrumbs breadcrumbs">
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> >
+    <a href="{{ url_for('admin_dashboard') }}">{{ _('Админ-панель') }}</a> > {{ _('Удаление ЦОД') }}
+  </div>
+  <div class="delete-dc-content content">
+    <div class="delete-dc-form-wrapper">
+      <h2 class="delete-dc-title">{{ _('Удаление ЦОД') }}</h2>
+      <form method="POST" action="{{ url_for('delete_dc') }}">
+        <div class="delete-dc-form-group">
+          <label for="dc_id" class="delete-dc-label">
+            <i class="fas fa-building"></i> {{ _('ID ЦОД') }}
+          </label>
+          <input type="text" id="dc_id" name="dc_id" class="filter-input delete-dc-input" placeholder="{{ _('Введите ID ЦОД') }}" required>
+        </div>
+        <div class="delete-dc-button-wrapper">
+          <button type="submit" class="excel-btn delete-dc-submit-btn">
+            <i class="fas fa-trash"></i> {{ _('Удалить') }}
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="delete-dc-content content">
-      <div class="delete-dc-form-wrapper">
-        <h2 class="delete-dc-title">Удаление ЦОД</h2>
-        <form method="POST" action="{{ url_for('delete_dc') }}">
-          <div class="delete-dc-form-group">
-            <label for="dc_id" class="delete-dc-label"><i class="fas fa-building"></i> ID ЦОД</label>
-            <input type="text" id="dc_id" name="dc_id" class="filter-input delete-dc-input" placeholder="Введите ID ЦОД" required>
-          </div>
-          <div class="delete-dc-button-wrapper">
-            <button type="submit" class="excel-btn delete-dc-submit-btn"><i class="fas fa-trash"></i> Удалить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {% endblock %}
+  </div>
+{% endblock %}

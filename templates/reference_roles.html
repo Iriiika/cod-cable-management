@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}Справочник - Матрица ролей{% endblock %}
+{% block title %}{{ _('Справочник - Матрица ролей') }}{% endblock %}
 {% block css %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reference_roles.css') }}">
 {% endblock %}
 {% block content %}
   <div class="ref-roles-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('reference') }}">Справочник</a> > Матрица ролей
+    <a href="{{ url_for('dashboard') }}">{{ _('Главная') }}</a> > 
+    <a href="{{ url_for('reference') }}">{{ _('Справочник') }}</a> > {{ _('Матрица ролей') }}
   </div>
   <div class="ref-roles-content content">
     <div class="ref-roles-filters filters">
-      <input type="text" class="ref-roles-filter-input filter-input" placeholder="Роль" onfocus="this.placeholder=''">
+      <input type="text" class="ref-roles-filter-input filter-input" placeholder="{{ _('Роль') }}" onfocus="this.placeholder=''">
       {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="ref-roles-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
+        <button class="ref-roles-excel-btn excel-btn"><i class="fas fa-file-excel"></i> {{ _('Excel') }}</button>
       {% endif %}
     </div>
     <table class="ref-roles-table">
       <thead>
         <tr>
           <th><input type="checkbox"></th>
-          <th>Роль</th>
-          <th>Права</th>
+          <th>{{ _('Роль') }}</th>
+          <th>{{ _('Права') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +33,6 @@
         {% endfor %}
       </tbody>
     </table>
-    <p class="ref-roles-status">Показано: {{ roles|length }} из {{ roles|length }}</p>
+    <p class="ref-roles-status">{{ _('Показано:') }} {{ roles|length }} {{ _('из') }} {{ roles|length }}</p>
   </div>
 {% endblock %}
