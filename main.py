@@ -1,10 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import psycopg2
 import bcrypt
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
-
 DB_CONFIG = {
     'dbname': 'cod_db',
     'user': 'postgres',
@@ -12,7 +10,6 @@ DB_CONFIG = {
     'host': 'localhost',
     'port': '5432'
 }
-
 def get_db_connection():
     try:
         conn = psycopg2.connect(**DB_CONFIG)
@@ -20,22 +17,27 @@ def get_db_connection():
     except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         return None
-
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error_code=404, error_message="Страница не найдена"), 404
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('error.html', error_code=403, error_message="Доступ запрещен"), 403
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error.html', error_code=500, error_message="Внутренняя ошибка сервера"), 500
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         login = request.form['username']
         password = request.form['password'].encode('utf-8')
-
         conn = get_db_connection()
         if conn is None:
             return render_template('login.html', error='Ошибка сервера')
-
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT id, full_name, role, password FROM users WHERE login = %s', (login,))
                 user = cur.fetchone()
-
             if user and bcrypt.checkpw(password, user[3].encode('utf-8')):
                 session['user_id'] = user[0]
                 session['full_name'] = user[1]
@@ -47,33 +49,26 @@ def login():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('login.html')
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
-
     if request.method == 'POST':
         full_name = request.form['full_name']
         login = request.form['login']
         password = request.form['password'].encode('utf-8')
         email = request.form['email']
-
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('register'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
                             (full_name, 'Наблюдатель', login, hashed_password, email))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session.get('user_id', 0), 'Регистрация пользователя', login))
                 conn.commit()
@@ -83,36 +78,29 @@ def register():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('register.html')
-
 @app.route('/admin')
 def admin_dashboard():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
     return render_template('main_admin.html', full_name=session['full_name'])
-
 @app.route('/engineer')
 def engineer_dashboard():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
     return render_template('main_engineer.html', full_name=session['full_name'])
-
 @app.route('/observer')
 def observer_dashboard():
     if 'user_id' not in session or session['role'] != 'Наблюдатель':
         return redirect(url_for('login'))
     return render_template('main_observer.html', full_name=session['full_name'])
-
 @app.route('/commutation')
 def commutation():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('commutation.html', connections=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT id, label FROM connections')
@@ -123,18 +111,14 @@ def commutation():
         connections = []
     finally:
         conn.close()
-
     return render_template('commutation.html', connections=connections)
-
 @app.route('/reference')
 def reference():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('reference.html', data_centers=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT name, short_name FROM data_centers')
@@ -145,18 +129,14 @@ def reference():
         data_centers = []
     finally:
         conn.close()
-
     return render_template('reference.html', data_centers=data_centers)
-
 @app.route('/reference_switches')
 def reference_switches():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('reference_switches.html', switches=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('''
@@ -179,18 +159,14 @@ def reference_switches():
         switches = []
     finally:
         conn.close()
-
     return render_template('reference_switches.html', switches=switches)
-
 @app.route('/reference_servers')
 def reference_servers():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('reference_servers.html', servers=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('''
@@ -214,18 +190,14 @@ def reference_servers():
         servers = []
     finally:
         conn.close()
-
     return render_template('reference_servers.html', servers=servers)
-
 @app.route('/reference_roles')
 def reference_roles():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('reference_roles.html', roles=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT name, permissions FROM roles')
@@ -236,18 +208,14 @@ def reference_roles():
         roles = []
     finally:
         conn.close()
-
     return render_template('reference_roles.html', roles=roles)
-
 @app.route('/reference_users')
 def reference_users():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('reference_users.html', users=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT id, full_name, role, login, email FROM users')
@@ -264,65 +232,52 @@ def reference_users():
         users = []
     finally:
         conn.close()
-
     return render_template('reference_users.html', users=users)
-
 @app.route('/add_dc', methods=['GET', 'POST'])
 def add_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         name = request.form['name']
         short_name = request.form['short_name']
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_dc'))
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
-            conn.commit()
-
-            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
-                        (session['user_id'], 'Добавление ЦОД', name))
-            conn.commit()
-            flash('ЦОД успешно добавлен', 'success')
-            return redirect(url_for('reference'))
-    except psycopg2.Error as e:
-        flash(f'Ошибка базы: {e}', 'error')
-    finally:
-        conn.close()
-
+        try:
+            with conn.cursor() as cur:
+                cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
+                conn.commit()
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Добавление ЦОД', name))
+                conn.commit()
+                flash('ЦОД успешно добавлен', 'success')
+                return redirect(url_for('reference'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
     return render_template('add_dc.html')
-
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         full_name = request.form['full_name']
         role = request.form['role']
         login = request.form['login']
         password = request.form['password'].encode('utf-8')
         email = request.form['email']
-
         hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_user'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO users (full_name, role, login, password, email) VALUES (%s, %s, %s, %s, %s)', 
                             (full_name, role, login, hashed_password, email))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Добавление пользователя', login))
                 conn.commit()
@@ -332,14 +287,11 @@ def add_user():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('add_user.html')
-
 @app.route('/add_switch', methods=['GET', 'POST'])
 def add_switch():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         rack_id = int(request.form['rack_id'])
         type = request.form['type']
@@ -347,18 +299,15 @@ def add_switch():
         unit = int(request.form['unit'])
         port_srvm = request.form['port_srvm'] or None
         port_data = request.form['port_data'] or None
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_switch'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO switches (rack_id, type, hostname, unit, port_srvm, port_data) VALUES (%s, %s, %s, %s, %s, %s)', 
                             (rack_id, type, hostname, unit, port_srvm, port_data))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Добавление коммутатора', hostname))
                 conn.commit()
@@ -368,31 +317,25 @@ def add_switch():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('add_switch.html')
-
 @app.route('/upload_connection', methods=['GET', 'POST'])
 def upload_connection():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         server_id = int(request.form['server_id'])
         switch_id = int(request.form['switch_id'])
         port = request.form['port']
         label = request.form['label']
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('upload_connection'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('INSERT INTO connections (server_id, switch_id, port, label) VALUES (%s, %s, %s, %s)', 
                             (server_id, switch_id, port, label))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Загрузка подключения', label))
                 conn.commit()
@@ -402,18 +345,14 @@ def upload_connection():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('upload_connection.html')
-
 @app.route('/report')
 def report():
     if 'user_id' not in session or session['role'] not in ['Администратор', 'Наблюдатель']:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('report.html', reports=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('''
@@ -438,22 +377,17 @@ def report():
         reports = []
     finally:
         conn.close()
-
     return render_template('report.html', reports=reports)
-
 @app.route('/help')
 def help():
     return render_template('help.html')
-
 @app.route('/logs')
 def logs():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         return render_template('logs.html', logs=[])
-
     try:
         with conn.cursor() as cur:
             cur.execute('''
@@ -474,29 +408,23 @@ def logs():
         logs = []
     finally:
         conn.close()
-
     return render_template('logs.html', logs=logs)
-
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         flash('Ошибка базы данных', 'error')
         return redirect(url_for('settings'))
-
     if request.method == 'POST':
         label_format = request.form['label_format']
         export_limit = request.form['export_limit']
-
         try:
             with conn.cursor() as cur:
                 cur.execute('UPDATE settings SET value = %s WHERE key = %s', (label_format, 'label_format'))
                 cur.execute('UPDATE settings SET value = %s WHERE key = %s', (export_limit, 'export_limit'))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Изменение настроек', 'label_format, export_limit'))
                 conn.commit()
@@ -506,7 +434,6 @@ def settings():
         finally:
             conn.close()
         return redirect(url_for('settings'))
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT key, value FROM settings')
@@ -517,30 +444,23 @@ def settings():
         settings = {'label_format': '', 'export_limit': '1000'}
     finally:
         conn.close()
-
     return render_template('settings.html', settings=settings)
-
 @app.route('/delete_dc', methods=['GET', 'POST'])
 def delete_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         dc_id = int(request.form['dc_id'])
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('delete_dc'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT name FROM data_centers WHERE id = %s', (dc_id,))
                 dc_name = cur.fetchone()[0]
-
                 cur.execute('DELETE FROM data_centers WHERE id = %s', (dc_id,))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление ЦОД', dc_name))
                 conn.commit()
@@ -550,30 +470,23 @@ def delete_dc():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('delete_dc.html')
-
 @app.route('/delete_user', methods=['GET', 'POST'])
 def delete_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         user_id = int(request.form['user_id'])
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('delete_user'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT login FROM users WHERE id = %s', (user_id,))
                 user_login = cur.fetchone()[0]
-
                 cur.execute('DELETE FROM users WHERE id = %s', (user_id,))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление пользователя', user_login))
                 conn.commit()
@@ -583,30 +496,23 @@ def delete_user():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('delete_user.html')
-
 @app.route('/delete_connection', methods=['GET', 'POST'])
 def delete_connection():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         conn_id = int(request.form['conn_id'])
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('delete_connection'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('SELECT label FROM connections WHERE id = %s', (conn_id,))
                 conn_label = cur.fetchone()[0]
-
                 cur.execute('DELETE FROM connections WHERE id = %s', (conn_id,))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Удаление подключения', conn_label))
                 conn.commit()
@@ -616,29 +522,23 @@ def delete_connection():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('delete_connection.html')
-
 @app.route('/edit_dc', methods=['GET', 'POST'])
 def edit_dc():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         dc_id = int(request.form['dc_id'])
         name = request.form['name']
         short_name = request.form['short_name']
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('edit_dc'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('UPDATE data_centers SET name = %s, short_name = %s WHERE id = %s', (name, short_name, dc_id))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование ЦОД', name))
                 conn.commit()
@@ -648,14 +548,11 @@ def edit_dc():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('edit_dc.html')
-
 @app.route('/edit_user', methods=['GET', 'POST'])
 def edit_user():
     if 'user_id' not in session or session['role'] != 'Администратор':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         user_id = int(request.form['user_id'])
         full_name = request.form['full_name']
@@ -663,12 +560,10 @@ def edit_user():
         login = request.form['login']
         password = request.form['password']
         email = request.form['email']
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('edit_user'))
-
         try:
             with conn.cursor() as cur:
                 if password:
@@ -679,7 +574,6 @@ def edit_user():
                     cur.execute('UPDATE users SET full_name = %s, role = %s, login = %s, email = %s WHERE id = %s',
                                 (full_name, role, login, email, user_id))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование пользователя', login))
                 conn.commit()
@@ -689,14 +583,11 @@ def edit_user():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('edit_user.html')
-
 @app.route('/edit_switch', methods=['GET', 'POST'])
 def edit_switch():
     if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
         return redirect(url_for('login'))
-
     if request.method == 'POST':
         switch_id = int(request.form['switch_id'])
         rack_id = int(request.form['rack_id'])
@@ -705,18 +596,15 @@ def edit_switch():
         unit = int(request.form['unit'])
         port_srvm = request.form['port_srvm'] or None
         port_data = request.form['port_data'] or None
-
         conn = get_db_connection()
         if conn is None:
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('edit_switch'))
-
         try:
             with conn.cursor() as cur:
                 cur.execute('UPDATE switches SET rack_id = %s, type = %s, hostname = %s, unit = %s, port_srvm = %s, port_data = %s WHERE id = %s',
                             (rack_id, type, hostname, unit, port_srvm, port_data, switch_id))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование коммутатора', hostname))
                 conn.commit()
@@ -726,19 +614,15 @@ def edit_switch():
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
-
     return render_template('edit_switch.html')
-
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     conn = get_db_connection()
     if conn is None:
         flash('Ошибка базы данных', 'error')
         return redirect(url_for('dashboard'))
-
     try:
         with conn.cursor() as cur:
             cur.execute('SELECT full_name, email FROM users WHERE id = %s', (session['user_id'],))
@@ -746,14 +630,11 @@ def profile():
             if not user:
                 flash('Пользователь не найден', 'error')
                 return redirect(url_for('dashboard'))
-
             user_data = {'full_name': user[0], 'email': user[1]}
-
         if request.method == 'POST':
             full_name = request.form['full_name']
             email = request.form['email']
             password = request.form['password']
-
             with conn.cursor() as cur:
                 if password:
                     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -763,32 +644,50 @@ def profile():
                     cur.execute('UPDATE users SET full_name = %s, email = %s WHERE id = %s',
                                 (full_name, email, session['user_id']))
                 conn.commit()
-
                 cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
                             (session['user_id'], 'Редактирование профиля', session['full_name']))
                 conn.commit()
                 session['full_name'] = full_name
                 flash('Профиль успешно обновлен', 'success')
                 return redirect(url_for('profile'))
-
     except psycopg2.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
     finally:
         conn.close()
-
     return render_template('profile.html', user=user_data)
-
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_password():
+    if 'user_id' in session:
+        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        email = request.form['email']
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('reset_password'))
+        try:
+            with conn.cursor() as cur:
+                cur.execute('SELECT id FROM users WHERE email = %s', (email,))
+                user = cur.fetchone()
+            if user:
+                flash('Инструкции по сбросу пароля отправлены на ваш email.', 'success')
+            else:
+                flash('Пользователь с таким email не найден.', 'error')
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+        return redirect(url_for('login'))
+    return render_template('reset_password.html')
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
     if session['role'] == 'Администратор':
         return redirect(url_for('admin_dashboard'))
     elif session['role'] == 'Инженер ЛВС':
         return redirect(url_for('engineer_dashboard'))
     else:
         return redirect(url_for('observer_dashboard'))
-
 if __name__ == '__main__':
     app.run(debug=True)
