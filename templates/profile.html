@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+  {% block title %}Профиль{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="profile-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> > Профиль
+    </div>
+    <div class="profile-content content">
+      <div class="profile-form-wrapper">
+        <h2 class="profile-title">Профиль пользователя</h2>
+        <form method="POST" action="{{ url_for('profile') }}">
+          <div class="profile-form-group">
+            <label for="full_name" class="profile-label"><i class="fas fa-user"></i> ФИО</label>
+            <input type="text" id="full_name" name="full_name" class="filter-input profile-input" value="{{ user.full_name }}" required>
+          </div>
+          <div class="profile-form-group">
+            <label for="email" class="profile-label"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" class="filter-input profile-input" value="{{ user.email }}" required>
+          </div>
+          <div class="profile-form-group">
+            <label for="password" class="profile-label"><i class="fas fa-lock"></i> Новый пароль (оставьте пустым, если не меняете)</label>
+            <input type="password" id="password" name="password" class="filter-input profile-input" placeholder="Введите новый пароль">
+          </div>
+          <div class="profile-button-wrapper">
+            <button type="submit" class="excel-btn profile-submit-btn"><i class="fas fa-save"></i> Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endblock %}
