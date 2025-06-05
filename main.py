@@ -281,20 +281,20 @@ def add_dc():
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_dc'))
 
-        try:
-            with conn.cursor() as cur:
-                cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
-                conn.commit()
+    try:
+        with conn.cursor() as cur:
+            cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
+            conn.commit()
 
-                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
-                            (session['user_id'], 'Добавление ЦОД', name))
-                conn.commit()
-                flash('ЦОД успешно добавлен', 'success')
-                return redirect(url_for('reference'))
-        except psycopg2.Error as e:
-            flash(f'Ошибка базы: {e}', 'error')
-        finally:
-            conn.close()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Добавление ЦОД', name))
+            conn.commit()
+            flash('ЦОД успешно добавлен', 'success')
+            return redirect(url_for('reference'))
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
 
     return render_template('add_dc.html')
 
@@ -728,6 +728,55 @@ def edit_switch():
             conn.close()
 
     return render_template('edit_switch.html')
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    if conn is None:
+        flash('Ошибка базы данных', 'error')
+        return redirect(url_for('dashboard'))
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute('SELECT full_name, email FROM users WHERE id = %s', (session['user_id'],))
+            user = cur.fetchone()
+            if not user:
+                flash('Пользователь не найден', 'error')
+                return redirect(url_for('dashboard'))
+
+            user_data = {'full_name': user[0], 'email': user[1]}
+
+        if request.method == 'POST':
+            full_name = request.form['full_name']
+            email = request.form['email']
+            password = request.form['password']
+
+            with conn.cursor() as cur:
+                if password:
+                    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                    cur.execute('UPDATE users SET full_name = %s, email = %s, password = %s WHERE id = %s',
+                                (full_name, email, hashed_password, session['user_id']))
+                else:
+                    cur.execute('UPDATE users SET full_name = %s, email = %s WHERE id = %s',
+                                (full_name, email, session['user_id']))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Редактирование профиля', session['full_name']))
+                conn.commit()
+                session['full_name'] = full_name
+                flash('Профиль успешно обновлен', 'success')
+                return redirect(url_for('profile'))
+
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
+
+    return render_template('profile.html', user=user_data)
 
 @app.route('/dashboard')
 def dashboard():
