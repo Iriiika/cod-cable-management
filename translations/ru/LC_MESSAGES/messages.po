@@ -121,6 +121,10 @@ msgstr ""
     msgid "Подключение не найдено"
     msgstr "Подключение не найдено"
 
+    #: main.py
+    msgid "Название и короткое имя обязательны"
+    msgstr "Название и короткое имя обязательны"
+
     #: templates/add_dc.html:2 templates/add_dc.html:9 templates/add_dc.html:13
     msgid "Добавление ЦОД"
     msgstr "Добавление ЦОД"

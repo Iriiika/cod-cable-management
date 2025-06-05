@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, g, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g, send_file, jsonify
 from flask_babel import Babel, _, get_locale
 import psycopg2
 import bcrypt
@@ -167,6 +167,33 @@ def reference():
     finally:
         conn.close()
     return render_template('reference.html', data_centers=data_centers, page=page, total_pages=total_pages)
+
+@app.route('/update_data_center/<int:dc_id>', methods=['POST'])
+def update_data_center(dc_id):
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return jsonify({'error': _('Доступ запрещен')}), 403
+    data = request.get_json()
+    name = data.get('name')
+    short_name = data.get('short_name')
+    if not name or not short_name:
+        return jsonify({'error': _('Название и короткое имя обязательны')}), 400
+    conn = get_db_connection()
+    if conn is None:
+        return jsonify({'error': _('Ошибка базы данных')}), 500
+    try:
+        with conn.cursor() as cur:
+            cur.execute('UPDATE data_centers SET name = %s, short_name = %s WHERE id = %s', (name, short_name, dc_id))
+            if cur.rowcount == 0:
+                return jsonify({'error': _('ЦОД не найден')}), 404
+            conn.commit()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Редактирование ЦОД', name))
+            conn.commit()
+        return jsonify({'success': _('ЦОД успешно отредактирован')})
+    except psycopg2.Error as e:
+        return jsonify({'error': f'Ошибка базы: {e}'}), 500
+    finally:
+        conn.close()
 
 @app.route('/export_data_centers')
 def export_data_centers():
