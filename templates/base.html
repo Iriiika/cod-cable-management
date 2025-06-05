@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+  <html lang="ru">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +29,9 @@
               <i class="fas fa-chart-line"></i> Отчет
             </button>
           {% endif %}
+          <button class="nav-btn {% if request.path == url_for('profile') %}active{% endif %}" data-page="{{ url_for('profile') }}">
+            <i class="fas fa-user"></i> Профиль
+          </button>
         {% else %}
           <button class="nav-btn {% if request.path == url_for('login') %}active{% endif %}" data-page="{{ url_for('login') }}">
             <i class="fas fa-sign-in-alt"></i> Вход
@@ -75,4 +78,4 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block js %}{% endblock %}
   </body>
-</html>
+  </html>
