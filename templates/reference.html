@@ -1,38 +1,56 @@
 {% extends 'base.html' %}
-{% block title %}Справочник - ЦОДы{% endblock %}
-{% block css %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/reference.css') }}">
-{% endblock %}
-{% block content %}
-  <div class="ref-breadcrumbs breadcrumbs">
-    <a href="{{ url_for('dashboard') }}">Главная</a> > 
-    <a href="{{ url_for('reference') }}">Справочник</a> > ЦОДы
-  </div>
-  <div class="ref-content content">
-    <div class="ref-filters filters">
-      <input type="text" class="ref-filter-input filter-input" placeholder="ЦОД" onfocus="this.placeholder=''">
-      {% if session['role'] in ['Администратор', 'Инженер ЛВС'] %}
-        <button class="ref-excel-btn excel-btn"><i class="fas fa-file-excel"></i> Excel</button>
-      {% endif %}
+  {% block title %}Справочник ЦОДов{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reference.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="reference-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> > Справочник ЦОДов
     </div>
-    <table class="ref-table">
-      <thead>
-        <tr>
-          <th><input type="checkbox"></th>
-          <th>ЦОД</th>
-          <th>Короткое имя</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for dc in data_centers %}
+    <div class="reference-content content">
+      <h2 class="reference-title">Справочник ЦОДов</h2>
+      <div class="filters">
+        <input type="text" id="nameFilter" class="filter-input" placeholder="Фильтр по названию">
+        <input type="text" id="shortNameFilter" class="filter-input" placeholder="Фильтр по короткому имени">
+        {% if session['role'] == 'Администратор' %}
+          <a href="{{ url_for('add_dc') }}" class="excel-btn"><i class="fas fa-plus"></i> Добавить ЦОД</a>
+        {% endif %}
+        <button class="excel-btn" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Экспорт в Excel</button>
+      </div>
+      <table id="dataCentersTable">
+        <thead>
           <tr>
-            <td><input type="checkbox"></td>
-            <td>{{ dc.name }}</td>
-            <td>{{ dc.short_name }}</td>
+            <th>Название</th>
+            <th>Короткое имя</th>
+            <th>Действия</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p class="ref-status">Показано: {{ data_centers|length }} из {{ data_centers|length }}</p>
-  </div>
-{% endblock %}
+        </thead>
+        <tbody>
+          {% for dc in data_centers %}
+            <tr>
+              <td>{{ dc.name }}</td>
+              <td>{{ dc.short_name }}</td>
+              <td>
+                {% if session['role'] == 'Администратор' %}
+                  <a href="{{ url_for('edit_dc', dc_id=dc.id) }}" class="edit-btn"><i class="fas fa-edit"></i></a>
+                  <a href="{{ url_for('delete_dc', dc_id=dc.id) }}" class="delete-btn"><i class="fas fa-trash-alt"></i></a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="pagination">
+        {% if page > 1 %}
+          <a href="{{ url_for('reference', page=page-1) }}" class="pagination-btn"><i class="fas fa-chevron-left"></i></a>
+        {% endif %}
+        <span>Страница {{ page }} из {{ total_pages }}</span>
+        {% if page < total_pages %}
+          <a href="{{ url_for('reference', page=page+1) }}" class="pagination-btn"><i class="fas fa-chevron-right"></i></a>
+        {% endif %}
+      </div>
+    </div>
+  {% endblock %}
+  {% block js %}
+    <script src="{{ url_for('static', filename='js/reference.js') }}"></script>
+  {% endblock %}
