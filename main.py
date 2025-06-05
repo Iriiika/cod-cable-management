@@ -281,20 +281,20 @@ def add_dc():
             flash('Ошибка базы данных', 'error')
             return redirect(url_for('add_dc'))
 
-        try:
-            with conn.cursor() as cur:
-                cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
-                conn.commit()
+    try:
+        with conn.cursor() as cur:
+            cur.execute('INSERT INTO data_centers (name, short_name) VALUES (%s, %s)', (name, short_name))
+            conn.commit()
 
-                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
-                            (session['user_id'], 'Добавление ЦОД', name))
-                conn.commit()
-                flash('ЦОД успешно добавлен', 'success')
-                return redirect(url_for('reference'))
-        except psycopg2.Error as e:
-            flash(f'Ошибка базы: {e}', 'error')
-        finally:
-            conn.close()
+            cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                        (session['user_id'], 'Добавление ЦОД', name))
+            conn.commit()
+            flash('ЦОД успешно добавлен', 'success')
+            return redirect(url_for('reference'))
+    except psycopg2.Error as e:
+        flash(f'Ошибка базы: {e}', 'error')
+    finally:
+        conn.close()
 
     return render_template('add_dc.html')
 
@@ -650,6 +650,84 @@ def edit_dc():
             conn.close()
 
     return render_template('edit_dc.html')
+
+@app.route('/edit_user', methods=['GET', 'POST'])
+def edit_user():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        user_id = int(request.form['user_id'])
+        full_name = request.form['full_name']
+        role = request.form['role']
+        login = request.form['login']
+        password = request.form['password']
+        email = request.form['email']
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('edit_user'))
+
+        try:
+            with conn.cursor() as cur:
+                if password:
+                    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+                    cur.execute('UPDATE users SET full_name = %s, role = %s, login = %s, password = %s, email = %s WHERE id = %s',
+                                (full_name, role, login, hashed_password, email, user_id))
+                else:
+                    cur.execute('UPDATE users SET full_name = %s, role = %s, login = %s, email = %s WHERE id = %s',
+                                (full_name, role, login, email, user_id))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Редактирование пользователя', login))
+                conn.commit()
+                flash('Пользователь успешно отредактирован', 'success')
+                return redirect(url_for('reference_users'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('edit_user.html')
+
+@app.route('/edit_switch', methods=['GET', 'POST'])
+def edit_switch():
+    if 'user_id' not in session or session['role'] != 'Инженер ЛВС':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        switch_id = int(request.form['switch_id'])
+        rack_id = int(request.form['rack_id'])
+        type = request.form['type']
+        hostname = request.form['hostname']
+        unit = int(request.form['unit'])
+        port_srvm = request.form['port_srvm'] or None
+        port_data = request.form['port_data'] or None
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('edit_switch'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('UPDATE switches SET rack_id = %s, type = %s, hostname = %s, unit = %s, port_srvm = %s, port_data = %s WHERE id = %s',
+                            (rack_id, type, hostname, unit, port_srvm, port_data, switch_id))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Редактирование коммутатора', hostname))
+                conn.commit()
+                flash('Коммутатор успешно отредактирован', 'success')
+                return redirect(url_for('reference_switches'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('edit_switch.html')
 
 @app.route('/dashboard')
 def dashboard():
