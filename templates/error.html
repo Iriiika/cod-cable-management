@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+  {% block title %}Ошибка{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="error-content content">
+      <div class="error-wrapper">
+        <h2 class="error-title">{{ error_code }} - Ошибка</h2>
+        <p class="error-message">{{ error_message }}</p>
+        <a href="{{ url_for('dashboard') if 'user_id' in session else url_for('login') }}" class="error-back-btn">
+          <i class="fas fa-arrow-left"></i> Вернуться
+        </a>
+      </div>
+    </div>
+  {% endblock %}

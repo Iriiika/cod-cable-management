@@ -1,0 +1,74 @@
+@import url('styles.css');
+
+.error-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
+}
+.error-wrapper {
+    max-width: 450px;
+    width: 100%;
+    background: var(--content-bg);
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.error-wrapper:hover {
+    transform: scale(1.02);
+    box-shadow: var(--neon-glow);
+}
+.error-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.error-message {
+    font-size: 16px;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+.error-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 32px;
+    background: var(--button-bg);
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.error-back-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+@media (max-width: 768px) {
+    .error-content {
+        padding: 15px;
+    }
+    .error-wrapper {
+        padding: 40px;
+    }
+}
+@media (max-width: 480px) {
+    .error-wrapper {
+        padding: 30px;
+    }
+    .error-title {
+        font-size: 28px;
+    }
+    .error-back-btn {
+        font-size: 14px;
+        padding: 10px 24px;
+    }
+}
