@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+  {% block title %}Редактирование ЦОД{% endblock %}
+  {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_dc.css') }}">
+  {% endblock %}
+  {% block content %}
+    <div class="edit-dc-breadcrumbs breadcrumbs">
+      <a href="{{ url_for('dashboard') }}">Главная</a> >
+      <a href="{{ url_for('admin_dashboard') }}">Админ-панель</a> > Редактирование ЦОД
+    </div>
+    <div class="edit-dc-content content">
+      <h2 class="edit-dc-title">Редактирование ЦОД</h2>
+      <p>Форма редактирования ЦОД в разработке.</p>
+    </div>
+  {% endblock %}
