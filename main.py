@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g, send_file, jsonify
-from flask_babel import Babel, _, get_locale
-import psycopg2
+from flask_babel import Babel, _
+import psycopg
 import bcrypt
 import math
 import io
@@ -19,17 +19,20 @@ DB_CONFIG = {
     'port': '5432'
 }
 
-@babel.localeselector
+# Функция выбора локали (без устаревшего декоратора localeselector)
 def get_locale():
     if 'lang' in session:
         return session['lang']
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
+# Регистрируем функцию выбора локали
+babel.init_app(app, locale_selector=get_locale)
+
 def get_db_connection():
     try:
-        conn = psycopg2.connect(**DB_CONFIG)
+        conn = psycopg.connect(**DB_CONFIG)
         return conn
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         return None
 
@@ -64,7 +67,7 @@ def login():
                 return redirect(url_for('dashboard'))
             else:
                 return render_template('login.html', error=_('Запросите доступ у <a href="mailto:SergeyAIvanov@dom.ru">SergeyAIvanov@dom.ru</a>'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -94,7 +97,7 @@ def register():
                 conn.commit()
                 flash(_('Регистрация успешна! Запросите доступ у администратора для повышения роли.'), 'success')
                 return redirect(url_for('login'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -130,7 +133,7 @@ def commutation():
             cur.execute('SELECT id, label FROM connections')
             connections = cur.fetchall()
             connections = [{'id': row[0], 'label': row[1]} for row in connections]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         connections = []
     finally:
@@ -159,7 +162,7 @@ def reference():
             cur.execute('SELECT id, name, short_name FROM data_centers LIMIT %s OFFSET %s', (per_page, offset))
             data_centers = cur.fetchall()
             data_centers = [{'id': row[0], 'name': row[1], 'short_name': row[2]} for row in data_centers]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         data_centers = []
         total_pages = 1
@@ -190,7 +193,7 @@ def update_data_center(dc_id):
                         (session['user_id'], 'Редактирование ЦОД', name))
             conn.commit()
         return jsonify({'success': _('ЦОД успешно отредактирован')})
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         return jsonify({'error': f'Ошибка базы: {e}'}), 500
     finally:
         conn.close()
@@ -207,7 +210,7 @@ def export_data_centers():
         with conn.cursor() as cur:
             cur.execute('SELECT id, name, short_name FROM data_centers')
             data_centers = cur.fetchall()
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         return redirect(url_for('reference'))
     finally:
@@ -257,7 +260,7 @@ def reference_switches():
                 'hall_name': row[3],
                 'rack_name': row[4]
             } for row in switches]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         switches = []
     finally:
@@ -286,7 +289,7 @@ def delete_switch(switch_id):
                         (session['user_id'], 'Удаление коммутатора', switch_hostname))
             conn.commit()
             flash(_('Коммутатор успешно удален'), 'success')
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
     finally:
         conn.close()
@@ -317,7 +320,7 @@ def reference_servers():
                 'rack_name': row[4],
                 'unit': row[5]
             } for row in servers]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         servers = []
     finally:
@@ -336,7 +339,7 @@ def reference_roles():
             cur.execute('SELECT name, permissions FROM roles')
             roles = cur.fetchall()
             roles = [{'name': row[0], 'permissions': row[1]} for row in roles]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         roles = []
     finally:
@@ -361,7 +364,7 @@ def reference_users():
                 'login': row[3],
                 'email': row[4]
             } for row in users]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         users = []
     finally:
@@ -390,7 +393,7 @@ def delete_user_by_id(user_id):
                         (session['user_id'], 'Удаление пользователя', user_login))
             conn.commit()
             flash(_('Пользователь успешно удален'), 'success')
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
     finally:
         conn.close()
@@ -416,7 +419,7 @@ def add_dc():
                 conn.commit()
                 flash(_('ЦОД успешно добавлен'), 'success')
                 return redirect(url_for('reference'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -447,7 +450,7 @@ def add_user():
                 conn.commit()
                 flash(_('Пользователь успешно добавлен'), 'success')
                 return redirect(url_for('reference_users'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -478,7 +481,7 @@ def add_switch():
                 conn.commit()
                 flash(_('Коммутатор успешно добавлен'), 'success')
                 return redirect(url_for('reference_switches'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -507,7 +510,7 @@ def upload_connection():
                 conn.commit()
                 flash(_('Подключение успешно загружено'), 'success')
                 return redirect(url_for('commutation'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -535,7 +538,7 @@ def delete_connection(conn_id):
                         (session['user_id'], 'Удаление подключения', conn_label))
             conn.commit()
             flash(_('Подключение успешно удалено'), 'success')
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
     finally:
         conn.close()
@@ -567,7 +570,7 @@ def report():
                 'rack_name': row[2],
                 'connection_count': row[3]
             } for row in reports]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         reports = []
     finally:
@@ -600,7 +603,7 @@ def logs():
                 'object': row[2],
                 'created_at': row[3]
             } for row in logs]
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         logs = []
     finally:
@@ -627,7 +630,7 @@ def settings():
                             (session['user_id'], 'Изменение настроек', 'label_format, export_limit'))
                 conn.commit()
                 flash(_('Настройки успешно обновлены'), 'success')
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -637,7 +640,7 @@ def settings():
             cur.execute('SELECT key, value FROM settings')
             settings_data = cur.fetchall()
             settings = {row[0]: row[1] for row in settings_data}
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
         settings = {'label_format': '', 'export_limit': '1000'}
     finally:
@@ -665,7 +668,7 @@ def delete_dc():
                 conn.commit()
                 flash(_('ЦОД успешно удален'), 'success')
                 return redirect(url_for('reference'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -692,7 +695,7 @@ def delete_user():
                 conn.commit()
                 flash(_('Пользователь успешно удален'), 'success')
                 return redirect(url_for('reference_users'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -719,7 +722,7 @@ def edit_dc():
                 conn.commit()
                 flash(_('ЦОД успешно отредактирован'), 'success')
                 return redirect(url_for('reference'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -755,7 +758,7 @@ def edit_user():
                 conn.commit()
                 flash(_('Пользователь успешно отредактирован'), 'success')
                 return redirect(url_for('reference_users'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -787,7 +790,7 @@ def edit_switch():
                 conn.commit()
                 flash(_('Коммутатор успешно отредактирован'), 'success')
                 return redirect(url_for('reference_switches'))
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
@@ -828,7 +831,7 @@ def profile():
                 session['full_name'] = full_name
                 flash(_('Профиль успешно обновлен'), 'success')
                 return redirect(url_for('profile'))
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         flash(f'Ошибка базы: {e}', 'error')
     finally:
         conn.close()
@@ -852,7 +855,7 @@ def reset_password():
                 flash(_('Инструкции по сбросу пароля отправлены на ваш email.'), 'success')
             else:
                 flash(_('Пользователь с таким email не найден.'), 'error')
-        except psycopg2.Error as e:
+        except psycopg.Error as e:
             flash(f'Ошибка базы: {e}', 'error')
         finally:
             conn.close()
