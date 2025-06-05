@@ -619,6 +619,38 @@ def delete_connection():
 
     return render_template('delete_connection.html')
 
+@app.route('/edit_dc', methods=['GET', 'POST'])
+def edit_dc():
+    if 'user_id' not in session or session['role'] != 'Администратор':
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        dc_id = int(request.form['dc_id'])
+        name = request.form['name']
+        short_name = request.form['short_name']
+
+        conn = get_db_connection()
+        if conn is None:
+            flash('Ошибка базы данных', 'error')
+            return redirect(url_for('edit_dc'))
+
+        try:
+            with conn.cursor() as cur:
+                cur.execute('UPDATE data_centers SET name = %s, short_name = %s WHERE id = %s', (name, short_name, dc_id))
+                conn.commit()
+
+                cur.execute('INSERT INTO logs (user_id, action, object) VALUES (%s, %s, %s)', 
+                            (session['user_id'], 'Редактирование ЦОД', name))
+                conn.commit()
+                flash('ЦОД успешно отредактирован', 'success')
+                return redirect(url_for('reference'))
+        except psycopg2.Error as e:
+            flash(f'Ошибка базы: {e}', 'error')
+        finally:
+            conn.close()
+
+    return render_template('edit_dc.html')
+
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
