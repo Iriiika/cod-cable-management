@@ -3,3 +3,4 @@ psycopg[binary]>=3.2.2
 werkzeug==3.0.1 
 bcrypt==4.1.2
 openpyxl==3.1.2
+Flask-Babel==4.0.0
