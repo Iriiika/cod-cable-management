@@ -391,7 +391,7 @@ msgid "Закрыть"
 msgstr "Close"
 
 #: templates/base.html:96
-msgid "Автор: Гуренко Ирина Алексеевна"
+msgid "Автор: Гурененко Ирина Алексеевна"
 msgstr "Author: Iryna Gurenko"
 
 #: templates/commutation.html:12 templates/reference_servers.html:13
